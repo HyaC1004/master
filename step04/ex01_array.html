@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let panel = new Array(10); // 
+        //console.log(panel.length);
+        for (let idx = 0; idx < panel.length; idx++) {
+            panel[idx] = new Array(10);
+        }
+        // console.log(panel[0] === panel[1]);
+        for (let cnt = 1; cnt <= 20; cnt++) {
+            let row = Math.floor(Math.random() * 10);
+            let col = Math.floor(Math.random() * 10);
+            // console.log(row, typeof row, col, typeof col);
+            panel[row][col] = 7;
+        }
+        document.write("<table>");
+        for (let ty = 0; ty < 10; ty++) {
+            document.write("<tr/>");
+            for (let tx = 0; tx < 10; tx++) {
+                document.write(`<td onclick="check(${ty}, ${tx});">${panel[ty][tx] ?? "-"}</td>`);
+            }
+            document.write("</tr>");
+        }
+        document.write("<table>");
+
+        function check(ty, tx) {
+            alert(ty + "," + tx);
+        }
+    </script>
+</body>
+
+</html>
