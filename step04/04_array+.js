@@ -21,13 +21,22 @@ for (let rx = 0; rx < 10; rx++) {
 for (let ry = 0; ry < 10; ry++) {
     //console.log(panel[ry][tx]);
 }
+//수평
+for (let ry = 0; ry < 10; ry++) {
+    for (let rx = 0; rx < 10; rx++) {
+        if (Math.abs(rx - tx) !== 0 && Math.abs(ry - ty)===0) {
+            if (panel[ry][rx] === 7) {                
+                console.log(panel[ry][rx], `(${rx},${ry})`);
+            }
+        }
+    }
+}
+
 //대각선
 for (let ry = 0; ry < 10; ry++) {
     for (let rx = 0; rx < 10; rx++) {
         if (Math.abs(rx - tx) === Math.abs(ry - ty)) {
-            if (panel[ry][rx] === undefined) {
-                continue;
-            } else {
+            if (panel[ry][rx] === 7) {                
                 console.log(panel[ry][rx], `(${rx},${ry})`);
             }
         }

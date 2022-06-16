@@ -43,6 +43,19 @@
 
         function check(ty, tx) {
             alert(ty + "," + tx);
+            //=================================
+            //킹각선
+            console.log("대각선 7체크")
+            for (let ry = 0; ry < 10; ry++) {
+                for (let rx = 0; rx < 10; rx++) {
+                    if (Math.abs(rx - tx) === Math.abs(ry - ty)) {
+                        if (panel[ry][rx] === 7) {
+                            console.log(panel[ry][rx], `(${rx},${ry})`);
+                        } 
+                    }
+                }
+            }
+            //=================================
         }
     </script>
 </body>
