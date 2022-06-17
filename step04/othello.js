@@ -56,6 +56,9 @@ OthelloEngine.prototype.switchUser = function(){
 // 해당 위치에 데이터를 집어넣을 수 있는지 체크
 OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지 체크
     //8방향중에 -1 있는지 체크 , 있는 방향 중에 1의 존재 체크
+    if(this.panel[tow][tcol]===1||this.panel[tow][tcol]===-1){
+        
+    }
     let possible = false;
     // 왼쪽    
     possible = false;
