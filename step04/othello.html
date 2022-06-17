@@ -1,0 +1,42 @@
+<html>
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td,th {
+            width:10%;
+            height:40px;
+            border: 1px solid #0c0b0b;
+            text-align: center;
+            padding: 8px;
+        }
+    </style>
+     <script src="./othello.js"></script>
+</head>
+<body>
+    <script>
+        const othello = new OthelloEngine();
+        othello.init();
+        console.log(othello);
+        document.write("<table>");
+        for (let row = 0; row < 8; row++) {
+            document.write("<tr>");
+            for (let col = 0; col < 8; col++) {
+                document.write(`<td onclick="handle(${row}, ${col});">${othello.panel[row][col] ?? " "}</td>`);
+            }
+            document.write("</tr>");
+        }
+        document.write("</table>");
+        document.write(`<h2>${othello.user}</h2>`)
+        function handle(trow, tcol){
+            let rst = othello.isAble(trow, tcol);
+            alert(rst);
+        }
+       
+    </script>
+</body>
+
+</html>
