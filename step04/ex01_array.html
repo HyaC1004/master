@@ -2,18 +2,21 @@
 <html lang="ko">
 <head>
     <style>
-        html{background-color: black;}
+        body{height: 100%;background-color: black;color:white;}
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
-        td, th {
-            color:white;
+        td, th {                        
             width: 10%;
             border: 1px solid #339440;
             text-align: left;
             padding: 8px;
+        }
+        #onoff{
+            float:right;
+            margin-bottom:10px;
         }
     </style>
 </head>
@@ -32,6 +35,7 @@
             // console.log(row, typeof row, col, typeof col);
             panel[row][col] = 7;
         }
+        document.write(`<input type="button" value="Dark Mode On" id="onoff" onclick="onoff();">`);
         document.write("<table>");
         for (let ty = 0; ty < 10; ty++) {
             document.write("<tr/>");
@@ -41,19 +45,19 @@
             document.write("</tr>");
         }
         document.write("<table>");
-       // document.write(`<input type="button" value="On" id="onoff" onclick="onoff();">`);
-        function onoff(){
+       
+        function onoff(){            
             currentvalue = document.getElementById('onoff').value;
             if(currentvalue == "Off"){
-                document.getElementById("onoff").value="On";
-                document.html.style.backgroundColor= white;
+                document.getElementById("onoff").value="Dark Mode On";
+                document.body.style.backgroundColor= "black";
+                document.body.style.color= "white";                
             }else{
-                document.getElementById("onoff").value="Off";
-                document.html.style.backgroundColor=black;
+                document.getElementById("onoff").value="Dark Mode Off";
+                document.body.style.backgroundColor= "white";
+                document.body.style.color= "black";                
             }
         }
-
-
         function reverse(ty,tx) {
             alert("Reverse!");
             if(panel[row][col] = 7){
@@ -65,14 +69,94 @@
         
         function check(ty, tx) {
             alert(ty + "," + tx);
+            console.log(`현재 좌표: (${tx},${ty})`);
             //=================================
-            //킹각선
-            console.log("대각선 7체크")
+            //위
+            console.log("위 체크")
+            for (let step =1; ty-step >= 0; step++) {                
+                if(panel[ty-step][tx] == 7) {
+                    console.log(`(${tx},${ty-step})`);
+                }
+            }
+            //아래
+            console.log("아래 체크")
+            for (let step =1; ty+step <9; step++) {                
+                if(panel[ty+step][tx] == 7) {
+                    console.log(`(${tx},${ty+step})`);
+                }
+            }
+            //좌측
+            console.log("좌측 체크")
+            for (let step =1; tx-step >= 0; step++) {                
+                if(panel[ty][tx-step] == 7) {
+                    console.log(`(${tx-step},${ty})`);
+                }
+            }
+            //우측
+            console.log("우측 체크")
+            for (let step =1; tx+step <9; step++) {                
+                if(panel[ty][tx+step] == 7) {
+                    console.log(`(${tx+step},${ty})`);
+                }
+            }
+            // 대각선 우측 위
+            console.log("대각선 우측 위 체크")
+            for (let step =1; ; step++) {   
+                if( ty-step <0 || tx + step > 9) {
+                    break;
+                }
+                if(panel[ty-step][tx+step] == 7) {
+                    console.log(`(${tx+step},${ty-step})`);
+                }
+            }
+            // 대각선 우측 아래
+            console.log("대각선 우측 아래 체크")
+            for (let step =1; ; step++) {   
+                if( ty+step <9 || tx + step > 9) {
+                    break;
+                }
+                if(panel[ty+step][tx+step] == 7) {
+                    console.log(`(${tx+step},${ty-step})`);
+                }
+            }
+            // 대각선 좌측 위
+            console.log("대각선 좌측 위 체크")
+            for (let step =1; ; step++) {   
+                if( ty-step <0 || tx - step < 0) {
+                    break;
+                }
+                if(panel[ty-step][tx+step] == 7) {
+                    console.log(`(${tx+step},${ty-step})`);
+                }
+            }
+            // 대각선 좌측 아래
+            console.log("대각선 좌측 아래 체크")
+            for (let step =1; ; step++) {   
+                if( ty+step > 9 || tx - step < 0 ) {
+                    break;
+                }
+                if(panel[ty-step][tx+step] == 7) {
+                    console.log(`(${tx+step},${ty-step})`);
+                }
+            }
+            //십자 체크
             for (let ry = 0; ry < 10; ry++) {
                 for (let rx = 0; rx < 10; rx++) {
                     if (Math.abs(rx - tx) === Math.abs(ry - ty)) {
                         if (panel[ry][rx] === 7) {
-                            console.log(panel[ry][rx], `(${rx},${ry})`);
+                            console.log(`(${rx},${ry})`);
+                        } 
+                    }
+                }
+            }
+
+            //킹각선
+            console.log("대각선 체크")
+            for (let ry = 0; ry < 10; ry++) {
+                for (let rx = 0; rx < 10; rx++) {
+                    if (Math.abs(rx - tx) === Math.abs(ry - ty)) {
+                        if (panel[ry][rx] === 7) {
+                            console.log(`(${rx},${ry})`);
                         } 
                     }
                 }
