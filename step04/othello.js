@@ -26,11 +26,8 @@ function OthelloEngine() {
 
 // 초기화
 OthelloEngine.prototype.init = function () {
-    this.panel[3][3] = 1;
-    this.panel[2][4] = 1;
-    this.panel[2][6] = 1;
-    this.panel[3][4] = -1;
-    this.panel[3][5] = -1;
+    this.panel[3][3] = 1;    
+    this.panel[3][4] = -1;    
     this.panel[4][3] = -1;
     this.panel[4][4] = 1;
 };
@@ -38,13 +35,15 @@ OthelloEngine.prototype.init = function () {
 OthelloEngine.prototype.getScore = function () {   
     let userA = 0; // -1
     let userB = 0; // 1
-    let each = this.panel[row] ;
-    for (let col=0;col<8;col++) {
-        if(each[col]==-1){
-            userA++;
-        }else if (each[col]==1) {
-            userB++;
-        }        
+    for(let row = 0; row<8; row++){
+        let each = this.panel[row];
+        for (let col=0;col<8;col++) {
+            if(each[col]==-1){
+                userA++;
+            }else if (each[col]==1) {
+                userB++;
+            }        
+        }
     }
     return {userA, userB};
 };
@@ -72,7 +71,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     this.possibleRoute.left = possible;
     // 오른쪽    
     possible = false;
-    if(tcol+1<8 && this.panel[trow][tcol+1] !== (this.user)){
+    if(tcol+1<8 && this.panel[trow][tcol+1] === -(this.user)){
         for(let idx = tcol+1; idx<8;idx++){
             //console.log("6");
             if(this.panel[trow][idx] === this.user) {
