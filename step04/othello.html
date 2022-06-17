@@ -1,39 +1,42 @@
 <html>
 <head>
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-        td,th {
-            width:10%;
-            height:40px;
-            border: 1px solid #0c0b0b;
-            text-align: center;
-            padding: 8px;
-        }
-    </style>
-     <script src="./othello.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./othello.js"></script>
 </head>
 <body>
+    <div>
+      
+    </div>
     <script>
         const othello = new OthelloEngine();
         othello.init();
-        console.log(othello);
-        document.write("<table>");
-        for (let row = 0; row < 8; row++) {
-            document.write("<tr>");
-            for (let col = 0; col < 8; col++) {
-                document.write(`<td onclick="handle(${row}, ${col});">${othello.panel[row][col] ?? " "}</td>`);
+        display();
+
+        function display() {
+            let html = "";
+            html += "<table>";
+            for (let row = 0; row < 8; row++) {
+                html += "<tr>";
+                for (let col = 0; col < 8; col++) {
+                    html+= `<td onclick="handle(${row}, ${col});">${othello.panel[row][col] ?? " "}</td>`;
+                }
+                html += "</tr>";
             }
-            document.write("</tr>");
-        }
-        document.write("</table>");
-        document.write(`<h2>${othello.user}</h2>`)
+            html += "</table>";
+            html += `<h2> 현재유저 : ${othello.user}</h2>`;
+            //let score = othello.getScore();
+           // html += `<h2> ${score.userA} : ${score.userB} </h2>`;
+            document.querySelector("div").innerHTML = html;
+        };
+
         function handle(trow, tcol){
             let rst = othello.isAble(trow, tcol);
             alert(rst);
+            if(rst) {
+                othello.proceed(trow, tcol);
+                othello.switchUser();
+                display();
+            }
         }
        
     </script>
