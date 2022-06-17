@@ -2,15 +2,16 @@
 <html lang="ko">
 <head>
     <style>
+        html{background-color: black;}
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
-
-        td,
-        th {
-            border: 1px solid #dddddd;
+        td, th {
+            color:white;
+            width: 10%;
+            border: 1px solid #339440;
             text-align: left;
             padding: 8px;
         }
@@ -40,7 +41,28 @@
             document.write("</tr>");
         }
         document.write("<table>");
+       // document.write(`<input type="button" value="On" id="onoff" onclick="onoff();">`);
+        function onoff(){
+            currentvalue = document.getElementById('onoff').value;
+            if(currentvalue == "Off"){
+                document.getElementById("onoff").value="On";
+                document.html.style.backgroundColor= white;
+            }else{
+                document.getElementById("onoff").value="Off";
+                document.html.style.backgroundColor=black;
+            }
+        }
 
+
+        function reverse(ty,tx) {
+            alert("Reverse!");
+            if(panel[row][col] = 7){
+                panel[row][col] = "-";
+            } else {
+                panel[row][col] = 7;
+            }
+        }
+        
         function check(ty, tx) {
             alert(ty + "," + tx);
             //=================================
