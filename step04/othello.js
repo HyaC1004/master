@@ -62,6 +62,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     // 왼쪽    
     if(tcol-1>=0&& this.panel[trow][tcol-1] === -(this.user)){
         for(let idx = tcol-1; idx>=0;idx--){
+            //console.log("4");
             if(this.panel[trow][idx] === this.user) {
                 possible = true;
                 break;
@@ -70,8 +71,9 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     }
     this.possibleRoute.left = possible;
     // 오른쪽    
-    if(tcol+1<8&& this.panel[trow][tcol+1] === -(this.user)){
-        for(let idx = tcol+1; idx>=0;idx++){
+    if(tcol+1<8 && this.panel[trow][tcol+1] !== (this.user)){
+        for(let idx = tcol+1; idx<8;idx++){
+            //console.log("6");
             if(this.panel[trow][idx] === this.user) {
                 possible = true;
                 break;
@@ -82,6 +84,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     // 위    
     if(trow-1>=0&& this.panel[trow-1][tcol] === -(this.user)){
         for(let idx = trow-1; idx>=0;idx--){
+            //console.log("8");
             if(this.panel[idx][tcol] === this.user) {
                 possible = true;
                 break;
@@ -91,7 +94,8 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     this.possibleRoute.top = possible;
     // 아래    
     if(trow+1<8&& this.panel[trow+1][tcol] === -(this.user)){
-        for(let idx = trow+1; idx>=0;idx++){
+        for(let idx = trow+1; idx<8;idx++){
+            //console.log("2");
             if(this.panel[idx][tcol] === this.user) {
                 possible = true;
                 break;
@@ -102,6 +106,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     // 오른쪽 위
     if(trow-1>=0 && tcol+1<8 && this.panel[trow-1][tcol+1] === -(this.user)) {
         for (let ridx = trow - 1, cidx = tcol + 1; ridx >= 0 && cidx < 8; ridx--, cidx++) {
+            //console.log("9");
             if(this.panel[ridx][cidx]===this.user){
                 possible = true;
                 break;
@@ -112,6 +117,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     // 오른쪽 아래
     if(trow+1< 8 && tcol+1<8 && this.panel[trow+1][tcol+1] === -(this.user)) {
         for (let ridx = trow+1, cidx = tcol + 1; ridx < 8 && cidx < 8; ridx++, cidx++) {
+            //console.log("3");
             if(this.panel[ridx][cidx]===this.user){
                 possible = true;
                 break;
@@ -122,6 +128,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     // 왼쪽 위
     if(trow-1>=0 && tcol-1>=0 && this.panel[trow-1][tcol-1] === -(this.user)) {
         for (let ridx = trow - 1, cidx = tcol - 1; ridx >= 0 && cidx >=0; ridx--, cidx--) {
+            //console.log("7");
             if(this.panel[ridx][cidx]===this.user){
                 possible = true;
                 break;
@@ -132,6 +139,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
     // 왼쪽 아래
     if(trow+1<8 && tcol-1>=0 && this.panel[trow+1][tcol-1] === -(this.user)) {
         for (let ridx = trow + 1, cidx = tcol - 1; ridx < 8 && cidx >= 0 ; ridx++, cidx--) {
+            //console.log("1");
             if(this.panel[ridx][cidx]===this.user){
                 possible = true;
                 break;
@@ -139,10 +147,11 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
         }
     }   
     this.possibleRoute.leftBottom = possible;
-    // 대각선 체크    
+    // 대각선 체크        
     if((trow-1>=0 && tcol+1<8 && this.panel[trow-1][tcol+1])||(trow+1<8 && tcol-1>=0 && this.panel[trow+1][tcol-1])||(trow+1< 8 && tcol+1<8 && this.panel[trow+1][tcol+1])||trow-1>=0 && tcol-1>=0 && this.panel[trow-1][tcol-1] === -(this.user)) {
         for(let r=0; r<8 ; r++){
             for(let c=0; c<8; c++) {
+                //console.log("5");
                 if (Math.abs(r - trow) === Math.abs(c - tcol)) {
                     if (this.panel[Math.abs(r - trow)][Math.abs(c - tcol)] === this.user) {
                         possible = true;
@@ -151,7 +160,7 @@ OthelloEngine.prototype.isAble = function (trow, tcol) { // 놓을 수 있는지
                 }
             }
         }
-    }  
+    }     
     this.possibleRoute.cross = possible;
     return this.possibleRoute.left || this.possibleRoute.top || this.possibleRoute.right || this.possibleRoute.bottom || this.possibleRoute.cross;//|| 
     //this.possibleRoute.leftTop || this.possibleRoute.rightTop || this.possibleRoute.leftBottom || this.possibleRoute.rightBottom;
