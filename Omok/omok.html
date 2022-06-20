@@ -8,8 +8,7 @@
       
     </div>
     <script>
-        const omok = new omokEngine();
-        omok.init();
+        const omok = new OmokEngine();        
         display();
 
         function display() {
@@ -30,7 +29,8 @@
         };
 
         function handle(trow, tcol){
-            let rst = omok.doAction(trow, tcol);            
+            omok.doAction(trow, tcol);   
+            display();        
         }
        
     </script>

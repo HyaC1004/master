@@ -19,7 +19,7 @@ OmokEngine.prototype.doAction = function (trow, tcol) {
     this.user = this.user === -1 ? 1 : -1;
 }
 // 승리 패배
-OmokEngine.prototype.winLose = function () {
+OmokEngine.prototype.checkWin = function () {
     for (let c = 2; c < this.size - 2; c++) {
         for (let r = 0; r < this.size; r++) {
             if (
@@ -123,6 +123,18 @@ OmokEngine.prototype.winLose = function () {
                 return this.panel[r][c];
                 break;
             }
+        }
+    }
+}
+let winner = checkWin();
+OmokEngine.prototype.winnerIs = function(){
+    if(winner){
+        if (winner == -1){
+            alert("흑돌 승");
+        } else if (winner == 1) {
+            alert ("백돌 승");
+        } else {
+            alert("비기기");
         }
     }
 }
