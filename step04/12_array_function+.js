@@ -12,18 +12,27 @@ const student = [
     new Person("최현",27,"남"),
     new Person("이성훈",30,"남")    
 ];
+let f = student.findIndex((obj) => obj.age===30);
+console.log(f);
 
 // filter로 30대만 추출
-let cnt = student.filter(function(val){    
-    if (val.age >= 30 && val.age <40) {
-        return true;       
-    } else {
-        return false;
-    }
+//let ans = student.filter((val) => val?.age - val?.age%10 === 30);
+let ans = student.filter(function(val,idx,arr) {
+    //console.log(arr === student);
+    return val?.age - val?.age%10 === 30;
 });
-console.log(cnt);
+console.log(ans);
 
 // sort와 reverse를 이용해서 나이순 내림정렬
+let anss = student.sort(function(one, other){
+    if(one?.age !== other?.age) {
+        return one?.age - other?.age;
+    } else {
+        return one?.name.localeCompare(other?.name);
+    }
+});
+console.log(anss);
+
 student.sort((a,b) => a.age-b.age);
 student.reverse();
 console.log(student);
