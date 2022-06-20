@@ -1,0 +1,39 @@
+<html>
+<head>
+     <link rel="stylesheet" href="./omok.css">
+     <script src="./omok.js"></script>
+</head>
+<body>
+    <div>
+      
+    </div>
+    <script>
+        const omok = new omokEngine();
+        omok.init();
+        display();
+
+        function display() {
+            let html = `<h2><span class="c${omok.user}">${omok.user ==1 ? '+'+omok.user : omok.user}</span>  의 차례</h2>`;;
+            html += "<table>";
+            for (let row = 0; row < 9; row++) {
+                html += "<tr>";
+                for (let col = 0; col < 9; col++) {
+                    let val = +omok.panel[row][col];
+                    html+= `<td  onclick="handle(${row}, ${col});">
+                        <div class="c${val}">${omok.panel[row][col] ?? " "}</div></td>`;
+                }
+                html += "</tr>";
+            }
+            html += "</table>";
+            
+            document.querySelector("div").innerHTML = html;
+        };
+
+        function handle(trow, tcol){
+            let rst = omok.doAction(trow, tcol);            
+        }
+       
+    </script>
+</body>
+
+</html>
