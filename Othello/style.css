@@ -19,11 +19,11 @@ body {
 /* table */
 table {
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: #dddddd;
     position: relative;
 }
 td {
-    border: 1px solid #dddddd;
+    border: 1px solid #eeeeee;
     text-align: center;
     width: var(--length);
     height: var(--length);
@@ -31,16 +31,17 @@ td {
 td:hover {
     background-color: hsla(var(--gray), 20%);
     cursor: pointer;
+    color: hsla(var(--gray), 20%);
 }
 /* user */
-h2 {
-    margin-top: 2rem;
-    /* background-color: hsla(var(--gray), 50%); */
+h2, h3 {
+    margin: 2rem;
+    background-color: hsla(var(--gray), 50%); 
     padding: 1rem 2rem;
     border-radius: 2rem;
     letter-spacing: .2rem;
     line-height: 1;
-    /* border: 1px solid #dddddd; */
+    border: 1px solid #dddddd; 
     text-align: center;
 }
 h2+ h2 {
@@ -48,4 +49,17 @@ h2+ h2 {
 }
 h2 .tit {
     color: #fff;
+}
+
+.c-1 {
+    background-color: #ffffff;
+    color: #ffffff;
+    border-radius: 50%;
+    height: 100%;
+}
+.c1 {
+    background-color: #000000;
+    color: #000000;
+    border-radius: 50%;
+    height: 100%;
 }
