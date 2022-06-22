@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number</title>
+    <style>
+        canvas {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="400" height="250"></canvas>
+    <script>
+        const ctx = document.querySelector("canvas").getContext("2d");
+        let red = 144;
+        let green = 238;
+        let blue = 144;
+        let size=20;
+        class randomText {
+            constructor(txt) {
+                Math.random().toString(36).substring(2, 11);
+            }
+        }
+        setInterval(function() {
+            ctx.clearRect(0,0,400,250);
+            ctx.font = `${size}px consolas`;
+            ctx.fillStyle = `#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`;                        
+            ctx.fillText("F",60,60);
+            ctx.fillText("L",90,90);
+            ctx.fillText("Y",130,120);
+
+            red+=15;
+            red %= 255;
+            // green+=15;
+            // green %= 255;
+            blue+=15;
+            blue %= 255;
+            if (size<50){
+                size+=1;
+            } else {
+                size=10;
+            }            
+        },100);
+    </script>
+</body>
+</html>
