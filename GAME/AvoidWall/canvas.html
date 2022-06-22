@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            background-color:rgb(38, 1, 71);            
+        }
+    </style>
+</head>
+<body>
+    <canvas width="600px" height="400px"></canvas>
+    <script src = "./game.js"></script>
+    <script>
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        
+        let frame = 0;
+        let score = 0;
+        let walls = [];
+        const user = new User();
+        let procedure;
+        
+        // canvas.addEventListener("keydown", function(e){
+        //     if(e.keyCode== 'Space'){
+        //      user.fly();
+        //     }
+        // }, false);
+        // canvas.addEventListener("keyup", function(e){
+        //     if(e.keyCode== 'Space'){
+        //     user.fall();
+        //     }
+        // }, false);
+       
+        
+        canvas.addEventListener("mouseenter", function(){  //38
+            if(procedure) {
+                clearInterval(procedure);
+            }
+            procedure = setInterval(function(){
+                user.fly();
+            },100)
+        },false);
+        canvas.addEventListener("mouseleave", function(){
+            if(procedure) {
+                clearInterval(procedure);
+            }
+            procedure = setInterval(function(){
+                user.fall();
+            },100)
+        },false);
+        //canvas.addEventListener("keydown", user.fall());
+        /*        
+        1. walls 배열 재정비    
+            ==> walls에는 wall 객체들이 추가만 되고 있다.
+            x < 0 이하로 된 애들은 지워주는 작업을 추가
+            x >= 이상인 애들로 filter 걸어서 변경
+        2. user하고 wall하고 충돌 체크를 해줘야 함
+            만약 하나라도 충돌이 되면 게임오버로 연동
+            forEach로 돌리던가.. some으로 콜백
+            멈추고 싶으면 clearInterval(main)
+        */
+
+        // 이게 main ============================
+        let main = setInterval(function(){
+            if(frame%15 === 0) {
+                walls.push(new Wall());
+            }
+            ctx.clearRect(0,0,600,400);
+            ctx.fillStyle = "gold";
+            ctx.fillRect(...user.toArray());
+            ctx.fillText(`SCORE : ${frame}`,15,15);
+
+            walls.forEach(function(obj){
+                obj.slide();
+                ctx.fillStyle = obj.color;
+                ctx.fillRect(...obj.toArray());
+            });
+            // 밖으로 바져나간 벽객체 제거
+            walls = walls.filter(function(obj){
+               if(obj.x+obj.width>0) {
+                return true;
+               }
+            });
+            // 월객체와 유저 객체의 충돌이 하나라도 있을때 interval 멈추기
+            let crashed = walls.some(function(obj){
+                return obj.crashWith(user);
+            });
+            if (crashed) {
+                clearInterval(main);                
+            };                       
+            frame++;            
+        },100)
+        //console.log(walls);
+    </script>
+</body>
+</html>
