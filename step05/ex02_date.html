@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ex02_date</title>
+</head>
+<body>
+    <div style="text-align: right;">    
+    </div>
+    <hr/>
+    <div>
+        <input type="date" /> ~ <input type="date" />
+        <button onclick="set();">30일</button>
+    </div>
+    <script>        
+        let inputs = document.querySelectorAll("input");
+        let today = new Date();             
+        let tYear = today.getFullYear();
+        let tMonth = '0'+(today.getMonth()+1);
+        let tDate = today.getDate();
+        let pMonth = '0'+today.getMonth();
+        function set() {
+                console.log(inputs[1].value);            
+                let prev30=`${tYear}-${pMonth}-${tDate}`;
+                inputs[0].value = prev30;
+            }
+        !function() {
+            setInterval(function() {
+                let time = new Date().toTimeString();
+                document.querySelector("div").innerHTML = time;
+            },1000);
+            
+            inputs[1].value=`${tYear}-${tMonth}-${tDate}`;
+            console.log(inputs[1].value);
+
+            
+            // value 는 YYYY-MM-DD이여만 한다.
+            // Date를 이용해서 이 프로그램이 작동한 날짜로 설정되게 작업
+            
+
+        }();    // 즉시 시전
+    </script>
+</body>
+</html>
