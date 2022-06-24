@@ -18,12 +18,12 @@
         let inputs = document.querySelectorAll("input");
         let today = new Date();             
         let tYear = today.getFullYear();
-        let tMonth = '0'+(today.getMonth()+1);
+        let tMonth = today.getMonth()+1;  // 0이 1월
         let tDate = today.getDate();
-        let pMonth = '0'+today.getMonth();
+        let pMonth = today.getMonth();
         function set() {
                 console.log(inputs[1].value);            
-                let prev30=`${tYear}-${pMonth}-${tDate}`;
+                let prev30=`${tYear}-${pMonth<10?"0"+pMonth:pMonth}-${tDate<10?"0"+tDate:tDate}`;
                 inputs[0].value = prev30;
             }
         !function() {
@@ -32,7 +32,7 @@
                 document.querySelector("div").innerHTML = time;
             },1000);
             
-            inputs[1].value=`${tYear}-${tMonth}-${tDate}`;
+            inputs[1].value=`${tYear}-${tMonth<10? "0"+tMonth:tMonth}-${tDate<10?"0"+tDate:tDate}`;
             console.log(inputs[1].value);
 
             
