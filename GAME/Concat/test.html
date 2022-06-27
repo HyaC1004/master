@@ -25,14 +25,26 @@
         
         function turn(){
             // alert(val);
-            let val = document.querySelector("input").value;              
-            let target =`https://stdict.korean.go.kr/api/search.do?certkey_no=4054&key=1B5AD3EA0BF79A10D8870C97B37B02BF&type_search=search&req_type=json&q=${val}`;
+            let val = document.querySelector("input").value;                          
             let last = words[words.length-1];
+            if(!/^[가-힣]{2,}$/.test(val)) {
+                alert("두글자 이상의 한글 단어를 입력해주세요.");
+                return document.querySelector("input").value = "";
+            }
+            if(words.length !==0) {
+                if (!val.startsWith(last.slice(-1))) {
+
+                }
+            }
+
+            let target =`https://stdict.korean.go.kr/api/search.do?certkey_no=4054&key=1B5AD3EA0BF79A10D8870C97B37B02BF&type_search=search&req_type=json&q=${val}`;
+
             fetch(target).then(function(rst) {
                 return rst.json();
             }).then(function(obj) {         
                 console.log(obj);                       
                 console.log(obj.channel.total);
+                
                 if(lastWord === null) {    // 이전에 입력된 단어가 없었다면
                     words.push(val);
                     lastWord=val;
@@ -52,7 +64,7 @@
                             console.log(last);
                             wordHistory();               
                         } else {
-                            alert("틀렸습니다.");    
+                            alert("끝말잇기 룰 숙지좀.");    
                             location.reload();                        
                         }                       
                     }                    
@@ -68,22 +80,10 @@
 
         function wordHistory() {
             let history = document.querySelector('.history');
-            history.innerHTML = words
-            console.log(words);
+            history.innerHTML = words.join("→");
+            //console.log(words);
         }
 
-        !function(){             
-            let word = "시험";                        
-            let target =`https://stdict.korean.go.kr/api/search.do?certkey_no=4054&key=1B5AD3EA0BF79A10D8870C97B37B02BF&type_search=search&req_type=json&q=${word}`;
-            console.log(target);
-            
-            fetch(target).then(function(rst) {
-                return rst.json();
-            }).then(function(obj) {
-                console.log(obj);
-                console.log(obj.channel.total);
-            }); 
-        };
     </script>
 </body>
 </html>
