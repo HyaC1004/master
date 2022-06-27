@@ -12,4 +12,4 @@ dictionary.size;
 
 const obj = {};
     obj.apple = {spell:"apple", mean:"사과", type:"n"};
-    obj.do = {spell:"do", mean:"하다", type:"v"};
+    obj.do = {spell:"do", mean:"하다", type:"v"};ㅈ

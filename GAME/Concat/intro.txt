@@ -1,0 +1,16 @@
+국립국어원 표준국어대사전
+
+
+https://stdict.korean.go.kr/main/main.do
+
+
+https://stdict.korean.go.kr/api/search.do?certkey_no=4038&key=2A480A7CAEDBE4890EDB7617D52911DD&type_search=search&req_type=json&q=
+
+일 일 5만건
+
+자바스크립트를 이용해서 통신을 해야되는데, 
+통신에 사용되는 함수가 browser에서만 작동하는 host 함수다
+    /node.js로 작동시킬꺼면 module설치가 필요
+
+통신이 정상적으로 이루어졌을때 목적지에서 권한 설정을 안해줬다면
+브라우저가 그 응답을 사용할 수없게 막아버린다.

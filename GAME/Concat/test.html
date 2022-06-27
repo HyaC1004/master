@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+    <h2 style="text-align: center;">끝말잇기</h2>
+    <div class="container" style="margin:auto; text-align:center;">
+        <p class="lastWord">최종 제시어 <b>아무거나 입력가능</b></p>
+        <input type="text" onchange="turn();" placeholder="단어를 입력하세요">
+
+        <hr>
+
+        <div class="historyWrap">
+            <b>단어 리스트</b>
+            <div class="history"></div>
+        </div>
+    </div>
+    <script>
+        let words = new Array();
+        let lastWord = null;
+        
+        function turn(){
+            // alert(val);
+            let val = document.querySelector("input").value;              
+            let target =`https://stdict.korean.go.kr/api/search.do?certkey_no=4054&key=1B5AD3EA0BF79A10D8870C97B37B02BF&type_search=search&req_type=json&q=${val}`;
+            let last = words[words.length-1];
+            fetch(target).then(function(rst) {
+                return rst.json();
+            }).then(function(obj) {         
+                console.log(obj);                       
+                console.log(obj.channel.total);
+                if(lastWord === null) {    // 이전에 입력된 단어가 없었다면
+                    words.push(val);
+                    lastWord=val;
+                    document.querySelector("b").innerHTML = lastWord;
+                    // console.log(last);
+                    // console.log(lastWord);
+                    wordHistory();
+                } else {
+                    if(words.includes(val)) {     
+                        alert("중복입니다.");      
+                        location.reload();             
+                    } else {                    
+                        if(val.startsWith(lastWord.slice(-1))) {
+                            words.push(val);
+                            lastWord=val;
+                            document.querySelector("b").innerHTML = lastWord; 
+                            console.log(last);
+                            wordHistory();               
+                        } else {
+                            alert("틀렸습니다.");    
+                            location.reload();                        
+                        }                       
+                    }                    
+                }
+            }).catch(function(e){          
+                console.log(e);
+                alert(`${val}은/는 없는 단어!`);    
+                location.reload();                                             
+            });        
+          
+            document.querySelector("input").value = "";
+        }
+
+        function wordHistory() {
+            let history = document.querySelector('.history');
+            history.innerHTML = words
+            console.log(words);
+        }
+
+        !function(){             
+            let word = "시험";                        
+            let target =`https://stdict.korean.go.kr/api/search.do?certkey_no=4054&key=1B5AD3EA0BF79A10D8870C97B37B02BF&type_search=search&req_type=json&q=${word}`;
+            console.log(target);
+            
+            fetch(target).then(function(rst) {
+                return rst.json();
+            }).then(function(obj) {
+                console.log(obj);
+                console.log(obj.channel.total);
+            }); 
+        };
+    </script>
+</body>
+</html>
