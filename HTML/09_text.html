@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">        
+    <title>09_text.html</title>
+</head>
+<body>
+    <div>
+        <h1 id="front">우리 교육 과정의 프론트엔드 영역</h1>
+        <ul id="list">
+            <li class="basic">HTML</li>
+            <li class="basic">CSS</li>
+            <li class="basic js">Javascript</li>
+            <li class="js" id = "react"><b>R</b>eact.<i>js</i></li>
+        </ul>
+        <p>
+            프론트엔드는 사용자와 밀접하게 닿아있는 표면적인 영역
+        </p>
+    </div>
+    <script>
+        /*
+            HTML 요소의 텍스트를 변경하고자 한다면,
+            (텍스트노드의)nodeValue 혹은 (요소노드의)textContent를 사용하면 된다,
+        */
+        const front = document.querySelector("#front");
+        console.log(front.nodeValue);
+    </script>
+</body>
+</html>

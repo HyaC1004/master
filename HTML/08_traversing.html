@@ -7,20 +7,29 @@
 </head>
 <body>
     <div>
-        <h1 id="subject">우리 교육 과정의 프론트엔드 영역</h1>
+        <h1 id="front">우리 교육 과정의 프론트엔드 영역</h1>
         <ul id="list">
             <li class="basic">HTML</li>
             <li class="basic">CSS</li>
             <li class="basic js">Javascript</li>
             <li class="js" id = "react"><b>R</b>eact.<i>js</i></li>
         </ul>
+        <p>
+            프론트엔드는 사용자와 밀접하게 닿아있는 표면적인 영역
+        </p>
     </div>
     <script>
         const list = document.querySelector("#list");
-        console.log(list.firstChild.nodeName);
-        console.log(list.firstElementChild.nodeName);
-        console.log(list.lastChild.nodeName);
-        console.log(list.lastElementChild.nodeName);
+        console.log(list.previousSibling);
+        console.log(list.previousElementSibling);
+        console.log(list.previousElementSibling===list.parentElement.firstElementChild);
+        console.log(list.nextSibling);
+        console.log(list.nextElementSibling);
+
+        // console.log(list.firstChild.nodeName);
+        // console.log(list.firstElementChild.nodeName);
+        // console.log(list.lastChild.nodeName);
+        // console.log(list.lastElementChild.nodeName);
 
 
         /*
