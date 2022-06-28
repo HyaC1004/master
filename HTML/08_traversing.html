@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08_traversing.html</title>
+</head>
+<body>
+    <div>
+        <h1 id="subject">우리 교육 과정의 프론트엔드 영역</h1>
+        <ul id="list">
+            <li class="basic">HTML</li>
+            <li class="basic">CSS</li>
+            <li class="basic js">Javascript</li>
+            <li class="js" id = "react"><b>R</b>eact.<i>js</i></li>
+        </ul>
+    </div>
+    <script>
+        const list = document.querySelector("#list");
+        console.log(list.firstChild.nodeName);
+        console.log(list.firstElementChild.nodeName);
+        console.log(list.lastChild.nodeName);
+        console.log(list.lastElementChild.nodeName);
+
+
+        /*
+        const list = document.querySelector("#list");
+        //console.log(list.parentNode);
+        // childNodes, children
+        const childs = list.childNodes; // nodelist - text node 포함
+        //const childs = list.children; // HTMLCollection - 낫 포함
+        console.log(childs.length);
+        for(let one of childs) {
+            console.log(one.nodeName, one.nodeType);
+        }
+        */
+    </script>
+</body>
+</html>

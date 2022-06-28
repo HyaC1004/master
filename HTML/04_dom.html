@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>04_DOM.html</title>
+</head>
+<body>
+    <div>
+        <h1 id="subject">웹 개발의 프론트엔드 영역</h1>
+        <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>Javascript</li>
+            <li>그 외 프론트엔드 프레임워크</li>
+        </ul>
+    </div>
+    <script>
+        let sbjt = document.getElementById("subject");
+        console.log(sbjt instanceof Node);                  // true
+        console.log(sbjt instanceof HTMLElement);           // true
+        console.log(sbjt instanceof HTMLHeadingElement);    // true
+        console.log(sbjt.textContent);
+        console.log(subject.textContent);
+        /*
+            HTML문서는 브라우저의 렌더링 엔진을 통해서 파싱되어 DOM이 만들어진다.
+            DOM은 HTML문서 구조와 정보를 표현해둔 트리 자료구조형태이다.
+            이 DOM을 구성하는 개별 요소들은 노드라고 부른다.
+
+            DOM의 노드 종류는 총 12개가 있다.
+            그중에서 중요한 노드는 document, element, attribute, text 노드가 있다.
+
+            문서(Document) 노드는 DOM 최상위 노드로서 하위의 구성 노드들을 접근하기 위한 진입점이 됨.
+            HTML당 하나만 만들어지는 유일한 노드.
+
+            document 객체를 통해 하위 노드를 얻어내는 방법은 여러가지가 존재하는데,
+            id, class, tagName 등이 존재한다.
+        */
+       
+    </script>
+</body>
+</html>

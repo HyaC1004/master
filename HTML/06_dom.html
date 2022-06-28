@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>06_DOM.html</title>
+</head>
+<body>
+    <div>
+        <h1 id="front">우리 교육 과정의 프론트엔드 영역</h1>
+        <ul>
+            <li class="basic">HTML</li>
+            <li class="basic">CSS</li>
+            <li class="basic js">Javascript</li>
+            <li class="js">React</li>
+        </ul>
+    </div>
+    <div id="back">
+        <h1 >우리 교육 과정의 백엔드 영역</h1>
+        <ol>
+            <li class="js">Node.js</li>
+            <li class="js">Express.js</li>
+            <li class="db">MongoDB</li>
+        </ol>
+    </div>
+    <script>
+        // 4. CSS selector 를 이용하는 querySelector(one), querySelectorAll(some)
+            // #id, .class, tag
+        let front = document.querySelector("#back");
+        console.log(front.textContent);
+        let js = document.querySelectorAll(".js");  // NodeList 유사배열객체
+        [...js].forEach((elm)=>elm.style.color="blue");
+
+        
+    </script>
+</body>
+</html>
