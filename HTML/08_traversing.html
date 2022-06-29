@@ -36,8 +36,8 @@
         const list = document.querySelector("#list");
         //console.log(list.parentNode);
         // childNodes, children
-        const childs = list.childNodes; // nodelist - text node 포함
-        //const childs = list.children; // HTMLCollection - 낫 포함
+        const childs = list.childNodes; // nodelist - text node 포함 for each 사용가능
+        //const childs = list.children; // HTMLCollection - 낫 포함 for each 사용불가
         console.log(childs.length);
         for(let one of childs) {
             console.log(one.nodeName, one.nodeType);

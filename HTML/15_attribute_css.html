@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS</title>
+</head>
+<body>
+    <h1 id="target" style="font-size: 50pt; color:orange;">Style Attribute</h1>
+
+    <script>
+        const target = document.querySelector("#target");
+        // string
+        console.log(target.getAttribute("style"), typeof target.getAttribute("style"));
+        // CSSStyleDeclaration
+        console.log(target.style, typeof target.style);
+        // style 프로퍼티를 통해서 css 변경을 할때는 문자열로 설정하는 것 보다는
+        //target.style="font-size:30pt;";
+        target.style.color="red";
+        target.style.fontWeight = "lighter";
+        // css 속성중에는 -이 들어가는 것들이 있는데 javascript 식별자로 -을 쓰는게 불가능'
+        // - 부분만 camel로
+        target.style.backgroundColor = "#f0faff";
+        target.style["background-color"]="antiquewhite";
+    </script>
+</body>
+</html>

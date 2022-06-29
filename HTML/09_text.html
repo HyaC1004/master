@@ -16,6 +16,11 @@
         <p>
             프론트엔드는 사용자와 밀접하게 닿아있는 표면적인 영역
         </p>
+        <pre style="font-size:1rem;font-weight:bolder;">
+ /) /)/)/)/)/)/)/)/)/)/)/)/)
+(= = ) ) ) ) ) ) ) ) ) ) ) )
+(u u ) ) ) ) ) ) ) ) ) ) ) )
+        </pre>
     </div>
     <script>
         /*
@@ -23,7 +28,13 @@
             (텍스트노드의)nodeValue 혹은 (요소노드의)textContent를 사용하면 된다,
         */
         const front = document.querySelector("#front");
-        console.log(front.nodeValue);
+        // console.log(front.firstChild.nodeValue);
+        // front.childNodes[0].nodeValue = "/) /)";
+        /*
+            textContent라는 속성이 있는데 이건, 자식모드들의 모든 텍스트를 합친것(html 무시)
+        */
+        console.log(front.textContent);
+        front.textContent = "??????<small>????</small>" //글씨만변경
     </script>
 </body>
 </html>
