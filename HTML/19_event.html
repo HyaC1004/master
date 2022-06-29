@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event</title>
+    <style>
+        body{
+            -webkit-user-select:none;
+            -moz-user-select:none;
+            -ms-user-select:none;
+            user-select:none
+        }
+    </style>
+</head>
+<body>
+    <button onclick="alert(event);">속성을 이용해서 등록</button>
+    <button id="bt">프로퍼티를 이용해서 등록</button>
+    <p>
+        html 요소에 속성으로 등록할때는 암묵적(자동)으로 함수를 만들어서 
+        그안에 우리가 작성한 내용이 함수 몸체로 들어간다.
+    </p>
+    <pre>
+    function onclick(event) {
+        test();
+    }
+    </pre>
+    <script>
+        document.querySelector("#bt").onclick = function(e){
+            // alert(event);
+            console.log(e.target);  // 이벤트 근원지
+        }
+    </script>
+</body>
+</html>
