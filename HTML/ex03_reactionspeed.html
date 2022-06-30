@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응속도 체크</title>
+    <style>
+        #wrap{width:80%;margin: auto;text-align: center;}
+        #screen {
+          width: 80%;
+          height: 400px;
+          text-align: center;
+          user-select: none;
+          margin: auto;
+          line-height: 400px;
+          font-size: 3rem;
+        }
+        #screen.waiting {
+          background-color: rgb(19, 103, 158);
+        }
+        #screen.ready {
+          background-color: rgb(131, 17, 17);
+          color: white;
+        }
+        #screen.now {
+          background-color: rgb(188, 236, 117);
+        }
+        #result{
+            margin:20px 0;
+            text-align: center;
+        }
+      </style>
+</head>
+<body>
+    <div id = "wrap">
+        <div id="screen" class="waiting">클릭해서 시작하세요</div>
+        <div id="result"></div>
+        <button id="init">평균 초기화</button>
+    </div>
+    <script>
+        const screen = document.querySelector("#screen");
+        const result = document.querySelector("#result");
+        const init = document.querySelector("init");
+
+        let startTime;
+        let endTime;
+        const records = [];
+        let timeoutId;
+
+        
+
+        screen.addEventListener('click', function(){
+            if (screen.classList.contains("waiting")) { // 대기
+                screen.classList.remove("waiting");
+                screen.classList.add("ready");
+                screen.textContent = "초록색이 되면 클릭"                
+                timeoutId = setTimeout(function() {
+                    startTime = new Date();
+                    screen.classList.remove("ready");
+                    screen.classList.add("now");
+                    screen.textContent = "눌러!!"
+                },Math.floor(Math.random()*1000)+2000);
+            } else if (screen.classList.contains("ready")) { // 준비   
+                clearTimeout(timeoutId)            ;
+                screen.classList.remove("ready");
+                screen.classList.add("waiting");
+                screen.textContent = "초록화면이 되면 누르라니까"
+            } else if (screen.classList.contains("now")) { // 클릭
+                endTime = new Date();
+                const current = endTime - startTime;
+                records.push(current);
+                const average = records.reduce((a,c) => a+c)/records.length;
+                result.textContent = `현재: ${current}ms, 평균: ${average}ms`;
+                startTime = null;
+                endTime = null;
+                screen.classList.remove("now");
+                screen.classList.add("waiting");
+                // init.mouseonclick(function() {
+                //     average = null;
+                //     result.textContent = "";
+                // });
+            }
+        });
+
+    </script>
+</body>
+</html>
