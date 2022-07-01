@@ -21,4 +21,6 @@ read("javascript/source.txt")
     })
     .then(function (result) {
         console.log(result);
+    }).catch(function(e){
+        console.log(e.message);
     });

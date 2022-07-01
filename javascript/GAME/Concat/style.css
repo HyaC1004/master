@@ -1,0 +1,95 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+:root {
+	--black: 199, 18%, 33%;
+	--blue: 227, 69%, 58%;
+	--red: 0, 55%, 54%;
+	--bgColor: 210, 13%, 91%;
+	--width: 20rem;
+}
+body {
+	font-family: Pretendard, Arial, sans-serif;
+	height: 100vh;
+	overflow: hidden;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: hsl(var(--black));
+	background-color: hsla(var(--bgColor), 50%);
+}
+h1 {
+	letter-spacing: .4rem;
+	margin-bottom: 1rem;
+}
+.container {
+	width: var(--width);
+	border-radius: .2rem;
+	background-color: #fff;
+	padding: 1rem 2rem;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.lastWord {
+	font-size: 0.9rem;
+	align-self: flex-start;
+	margin-left: 2%;
+	margin-bottom: .4rem;
+}
+.lastWord b {
+	font-size: 1rem;
+	color: hsl(var(--blue));
+}
+input {
+	width: 100%;
+	height: 2rem;
+	text-align: center;
+	padding: .2rem .4rem;
+	border-radius: .2rem;
+	line-height: 1;
+	color: hsl(var(--blue));
+	border: 1px solid hsla(var(--black), 70%);
+	background-color: hsla(var(--bgColor), 10%);
+}
+input:focus {
+	outline: 2px solid hsla(var(--blue), 30%);
+}
+hr {
+	width: 100%;
+	height: 1px;
+	border: 0;
+	background-color: hsla(var(--black), 30%);
+	margin: 1.8rem 0;
+}
+.historyWrap {
+	width: 100%;
+	margin-top: -2.6rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.historyWrap b {
+	margin-bottom: .8rem;
+	background: #fff;
+	display: inline-block;
+	padding: 0 .4rem;
+}
+.historyWrap .history {
+	width: 100%;
+	height: auto;
+	font-size: 0.9rem;
+	border: 1px solid hsla(var(--black), 70%);
+	background-color: hsla(var(--bgColor), 10%);
+	padding: .2rem .4rem;
+	border-radius: .2rem;
+	overflow-y: auto;
+}
+.historyWrap .history::-webkit-scrollbar {
+	display: none;
+  }
