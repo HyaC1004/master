@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="http://keycode.info" id="link" target="_blank">키코드 확인</a>
+    <button id="bt">버튼</button>
+    <input type="checkbox" id="cb" /> 
+    <script>
+        // 2. DOM요소는 이벤트에 의한 기본 동작이 설정되있다.
+        // 이 동작 자체를 중단 시킬수 있다.
+        document.querySelector("#link").onclick = function(e){
+            e.preventDefault();
+        };
+        document.querySelector("#cb").onclick = function(e){
+            e.preventDefault();
+        };
+        document.querySelector("#bt").onclick = function(evt){
+            console.log("event!!");
+            console.log(evt);
+        };
+        // 1. 이벤트는 강제 전파 할수 있다.
+        let e = new MouseEvent("click");
+        document.querySelector("#bt").dispatchEvent(e); // 클릭안해도 이벤트 발생
+    </script>
+</body>
+</html>

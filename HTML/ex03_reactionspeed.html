@@ -36,7 +36,7 @@
     <div id = "wrap">
         <div id="screen" class="waiting">클릭해서 시작하세요</div>
         <div id="result"></div>
-        <button id="init">평균 초기화</button>
+        <button id="init"></button>
     </div>
     <script>
         const screen = document.querySelector("#screen");
@@ -47,7 +47,7 @@
         let endTime;
         const records = [];
         let timeoutId;
-
+        
         
 
         screen.addEventListener('click', function(){
