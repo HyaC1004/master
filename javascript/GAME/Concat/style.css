@@ -82,6 +82,7 @@ hr {
 }
 .historyWrap .history {
 	width: 100%;
+	min-height: 5rem;
 	height: auto;
 	font-size: 0.9rem;
 	border: 1px solid hsla(var(--black), 70%);
