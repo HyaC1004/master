@@ -9,19 +9,33 @@ const path = require("path");
     기본적으로 3가지 형태로 처리할수 있게 되어있다.
     1. callback
     2. sync    (취지에 어긋남)
-    3. promise
-    
+    3. promise    
 */
 
-fs.readFile("./package.json",function(err,data){
+fs.readFile("NODE/package.json",function(err,data){
     // 읽기에 실패하면 err에 데이터가 들어가고, 성공하면 data가 들어가고
     console.log(data instanceof Buffer, data);
 });
 
-let data = fs.readFileSync("./package.json");
+let data = fs.readFileSync("NODE/package.json");
 console.log(data instanceof Buffer, data);
 
-fs.promises.readFile("./package.json")
+fs.promises.readFile("NODE/package.json")
     .then((data)=>{
         console.log(data instanceof Buffer, data);
     });
+//================================================
+fs.mkdir(path.join(__dirname,"photo"),function(err){
+    console.log("mkdir",err.message);
+});
+
+try{
+    let result = fs.mkdirSync(path.join(__dirname,"music"));
+    console.log(result);
+} catch(e) {
+    console.log("mkdirSync", e.message);
+}
+
+fs.promises.mkdir(path.join(__dirname,"document"))
+     .then((data)=>console.log("promises.mkdir ",data))
+     .catch((e)=>console.log("promises.mkdir ",e.message));
