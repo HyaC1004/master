@@ -3,11 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title><%= title %></title>
+    <style>        
+        #wrap{
+            width: 80%;
+            font-family:'Courier New', Courier, monospace;
+        }
+        table{width:50%;text-align:center; border-collapse: collapse;border: 1px solid;}
+        table tr:first-child>td{background-color: rgb(110, 199, 214);}
+        td{border: 1px solid;background-color: white;}
+    </style>
 </head>
 <body>
-    <p>사용 시간: <%= time %>분</p>
-    <p>사용 요금: <%= price %>원</p>
+    
+    <div id="wrap">
+        <h2>주차요금계산</h2>
+        <table>
+            <tr>
+                <td colspan="2">༼ つ ◕_◕ ༽つ주차요금 계산표<span style="font-size:1.5rem;">🚗</span></td>
+            </tr>
+            <tr>
+                <td>사용 시간</td>
+                <td>사용 요금</td>
+            </tr>
+            <tr>
+                <td><%= time %>분</td>
+                <td><%= price %>원</td>
+            </tr>
+        </table>   
+        <% if(time<=10) {%>
+            <p>10분까지는 무료 주차입니다.</p>
+        <%}%>
+    </div> 
 </body>
 </html>

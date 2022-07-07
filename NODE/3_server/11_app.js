@@ -22,28 +22,41 @@ const { time } = require("console");
     30분까지는 1000원 / 10분당 400 ===> 최대요금 10000
 */
 http.createServer((req,res)=>{
+    console.log(req.method);
     const pathname = url.parse(req.url,true).pathname;
-    const query = url.parse(req.url,true).query;
-    var usedTime = query.used;    
-    function parkingFee(usedTime) {
-        let fee = 1000;
-        let left = usedTime - 30;
-        while (left > 0) {
-            left -= 10;
-            fee += 400;
+    const query = url.parse(req.url,true).query;    
+    // console.log(query.used,Number.parseInt(query.used));
+    // console.log(/[0-9]+/.test(Number.parseInt(query.used)));
+    if(pathname==="/fee" ){
+        let usedTime = Number.parseInt(query.used);        
+        let fee           
+        if(usedTime<=10){
+            fee=0;
+        }else{               
+            fee = 1000;             
+            if(usedTime > 30) {                    
+                fee += Math.ceil((usedTime-30)/10)*400;
+            }
+            fee = fee < 10000 ? fee : 10000;  
+        } 
+        if(/[0-9]+/.test(usedTime)){
+            ejs.renderFile(path.join(__dirname,"view","fee.ejs"),{
+                title: "Parking Fee",
+                time: usedTime,
+                price: fee
+            }).then(data=>{
+                res.setHeader("content-type", "text/html;charset=utf-8");            
+                res.end(data);
+            });
+        } else {
+            ejs.renderFile(path.join(__dirname,"view","404.ejs"),{
+            }).then(data =>{
+                res.writeHead(404,{
+                    "content-type" : "text/html;charset=utf-8"
+                });          
+                res.end(data);
+            }); 
         }
-        fee = fee < 10000 ? fee : 10000;        
-        return fee;
-    }
-    if(pathname==="/fee") {
-        ejs.renderFile(path.join(__dirname,"view","fee.ejs"),{
-            title: "Parking Fee",
-            time: usedTime,
-            price: parkingFee(usedTime)
-        }).then(data=>{
-            res.setHeader("content-type", "text/html;charset=utf-8");            
-            res.end(data);
-        });
     }else{
         ejs.renderFile(path.join(__dirname,"view","404.ejs"),{
         }).then(data =>{
