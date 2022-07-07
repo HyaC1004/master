@@ -15,6 +15,29 @@ const url = require("url");
     dayList?rank=8
         너의 요청을 처리할 수 없다.
 */
+
+/* http.createServer((req,res)=>{
+    let parsed = url.parse(req.url,true);
+    let pathname = parsed.pathname;
+    let query = parsed.query;
+    res.setHeader("content-type", "text/html;charset=utf-8");
+    if(pathname=== "/weekdayList" && query.rank!==undefined) {
+        res.write("<html>");
+        res.write("<body>");
+        res.write("<h2>당신의 요청쿼리 분석 결과</h2>");
+        res.write("<p>");
+        res.write(`${query.week}요 웹툰 ${query.rank}위 조회`);
+        res.write("</p>");        
+        res.write("</body>");
+        res.write("</html>");
+    } else {
+        res.write("<h3>리소스가 존재하지 않음 (NOT FOUND)</h3>")
+    }
+    res.end();
+}).listen(8080,()=>{
+    console.log("STARTED");
+}); */
+
 const server = http.createServer((req, res) => {
     if (req.url !== "/favicon.ico") {
         console.log(url.parse(req.url));
@@ -22,46 +45,30 @@ const server = http.createServer((req, res) => {
     res.setHeader("content-type", "text/html;charset=utf-8");
     let pathname = url.parse(req.url).pathname;
     // 쿼리 title(key)=79277(value)
-    let query = url.parse(req.url, true).query;
-    console.log(query);
-    if (pathname === "/weekdayList") {
-        switch (query.week) {
-            case query.week = "mon":
-                query.week = "월"
-                break;
-            case query.week = "tue":
-                query.week = "화"
-                break;
-            case query.week = "wed":
-                query.week = "수"
-                break;
-            case query.week = "thu":
-                query.week = "목"
-                break;
-            case query.week = "fri":
-                query.week = "금"
-                break;
-            case query.week = "sat":
-                query.week = "토"
-                break;
-            case query.week = "sun":
-                query.week = "일"
-                break;
-        }
-        res.write(`
-            <p>너의 요청 처리 결과: <b>${query.week}요웹툰 ${query.rank}위</b></p>
-        `);
+    let query = url.parse(req.url, true).query; 
+    console.log(Object.values(query), typeof query);    
+    let week = ['mon','tue','wed','thu','fri','sat','sun'];
+    let weekK = ['월','화','수','목','금','토','일'];
+    let weekIndex = week.indexOf(query.week);            
+
+    if (pathname === "/weekdayList") { 
+        if(week.includes(query.week) && query.rank!==undefined){
+            res.write(`
+                <h2>너의 요청 처리 결과</h2> <p><b>${weekK[weekIndex]}요웹툰 ${query.rank}위</b></p>
+            `);
+        } else {
+            res.write(`너의 요청을 처리할 수 없다.`);
+        }              
     } else {
         res.write(`너의 요청을 처리할 수 없다.`);
     }
-
     res.end();
-
 }).listen(8080, () => {
     console.log("[SERVER] START");
 });
 
-! function () {
+!function () {
     let rst = url.parse("/dayList?rank=8&genre=action", true);
+    // true 쿼리string을 Object, default값이 false => string
     console.log(rst.query.genre);
 };

@@ -7,6 +7,9 @@ const url = require("url");
     그 외엔 없는 서비스다.
 */
 const server = http.createServer((req,res)=>{
+    // let parsed = url.parse(req,url);
+    // let pathname = parsed.pathname;
+    // let query = parsed.query;
     console.log(req.url);
     let pathname = url.parse(req.url).pathname;
     res.setHeader("content-type","text/html;charset=utf-8");

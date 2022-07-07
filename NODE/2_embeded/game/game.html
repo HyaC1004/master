@@ -1,0 +1,46 @@
+<html>
+<head>
+     <link rel="stylesheet" href="./static/style.css">
+     <script src="./static/othello.js"></script>
+</head>
+<body>
+    <div>     
+    </div>
+    <script>
+        const othello = new OthelloEngine();
+        othello.init();
+        display();
+
+        function display() {
+            let html = `<h2><span class="c${othello.user}">${othello.user ==1 ? '+'+othello.user : othello.user}</span>  의 차례</h2>`;;
+            html += "<table>";
+            for (let row = 0; row < 8; row++) {
+                html += "<tr>";
+                for (let col = 0; col < 8; col++) {
+                    let val = +othello.panel[row][col];
+                    html+= `<td  onclick="handle(${row}, ${col});">
+                        <div class="c${val}">${othello.panel[row][col] ?? " "}</div></td>`;
+                }
+                html += "</tr>";
+            }
+            html += "</table>";
+            
+            let score =othello.getScore();
+            html += `<h2><span class="c-1">??</span> ${score.userA} vs ${score.userB} <span class="c1">??</span></h2>`;
+            document.querySelector("div").innerHTML = html;
+        };
+
+        function handle(trow, tcol){
+            let rst = othello.isAble(trow, tcol);
+            console.log(rst, othello.possibleRoute);
+            if(rst) {
+                othello.proceed(trow, tcol);
+                othello.switchUser();
+                display();
+            }
+        }
+       
+    </script>
+</body>
+
+</html>
