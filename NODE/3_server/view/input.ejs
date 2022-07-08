@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h2{margin-left: 50px;}
+        form{ margin:1rem;font-size: 1.5rem;}
+    </style>
+</head>
+<body>
+    <h2><%= today %></h2>
+    <%# form을 만들때는 action ===> 제출받을 곳  method GET이 디폴트값 %>
+    <form action="/output" method="get">
+        <label>(GET)주차장을 몇 분 이용하셨습니까?</label><br />
+        <input type="number" name="used"/>
+        <button type="submit">정산</button>
+    </form>
+    <form action="/output" method="post">
+        <label>(POST)주차장을 몇 분 이용하셨습니까?</label><br />
+        <input type="number" name="used"/>
+        <button type="submit">정산</button>
+    </form>
+</body>
+</html>

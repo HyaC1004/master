@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon .\\3_server\\12_method.js"
+    "start" : "nodemon .\\3_server\\15_conv.js"
   },
   "author": "hya",
   "license": "ISC",
