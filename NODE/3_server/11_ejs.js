@@ -45,7 +45,9 @@ http.createServer((req,res)=>{
                 time: usedTime,
                 price: fee
             }).then(data=>{
-                res.setHeader("content-type", "text/html;charset=utf-8");            
+                res.writeHead(200,{
+                    "content-type" : "text/html;charset=utf-8"
+                });             
                 res.end(data);
             });
         } else {
@@ -57,7 +59,18 @@ http.createServer((req,res)=>{
                 res.end(data);
             }); 
         }
-    }else{
+    }else if(pathname==="/rank") {        
+        const rendered = ejs.renderFile(path.join(__dirname,"view","rank.ejs"),{
+            title: "First EJS",
+            weekday: query.week,
+            list: ["이솔","이혜주"]
+        }).then(data => {
+            res.writeHead(200,{
+                "content-type" : "text/html;charset=utf-8"
+            });  
+            res.end(data);
+        });
+    } else {
         ejs.renderFile(path.join(__dirname,"view","404.ejs"),{
         }).then(data =>{
             res.writeHead(404,{
@@ -69,31 +82,3 @@ http.createServer((req,res)=>{
 }).listen(8080,()=>{
     console.log("START");
 });
-/* http.createServer((req,res)=>{
-    const pathname = url.parse(req.url,true).pathname;
-    const query = url.parse(req.url,true).query;
-
-    if(pathname==="/rank") {        
-        const rendered = ejs.renderFile(path.join(__dirname,"view","rank.ejs"),{
-            title: "First EJS",
-            weekday: query.week,
-            list: ["이솔","이혜주"]
-        }).then(data => {
-            res.setHeader("content-type", "text/html;charset=utf-8");
-            // /console.log(data);
-            res.end(data);
-        });
-    }else{
-        ejs.renderFile(path.join(__dirname,"view","404.ejs"),{
-        }).then(data =>{
-            res.writeHead(404,{
-                "content-type" : "text/html;charset=utf-8"
-            });
-            //res.statusCode=404;
-            //res.setHeader("content-type", "text/html;charset=utf-8");            
-            res.end(data);
-        });            
-    }
-}).listen(8080,()=>{
-    console.log("START");
-}); */
