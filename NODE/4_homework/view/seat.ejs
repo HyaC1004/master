@@ -29,27 +29,51 @@
 
 <body>
     <div>
-        <h2><%= %></h2>
+        <h2><%= movies[movie].name %></h2>
         <small>좌석을 선택해주세요.(최대2개)</small>
     </div>
     <div style="width: 70%;">
-        <form>
-            <input type="hidden" value="<%= %>" />
-            <table style="margin-bottom: 10px;">
+        <form action="./reserve" method="post">
+            <input type="hidden" name="movie"value="<%=movie %>" /> <!-- 영화 정보 넘기기 -->
+            <table id="seatBox" style="margin-bottom: 10px;">
                 <tr style="height: 50px; background-color: #2fc088;">
                     <td colspan="10" style="text-align: center;">스크린</td>
                 </tr>
                 <% for(let row=1; row<=5; row++) {%>
-                <tr>
+                <tr id="seatBox2">
                     <%for(let seat= 1; seat <= 10 ; seat++  ){%>
-                    <td><input type="checkbox" value="<%=row +'-' + seat %>"></td>
+                    <td ><input onclick="CountChecked(this)" type="checkbox" name ="seatNo" value="<%=row +'-' + seat %>"></td>
                     <%}%>
                 </tr>
             <% } %>
             </table>
             <button type="submit">예약확정</button>
-            <button type="submit">재선택</button>
+            <button type="button">재선택</button>
         </form>
     </div>
+    <script> 
+        let seatBox =Array.from(document.querySelectorAll('#seatBox2'));
+        let seatList= seatBox.map(tr=>{
+            return Array.from(tr.querySelectorAll('input')).map(input=>input.value);
+        });
+        console.log(seatBox,seatList);
+        
+        
+        let maxCount = 2;								
+        let count = 0;   							
+
+        function CountChecked(seatCheck){ 		            
+            if(seatCheck.checked){
+                count++;
+            } else {
+                count--;
+            }                       
+            if (count > maxCount) {						
+                alert("2좌석까지만 예약 가능합니다!");	
+                seatCheck.checked = false;						
+                count -= 1;									
+            }
+        }
+    </script>
 </body>
 </html>

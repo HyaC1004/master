@@ -3,12 +3,13 @@ const url = require("url");
 const path = require("path");
 const ejs = require("ejs");
 const querystring = require('querystring');
+const fs = require("fs");
 
 const movies =[
-    {id:"mv01",name:"토르 - 러브 앤 썬더",img:"/static/thor.png"},
-    {id:"mv02",name:"범죄도시2",img:"/static/roundup.png"},
-    {id:"mv03",name:"탑건 - 메버릭",img:"/static/topgun.png"},
-    {id:"mv04",name:"빅샤크4: 바다공룡 대모험",img:"/static/shark.png"}
+    {id:"mv01",name:"토르 - 러브 앤 썬더",img:"static/thor.png"},
+    {id:"mv02",name:"범죄도시2",img:"static/roundup.png"},
+    {id:"mv03",name:"탑건 - 메버릭",img:"static/topgun.png"},
+    {id:"mv04",name:"빅샤크4: 바다공룡 대모험",img:"static/shark.png"}
 ]
 /*
     list.ejs 랜더링 할때 이 배열을 넘겨주고 난후
@@ -20,21 +21,60 @@ const movies =[
     }
 */
 http.createServer(async(req,res)=>{
-    const pathname = url.parse(req.url,true).pathname;
-    if(pathname==="/list") {
-        let html = await ejs.renderFile(path.join(__dirname,"view","list.ejs"));
-        res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
-        return res.end(html);
-    }else if(pathname==="/seat") {
-        let html = await ejs.renderFile(path.join(__dirname,"view","seat.ejs"));
-        res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
-        return res.end(html);
-    }else if(pathname==="/reserve") {
-        let html = await ejs.renderFile(path.join(__dirname,"view","reserve.ejs"));
-        res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
-        return res.end(html);
+    const pathname = url.parse(req.url,true).pathname;  
+    console.log(req.url);  
+    if(pathname.startsWith("/static")){
+        return fs.createReadStream(path.join(__dirname,'/',pathname)).pipe(res);
     }
-    res.end("NOT FOUND");
+    // if(req.url === '/static'){
+    //     fs.readFile('./static/thor.png',function(err,data){
+    //         res.writeHead(200);
+    //         res.write(data);   
+    //         res.end();         
+    //     })
+    // }
+    if(pathname==="/list") {
+        console.log(req.url);        
+        let html = await ejs.renderFile(path.join(__dirname,"view","list.ejs"),{
+            movies: movies
+        });        
+        
+        res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
+        res.end(html);
+    }else if(pathname==="/seat") { // GET 요청        
+        query = url.parse(req.url, true).query;         
+        
+        console.log(movies.findIndex(i=>i.id==query.code));
+        let html = await ejs.renderFile(path.join(__dirname,"view","seat.ejs"),{
+            movies: movies,
+            movie: movies.findIndex(i=>i.id==query.code)
+        });
+        res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
+        res.end(html);
+    }else if(pathname==="/reserve") {
+        let recv;
+        req.on("data",(data)=>{                
+            recv=data;                
+        });    
+        req.on("end",()=>{
+            const params = new URLSearchParams(recv.toString());
+            let movie = params.get("movie");
+            seatNo = params.getAll("seatNo")                       
+            
+            ejs.renderFile(path.join(__dirname,"view","reserve.ejs"),{
+                movies: movies,     
+                movie: movie,       
+                seat: seatNo
+            }).then(data =>{
+                res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
+                console.log(data);
+                res.end(data);
+            });
+        });
+    }else{
+        res.end("NOT FOUND");
+    }
+    
 }).listen(8080,()=>{
     console.log("START");
 })

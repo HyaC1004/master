@@ -5,21 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영화 목록</title>
+    <style>
+        #wrap{width:100%;margin:auto;}
+        .poster{width:20%;margin:auto;}
+        .poster a img{width:100%;height: auto;}
+    </style>
 </head>
 <body>
     <div id="wrap">
-        <div>
+        <div style="border: 1px solid;padding-bottom:5rem;">
             <h2>영화 무료 관람 예약<small>(영화사 이벤트 2022.07.08 한정)</small></h2>
             <div style="display: flex;">
-                <%for(let i=0; i<movies.length;i++){%>
+                <% for(let i=0; i<movies.length;i++) { %>
                     <div class="poster">
                         <label><%= movies[i].name %></label>
                         <a href="/seat?code=<%= movies[i].id %>">
-                            <img src="<%=movies[i].img%>" />
+                            <img src = "<%=movies[i].img %> "> 
+                            
                         </a>
                     </div>
                 <%}%>
-            </div>
+            </div>          
         </div>
     </div>
 </body>
