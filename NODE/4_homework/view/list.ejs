@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영화 목록</title>
     <style>
-        #wrap{width:100%;margin:auto;}
-        .poster{width:20%;margin:auto;}
-        .poster a img{width:100%;height: auto;}
+        body{background-color: rgb(143, 140, 139);}
+        #wrap{width:100%;margin:auto;background-color: antiquewhite;padding-top: 1rem;}
+        #wrap h2{text-align: center;}
+        .poster{width:20%;margin:auto;margin-bottom: 5rem;}        
+        .poster a img{width:100%;height: auto;margin-top: 1rem;}
     </style>
 </head>
 <body>
     <div id="wrap">
-        <div style="border: 1px solid;padding-bottom:5rem;">
+        <div>
             <h2>영화 무료 관람 예약<small>(영화사 이벤트 2022.07.08 한정)</small></h2>
             <div style="display: flex;">
                 <% for(let i=0; i<movies.length;i++) { %>
@@ -21,7 +23,6 @@
                         <label><%= movies[i].name %></label>
                         <a href="/seat?code=<%= movies[i].id %>">
                             <img src = "<%=movies[i].img %> "> 
-                            
                         </a>
                     </div>
                 <%}%>

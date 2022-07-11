@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div {
+            margin: 10px;
+            align-items: center;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #D6EEEE;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2><%= target.name  %></h2>
+        <small>좌석을 선택해주세요.(최대2개)</small>
+    </div>
+    <div style="width: 70%;">
+        <form action="/reserve" method="post">
+            <input type="hidden" value="<%=target.id %>" name="id">
+        <table style="margin-bottom: 10px;">
+            <tr style="height: 50px; background-color: #2fc088;">
+                <td colspan="10" style="text-align: center;">스크린</td>
+            </tr>
+            <% for(let row=1; row<=5; row++) {%>
+                <tr>
+                <%for(let seat= 1; seat <= 10 ; seat++  ){%>
+                    <td>
+                        <input type="checkbox" value="<%=row +'-' + seat %>" name="seat"
+                            onclick="limit(event);" ></td>
+                <%}%>
+                </tr>
+            <% } %>
+        </table>
+        <button type="submit">예약확정</button>
+        <button type="reset">재선택</button>
+    </form>
+    </div>
+    <script>
+        let count = 0;
+        function limit(event) {   // onclick 버전은 바뀌기전에 작동하니까
+            console.log(event, event.target);
+            if(event.target.checked) {
+                if(count <2) {
+                    count++;
+                } else {
+                    event.preventDefault();
+                }
+            }else {
+                count--;
+            }
+        }   
+
+        /*
+        function limit(event) {   // onchange 바뀌고 난 다음에 작동
+            if(event.target.checked) {
+                count++;
+                if(count===3) {
+                    event.target.checked=false;
+                    count--;
+                }
+            }else {
+                count--;
+            }
+        }*/        
+    </script>
+</body>
+
+</html>

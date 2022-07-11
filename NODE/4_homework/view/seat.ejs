@@ -6,68 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>좌석 선택</title>
     <style>
-        div {
-            margin: 10px;
-            align-items: center;
+        body{background-color: rgb(143, 140, 139);}
+        #wrap{width:100%;margin:auto;background-color: antiquewhite;padding: 1rem 0;}
+        .header{margin:auto; text-align: center;}
+        .seatTable {
+            margin:  auto;
+            width: 80%;
         }
-
         table {
             border-collapse: collapse;
             width: 100%;
         }
-
         td {
             text-align: left;
             padding: 8px;
         }
-
         tr:nth-child(even) {
             background-color: #D6EEEE;
+        }
+        @media (min-width:767px) {
+            #wrap{width: 70%;}
         }
     </style>
 </head>
 
 <body>
-    <div>
-        <h2><%= movies[movie].name %></h2>
-        <small>좌석을 선택해주세요.(최대2개)</small>
-    </div>
-    <div style="width: 70%;">
-        <form action="./reserve" method="post">
-            <input type="hidden" name="movie"value="<%=movie %>" /> <!-- 영화 정보 넘기기 -->
-            <table id="seatBox" style="margin-bottom: 10px;">
-                <tr style="height: 50px; background-color: #2fc088;">
-                    <td colspan="10" style="text-align: center;">스크린</td>
-                </tr>
-                <% for(let row=1; row<=5; row++) {%>
-                <tr id="seatBox2">
-                    <%for(let seat= 1; seat <= 10 ; seat++  ){%>
-                    <td ><input onclick="CountChecked(this)" type="checkbox" name ="seatNo" value="<%=row +'-' + seat %>"></td>
-                    <%}%>
-                </tr>
-            <% } %>
-            </table>
-            <button type="submit">예약확정</button>
-            <button type="button">재선택</button>
-        </form>
+    <div id="wrap">
+        <div class="header">
+            <h2>🎞<%= movies[movie].name %>🔞<img width="30px" src="../static/mokoko.png" /></h2>
+            <small>좌석을 선택해주세요.(최대 2개)</small>
+        </div>
+        <div class="seatTable">
+            <form action="./reserve" method="post">
+                <input type="hidden" name="movie" value="<%=movie %>" /> <!-- 영화 정보 넘기기 -->
+                <table style="margin-bottom: 10px;">
+                    <tr style="height: 50px; background-color: #2fc088;">
+                        <td colspan="10" style="text-align: center;">스크린</td>
+                    </tr>
+                    <% for(let row=1; row<=5; row++) {%>
+                    <tr id="seatBox">
+                        <%for(let seat= 1; seat <= 10 ; seat++  ){%>
+                        <td ><input onclick="CountChecked(this)" type="checkbox" name ="seatNo" value="<%=row +'-' + seat %>"></td>
+                        <%}%>
+                    </tr>
+                <% } %>
+                </table>
+                <button type="submit" id="submit">예약확정</button>
+                <span id="des">자리를 골라주세요!</span>                
+            </form>
+        </div>
     </div>
     <script> 
-        let seatBox =Array.from(document.querySelectorAll('#seatBox2'));
-        let seatList= seatBox.map(tr=>{
-            return Array.from(tr.querySelectorAll('input')).map(input=>input.value);
-        });
-        console.log(seatBox,seatList);
-        
-        
-        let maxCount = 2;								
-        let count = 0;   							
+        !function checkPlz(){
+            let checkZero = document.querySelectorAll('#seatBox td input');
+            let submit = document.getElementById('submit');            
+            checkZero.forEach(val=>{
+                if(val.checked===false){
+                    submit.disabled = true;                    
+                } 
+            })
+        }();
 
-        function CountChecked(seatCheck){ 		            
+        let maxCount = 2;								
+        let count = 0;  
+        function CountChecked(seatCheck){ 	            	            
             if(seatCheck.checked){
                 count++;
             } else {
                 count--;
-            }                       
+            }      
+            if(count===0){
+                submit.disabled = true;
+                document.getElementById('des').style.display = "inline";
+            }else{
+                submit.disabled = false;
+                document.getElementById('des').style.display="none";
+            }
             if (count > maxCount) {						
                 alert("2좌석까지만 예약 가능합니다!");	
                 seatCheck.checked = false;						

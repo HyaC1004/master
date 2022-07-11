@@ -26,14 +26,7 @@ http.createServer(async(req,res)=>{
     if(pathname.startsWith("/static")){
         return fs.createReadStream(path.join(__dirname,'/',pathname)).pipe(res);
     }
-    // if(req.url === '/static'){
-    //     fs.readFile('./static/thor.png',function(err,data){
-    //         res.writeHead(200);
-    //         res.write(data);   
-    //         res.end();         
-    //     })
-    // }
-    if(pathname==="/list") {
+    if(pathname==="/list" || pathname==="/") {
         console.log(req.url);        
         let html = await ejs.renderFile(path.join(__dirname,"view","list.ejs"),{
             movies: movies
@@ -42,9 +35,12 @@ http.createServer(async(req,res)=>{
         res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
         res.end(html);
     }else if(pathname==="/seat") { // GET 요청        
-        query = url.parse(req.url, true).query;         
-        
-        console.log(movies.findIndex(i=>i.id==query.code));
+        let query = url.parse(req.url, true).query;       
+        if(!query.code ) {
+            res.writeHead(302, {"Location": "/list"});
+            return res.end();
+        }
+        //console.log(movies.findIndex(i=>i.id==query.code));
         let html = await ejs.renderFile(path.join(__dirname,"view","seat.ejs"),{
             movies: movies,
             movie: movies.findIndex(i=>i.id==query.code)
@@ -54,12 +50,12 @@ http.createServer(async(req,res)=>{
     }else if(pathname==="/reserve") {
         let recv;
         req.on("data",(data)=>{                
-            recv=data;                
+            recv=data;              
         });    
         req.on("end",()=>{
             const params = new URLSearchParams(recv.toString());
             let movie = params.get("movie");
-            seatNo = params.getAll("seatNo")                       
+            let seatNo = params.getAll("seatNo")                       
             
             ejs.renderFile(path.join(__dirname,"view","reserve.ejs"),{
                 movies: movies,     
@@ -67,12 +63,18 @@ http.createServer(async(req,res)=>{
                 seat: seatNo
             }).then(data =>{
                 res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
-                console.log(data);
+                //console.log(data);
                 res.end(data);
             });
         });
     }else{
-        res.end("NOT FOUND");
+        ejs.renderFile(path.join(__dirname,"view","404.ejs"),{
+        }).then(data =>{
+            res.writeHead(404,{
+                "content-type" : "text/html;charset=utf-8"
+            });          
+            res.end(data);
+        }); 
     }
     
 }).listen(8080,()=>{

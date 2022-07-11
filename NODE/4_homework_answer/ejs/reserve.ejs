@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약처리결과</title>
+</head>
+<body>
+    <div>
+    <h2>예약처리결과</h2>
+        <div>
+            <img src="<%=target.img %>" width="200px;"/>
+        </div>
+        <p>
+            선택하신 영화 [<%=target.name %>] 에 무료 관람 신청이 접수되었습니다.
+        </p>
+        <p>
+            희망좌석 <% seat.forEach( elm =>  {%>
+                [<%=elm %>] 
+            <%})%>
+        </p>
+    </div>
+</body>
+</html>

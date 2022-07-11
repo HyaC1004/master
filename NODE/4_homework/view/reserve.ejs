@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예약 결과</title>
     <style>
+        body{background-color: rgb(143, 140, 139);}
+        #wrap{width:100%;margin:auto;background-color: antiquewhite;padding: 1rem 0;}
         div {
             margin: 10px;
             align-items: center;
@@ -22,24 +24,35 @@
         tr:nth-child(even) {
             background-color: #D6EEEE;
         }
+        a {
+            text-decoration: none;
+            color: rgb(32, 49, 202);
+            font-weight: bolder;            
+        }
     </style>
 </head>
 
 <body>
-    <div>
-        <h2>예약 처리 결과 / <%= movies[movie].name %></h2>
-    </div>
-    
+    <div id="wrap">
         <div>
-            <p class="posterImg">  
-                <img src = "<%=movies[movie].img %> "> 
-            </p>
-            <p>
-                선택하신 <%= movies[movie].name %> 무료 관람 신청이 접수되었습니다.
-            </p>
-            <p>
-                접수된 좌석 번호 : [<%= seat[0] %>] , [<%= seat[1] %>]
-            </p>
+            <h2>예약 처리 결과 / <%= movies[movie].name %></h2>
+        </div>
+        
+            <div>
+                <p class="posterImg">  
+                    <img src = "<%=movies[movie].img %> "> 
+                </p>
+                <p>
+                    선택하신 <%= movies[movie].name %> 무료 관람 신청이 접수되었습니다.
+                </p>
+                <p>
+                    접수된 좌석 번호 : 
+                    <%seat.forEach(val => {%>
+                        [<%= val %>] 
+                    <% });  %> 
+                </p>
+                <a href="list">처음으로 돌아가기</a>
+            </div>
         </div>
     </div>
 </body>
