@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon .\\3_server\\15_conv.js"
+    "start": "nodemon .\\3_server\\15_conv.js"
   },
   "author": "hya",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "uuid": "^8.3.2"
   }
 }
