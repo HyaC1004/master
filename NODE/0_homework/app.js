@@ -30,20 +30,20 @@ http.createServer(async(req,res)=>{
         console.log(req.url);        
         let html = await ejs.renderFile(path.join(__dirname,"view","list.ejs"),{
             movies: movies
-        });        
-        
+        });     
         res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
         res.end(html);
     }else if(pathname==="/seat") { // GET 요청        
         let query = url.parse(req.url, true).query;       
-        if(!query.code ) {
+        if(!query.id ) {
             res.writeHead(302, {"Location": "/list"});
             return res.end();
         }
+        //let target = movies.find((elm)=> elm.id == query.id);
         //console.log(movies.findIndex(i=>i.id==query.code));
         let html = await ejs.renderFile(path.join(__dirname,"view","seat.ejs"),{
             movies: movies,
-            movie: movies.findIndex(i=>i.id==query.code)
+            movie: movies.findIndex(i=>i.id==query.id)
         });
         res.writeHead(200,{"content-type":"text/html;charset=utf-8"});
         res.end(html);

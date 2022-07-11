@@ -7,7 +7,7 @@
     <title>영화 목록</title>
     <style>
         body{background-color: rgb(143, 140, 139);}
-        #wrap{width:100%;margin:auto;background-color: antiquewhite;padding-top: 1rem;}
+        #wrap{width:100%;margin:auto;background-color: antiquewhite;padding-top: 1rem; border-radius: 10px;}
         #wrap h2{text-align: center;}
         .poster{width:20%;margin:auto;margin-bottom: 5rem;}        
         .poster a img{width:100%;height: auto;margin-top: 1rem;}
@@ -21,7 +21,7 @@
                 <% for(let i=0; i<movies.length;i++) { %>
                     <div class="poster">
                         <label><%= movies[i].name %></label>
-                        <a href="/seat?code=<%= movies[i].id %>">
+                        <a href="/seat?id=<%= movies[i].id %>">
                             <img src = "<%=movies[i].img %> "> 
                         </a>
                     </div>
