@@ -5,9 +5,6 @@
 */
 const http = require("http")
 http.createServer((req,res)=>{
-    /* 
-    
-    */
     if(req.url==='/') {
         // 여기 왔을때 사용자에게 WELCOME이라고 보내면서
         // 쿠키를 함께 하나 보다.
@@ -38,7 +35,6 @@ http.createServer((req,res)=>{
         console.log(cookies);
         res.write(JSON.stringify(cookies));
         res.end("Okay....");   
-
     }else {
         res.end("NOT FOUND");
     }

@@ -5,12 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const e = require("express");
 
-const movies = [
-    { id: "mv01", name: "토르 - 러브 앤 썬더", img: "/static/85999_320.jpg" },
-    { id: "mv02", name: "범죄도시 2", img: "/static/85813_320.jpg" },
-    { id: "mv03", name: "탑건 - 매버릭", img: "/static/82120_320.jpg" },
-    { id: "mv04", name: "헤어질 결심", img: "/static/85852_320.jpg" },
-];
+
 
 http.createServer(async (req, res) => {
     const { pathname } = url.parse(req.url, true);

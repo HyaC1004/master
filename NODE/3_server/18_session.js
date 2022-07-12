@@ -7,7 +7,7 @@ const url = require("url");
 const path = require("path");
 const ejs = require("ejs");
 
-const sessions = {};
+const sessions = new Map();    // {}};
 const namePool = [];
 
 http.createServer(async (req, res) => {
@@ -19,14 +19,14 @@ http.createServer(async (req, res) => {
     let currentUserSession;
     if(!recvCookie.sessionId) {
         const uk = uuid.v4();
-        sessions[uk] = { };
+        sessions.set(uk,{});
         res.setHeader("set-cookie", "sessionId="+uk);        
-        currentUserSession = sessions[uk];
+        currentUserSession = sessions.get(uk);
     } else {
-        if(sessions[recvCookie.sessionId] === undefined) {
-            sessions[recvCookie.sessionId]= {};
+        if(sessions.get(recvCookie.sessionId) === undefined) {
+            sessions.get(recvCookie.sessionId)= {};
         }
-        currentUserSession = sessions[recvCookie.sessionId];
+        currentUserSession = sessions.get(recvCookie.sessionId);
     }
     //=====================================================
     console.log(currentUserSession);

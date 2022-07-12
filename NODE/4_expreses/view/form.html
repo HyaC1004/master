@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express</title>
+</head>
+<body>
+    <h1>요청 처리 테스트(GET)</h1>
+    <form action="/req/2" method="get">
+        <p>
+            <input type="text" name="visitor" placeholder="방문자 이름">
+        </p>
+        <p>
+            <textarea name="comment" placeholder="하고 싶은 말"></textarea>
+        </p>
+        <p>
+            <button type="submit">전송</button>
+        </p>
+    </form>
+
+    <h1>요청 처리 테스트(POST)</h1>
+    <form action="/req/2" method="post">
+        <p>
+            <input type="text" name="visitor" value="방문자 이름">
+        </p>
+        <p>
+            <textarea name="comment" >하고 싶은 말</textarea>
+        </p>
+        <p>
+            <button type="submit">전송</button>
+        </p>
+    </form>
+</body>
+</html>
