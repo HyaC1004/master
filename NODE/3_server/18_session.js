@@ -7,7 +7,7 @@ const url = require("url");
 const path = require("path");
 const ejs = require("ejs");
 
-const sessions = new Map();    // {}};
+const sessions = new Map();
 const namePool = [];
 
 http.createServer(async (req, res) => {
@@ -15,19 +15,20 @@ http.createServer(async (req, res) => {
         res.statusCode=404;
         return res.end();
     }
-    const recvCookie = cookieParser(req.headers.cookie);
+    const recvCookie = cooikeParser(req.headers.cookie);
     let currentUserSession;
     if(!recvCookie.sessionId) {
         const uk = uuid.v4();
-        sessions.set(uk,{});
+        sessions.set(uk, {});
         res.setHeader("set-cookie", "sessionId="+uk);        
         currentUserSession = sessions.get(uk);
     } else {
         if(sessions.get(recvCookie.sessionId) === undefined) {
-            sessions.get(recvCookie.sessionId)= {};
+            sessions.set(recvCookie.sessionId, {});
         }
         currentUserSession = sessions.get(recvCookie.sessionId);
     }
+
     //=====================================================
     console.log(currentUserSession);
     if(req.url==="/game") {
@@ -54,7 +55,7 @@ http.createServer(async (req, res) => {
             currentUserSession.playerName = query.name;
             res.writeHead(302, {"location":"/game"});
             return res.end();
-        }
+        }``
     }
 
 
@@ -65,7 +66,7 @@ http.createServer(async (req, res) => {
 })
 
 
-function cookieParser(str) {
+function cooikeParser(str) {
     const cookies = {};
     if (str) {
         const cookieArray = str.split(/;\s+/);
