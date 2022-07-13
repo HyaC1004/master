@@ -35,10 +35,15 @@
             </tr>
             <% for(let row=1; row<=5; row++) {%>
                 <tr>
-                <%for(let seat= 1; seat <= 10 ; seat++  ){%>
+                <%for(let seat= 1; seat <= 10 ; seat++  ){
+                    let value = `${row}-${seat}`;%>                    
                     <td>
-                        <input type="checkbox" value="<%=row +'-' + seat %>" name="seat"
-                            onclick="limit(event);" ></td>
+                        <%if(target.reserve.includes(value)) {%>
+                            <input type="checkbox" checked disabled >
+                        <%}else{%>
+                            <input type="checkbox" value="<%=row +'-' + seat %>" name="seat" onclick="limit(event);">
+                        <%}%>
+                    </td>
                 <%}%>
                 </tr>
             <% } %>

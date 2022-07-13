@@ -37,7 +37,16 @@ app.post("/reserve", (req, resp) => {
     } else {
         seat = [req.body.seat];
     }
-    resp.render("reserve", { target, seat });
+
+    // 사용자가 보내준 좌석 배열로 하나라도 예약좌석 배열에 있는지 확인
+    if(seat.some((elm)=>target.reserve.includes(elm))){
+        resp.render("reserve", { target, seat, msg:"이미 신청된 좌석이 포함되어 있어 처리할수 없습니다." });
+    }else{
+        resp.render("reserve",{target, seat, msg:"정상적으로 처리되었습니다."})
+        target.reserve = target.reserve.concat(seat);
+        // target.reserve = [...target,reserve,...seat];
+    }
+    
 });
 
 app.listen(8080, ()=>{
