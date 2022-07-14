@@ -1,15 +1,15 @@
 const express = require("express");
 
 const router = express.Router();
-
-
-router.get("/start", (req, res)=>{
-    let nick = req.query.nick;
-    req.session.nick = nick;
-    res.render("game",{nick});
-});
-
-router.use((req, resp, next)=>{
+router.use((req,res,next)=>{
+    if(!req.session.nick){
+        res.redirect("/account/login");
+    }
     next();
 });
+
+router.get("/start", (req, res)=>{        
+    return res.render("game",{nick: req.session.nick});  
+});
+
 module.exports = router;

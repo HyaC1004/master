@@ -1,0 +1,14 @@
+[#Shell]
+use <database>
+
+== Create ==
+db.<컬렉션>.insertOne({});
+db.<컬렉션>.insertMany([{},{},{}]);
+
+db.students.insertMany([{"name":"최윤주","age":34},{"name":"조아연","age":24}]);
+
+== Read ==
+db.<컬렉션>.find({});
+db.<컬렉션>.findOne({});
+
+db.students.find({"gender":true,"age":21});
