@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <style>
+        #wrap {
+            width: 80%;
+            margin: auto;            
+        }
+        .title {
+            width: 100%;
+            border: 1px solid #f0faff;   
+            border-radius: 10px;  
+            background-color: rgb(0, 0, 0); 
+            margin-bottom: 1rem;
+        }
+        .title h2 {text-align: center;color: white;}
+        .content {
+            width: 100%;               
+            border-radius: 10px;  
+            background-color: rgb(231, 228, 255); 
+        }
+        .content table {
+            width: 100%;
+            border: 1px solid #fff;
+        }
+        tr, td{
+            border: 1px solid #fff;
+        }
+        .content table tr td:first-child{
+            width:30%;
+            height:40px;
+            text-align: center;
+        }
+        .content table tr td:nth-child(2){
+            padding-left: 1rem;
+        }
+        .profile_img{
+            padding: 0.8rem 0;
+        }
+        .profile_img img{
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+        }
+        .logout {color:black;text-align: right;margin-bottom: 1rem;}
+        .logout a{padding:10px;text-decoration: none;border-radius: 5px;background-color: rgb(108, 248, 115);}
+    </style>
+</head>
+<body>
+    <%- include("./top.ejs"); %>
+    <div id="wrap">
+        <div class="title">
+            <h2>마이페이지</h2>
+        </div>
+        <div class="logout">
+            <a href="/user/logout">로그아웃</a>
+        </div>
+        <div class="content">
+            <table>
+                <tr>
+                    <td>사진</td>
+                    <td class="profile_img"><img src="/default.png" width="200px" alt="기본" /></td>
+                </tr>
+                <tr>
+                    <td>아이디</td>
+                    <td><%= obj._id %></td>
+                </tr>
+                <tr>
+                    <td>비밀번호</td>
+                    <td><%= %></td>
+                </tr>
+                <tr>
+                    <td>이름</td>
+                    <td><%= obj.name %></td>
+                </tr>
+                <tr>
+                    <td>이메일</td>
+                    <td><%= obj.email %></td>
+                </tr>
+                <tr>
+                    <td>연락처</td>
+                    <td><%= obj.contact %></td>
+                </tr>
+                <tr>
+                    <td>생일</td>
+                    <td><%= obj.birth.year %>년 <%= obj.birth.month %>월 <%= obj.birth.day %>일</td>
+                </tr>                
+            </table>            
+        </div>        
+    </div>
+    <%- include("./footer.ejs"); %>
+</body>
+</html>

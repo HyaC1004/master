@@ -28,12 +28,20 @@
                 </p>          
                 <p style="text-align: right">
                     <a href="/update?id=<%=data._id.toString()%>">수정</a>
-                    <a href="/delete?id=<%=data._id.toString()%>">삭제</a>
-                    
+                    <a href="/delete?id=<%=data._id.toString()%>" onclick="check(event);" data-pass="<%=data.password%>">삭제</a>                    
                 </p>      
             </div>
             <hr />
         <% }); %>
     </div> 
+    <script>
+        function check(evt) {
+            let input = prompt("비밀번호를 입력해주세요?");
+            let pw = evt.target.parentNode.dataset.pass;            
+            if(input !== pw) {
+                evt.preventDefault();
+            }
+        }
+    </script>
 </body>
 </html>

@@ -20,6 +20,7 @@
            <p style="text-align: right;">
                 <a href="/delete?id=<%=data._id.toString()%>" onclick="check(event);"
                     data-pass="<%=data.password%>"><button>삭제</button></a>
+                <a href="/delete?id=<%=data._id.toString()%>"><button>삭제</button></a>    
                 <button onclick="location.href='/update?id=<%=data._id.toString()%>'">수정</button>
            </p>
         </div>    

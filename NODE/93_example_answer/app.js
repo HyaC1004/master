@@ -37,10 +37,19 @@ app.get("/list", async (req, resp) => {
     resp.render("list", { array });
 });
 
-app.get("/delete", async (req, resp) => {
-    let result = await guestbook.deleteById(req.query.id);
-    resp.redirect("/list");
+app.get("/delete", (req, resp) =>{
+    resp.render("valid", { target : req.query.id });
 });
+
+app.post("/delete", async (req, resp) => {
+    let t = await guestbook.findById(req.body.target);
+    if(t && t.password===req.body.password) {
+        let result = await guestbook.deleteById(req.body.target);
+        resp.redirect("/list");
+    } else {
+        resp.redirect("/delete/?id="+req.body.target);
+    }
+});                                                                                              
 
 app.route("/update").get(async (req, resp) => {
     let obj = await guestbook.findById(req.query.id);

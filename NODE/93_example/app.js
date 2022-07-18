@@ -37,6 +37,19 @@ app.get("/list",async(req,res)=>{
     let array = await visitors.findAll();    
     res.render("list",{array});    
 });
+app.route("/delete")
+    .get((req,res)=>{
+        res.render("valid",{target : req.query.id});
+    })
+    .post(async(req,res)=>{
+        let t = await visitors.findById(req.body.target);
+        if(t && t.password===req.body.password) {
+            let result = await visitors.deleteById(req.body.target);
+            res.redirect("/list");
+        } else {
+            res.redirect("/delete/?id="+req.body.target);
+        }
+    });
 app.get("/delete",async(req,res)=>{
     let result = await visitors.deleteById(req.query.id);
     res.redirect("/list");
