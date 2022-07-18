@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List</title>
+</head>
+
+<body>
+    <h2>관리중인 학생들 목록</h2>
+    <% array.forEach(data=>{%>
+        <div>
+            <h3><%=data.name%></h3>
+            <ul>
+                <li>나이 : <%=data.age??'-'%></li>
+                <li>성별 : <%=data.gender??'-'%></li>
+                <li>취미 : <%=data.hobbies??'-'%></li>
+            </ul>
+        </div>
+        <hr />
+    <% }); %>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록</title>
+</head>
+<body>
+    <%-include("nav.ejs");  %>
+    <h2>다녀간 사람들</h2>
+    <div style="margin : 0 auto; width: 90%;">
+        <% array.forEach(data=> { %>
+        <div style="padding: 2px; background-color: antiquewhite; ">
+           
+           <h4 style="margin: 0;"><%=data.name%> / <small><%=data.createdAt?.toLocaleString() %></small></h4>
+           <p>
+                <%=data.comment %>
+           </p>
+           <p style="text-align: right;">
+                <a href="/delete?id=<%=data._id.toString()%>" onclick="check(event);"
+                    data-pass="<%=data.password%>"><button>삭제</button></a>
+                <button onclick="location.href='/update?id=<%=data._id.toString()%>'">수정</button>
+           </p>
+        </div>    
+        <hr/>
+        <% }); %>
+    </div>
+    <script>
+        function check(evt) {
+            let input = prompt("비밀번호를 아십니까?");
+            console.log(evt.target.parentNode.dataset.pass);
+            if(input !== evt.target.parentNode.dataset.pass) {
+                evt.preventDefault();
+            }
+        }
+    </script>
+</body>
+</html>

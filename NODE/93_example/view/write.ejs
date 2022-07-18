@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록 작성</title>
+    <style>
+        #wrap{width:80%;margin: auto;}
+        #comment {
+            width: 400px;
+            height: 200px;
+        }
+        /* 3D */
+        button{
+            display: block;
+            position: relative;            
+            width: 120px;
+            padding: 0;
+            margin: 10px 20px 10px 120px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 5px;
+            transition: all 0.2s;
+            background: #5DC8CD;
+            box-shadow: 0px 5px 0px 0px #1E8185;
+        }
+        button:hover{
+            margin-top: 15px;
+            margin-bottom: 5px;
+            box-shadow: 0px 0px 0px 0px #1E8185;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap" >
+        <%- include("nav.ejs");  %>
+        <form action="/write" method="post">
+        <table>
+            <tr>
+                <td><label for="name">닉네임 입력</label></td>
+                <td><input type="text" name="name" id="name"/></td>
+            </tr>
+
+            <tr>
+                <td><label for="pw">비밀번호 입력</label></td>
+                <td><input type="password" name="pw" id="pw"/></td>
+            </tr>
+            <tr>
+                <td><label for="comment">방명록 작성</label></td>
+                <td><textarea name="comment" id="comment"></textarea>  
+                </td> 
+            </tr>    
+        </table> 
+            <p>
+                <button type="submit" class="button btnPush btnLightBlue">등록</button>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

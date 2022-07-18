@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <%- include("nav.ejs");  %>
+    <div>
+        <h3>방명록-수정</h3>
+        <form action="/update" method="post">
+            <div>
+                <input type="text" name="name" placeholder="이름" value="<%=obj.name%>">
+                <input type="password" name="password" placeholder="암호" value="<%=obj.password%>">
+            </div>
+            <div>
+                <textarea name="comment" placeholder="방명록에 남기고 싶은 글을 입력해주세요."><%=obj.comment%></textarea>
+            </div>
+            <div>
+                <input type="hidden" name="id" value="<%=obj._id.toString()%>">
+                <button type="submit">수정</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

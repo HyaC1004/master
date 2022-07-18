@@ -33,7 +33,7 @@ app.get("/seat",(req,res)=>{
     
 });
 app.post("/reserve",(req,res)=>{    
-    let movie = req.body.movie;
+    let movie = movies.findIndex(i=>i.id==query.id)
     let seatNo = req.body.seatNo;     
     if(Array.isArray(req.body.seatNo)){
         seatNo = req.body.seatNo;
@@ -41,13 +41,21 @@ app.post("/reserve",(req,res)=>{
         seatNo = [req.body.seatNo];
     }       
     //movies[movie].reserve.push(seatNo);
-    //let test = concat(movies[movie].reserve);
-    console.log(test);
-    res.render("reserve",{
-        movies: movies,     
-        movie: movie,       
-        seat: seatNo
-    });       
+    if (seat.some((elm) => movie.reserve.includes(elm))) {
+        res.render("reserve",{
+            movies: movies,     
+            movie: movie,       
+            seat: seatNo
+        });
+    }else {
+        res.render("reserve",{
+            movies: movies,     
+            movie: movie,       
+            seat: seatNo
+        });
+        // target.reserve = target.reserve.concat(seat);
+        movie.reserve = [...movie.reserve, ...seat];
+    };       
 });
 app.listen(8080,()=>{
     console.log("START");

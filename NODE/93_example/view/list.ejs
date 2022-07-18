@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록</title>
+    <style>
+        #wrap{
+            width: 80%;
+            margin: auto;
+        }
+        .commentContent{
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <%- include("nav.ejs");  %>
+        <h2>방명록</h2>        
+        <% array.forEach(data=>{%>
+            <div class="commentContent">
+                <small>[<%=data._id.toString()%>]</small>
+                <h4 style="margin: 0;"><%=data.name%> / <small><%=data.createdAt.toLocaleString() %></small></h4>
+                <p>
+                    <%=data.comment %>
+                </p>          
+                <p style="text-align: right">
+                    <a href="/update?id=<%=data._id.toString()%>">수정</a>
+                    <a href="/delete?id=<%=data._id.toString()%>">삭제</a>
+                    
+                </p>      
+            </div>
+            <hr />
+        <% }); %>
+    </div> 
+</body>
+</html>
