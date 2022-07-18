@@ -25,16 +25,15 @@ async function findById(id) {
 
 async function deleteById(id) {
     const accounts = connect();
-    let result = await accounts.deleteOne({"_id": new monogodb.ObjectId(id)});
+    let result = await accounts.deleteOne({"_id": id});
     return result;
 }
 
 async function updateById(id,obj) {
     const accounts = connect();
     let result = await accounts.updateOne(
-        {"_id": new monogodb.ObjectId(id)},
-        {$set:{
-            "id" : obj.id,
+        {"_id": id},
+        {$set:{            
             "password" : obj.password,
             "name" : obj.name,            
             "email" : obj.email,

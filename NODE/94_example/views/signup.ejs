@@ -27,9 +27,17 @@
         }
         #wrap form button {
             margin: 0 1rem;
-            width: 40%;
+            width: 30%;
             height: 60px;
-            font-size: 1.2rem;
+            font-size: 1rem;
+            border: 1px solid rgb(181, 240, 255);
+            border-radius: 30px;
+            font-weight: bolder ;
+            background-color: rgb(255, 255, 252);
+        }
+        #wrap form button:hover{
+            background-color: rgb(36, 0, 168);
+            color: white;
         }
         #wrap form .buttonDiv {
             text-align: center;
@@ -43,12 +51,14 @@
     <div id="wrap">
         <h2>회원가입하기</h2>
         <form action="/account/signup" method="post">
-            <div><label><input type="text" name="id" placeholder="아이디"/></label><br />
-            <p><%= msg %></p></div>
-            <div><label><input type="password" name="password" placeholder="비밀번호"/></label></div>
-            <div><label><input type="text" name="name" placeholder="이름"/></label></div>
-            <div><label><input type="email" name="email" placeholder="이메일@example"/></label></div>
-            <div><label><input type="text" name="contact" placeholder="연락처"/></label></div>
+            <div>
+                <label><input type="text" name="id" placeholder="아이디" required/></label><br />
+                <p style="color: red;"><%= msg %></p>
+            </div>
+            <div><label><input type="password" name="password" placeholder="비밀번호" required/></label></div>
+            <div><label><input type="text" name="name" placeholder="이름" required/></label></div>
+            <div><label><input type="email" name="email" placeholder="이메일@example" required/></label></div>
+            <div><label><input type="text" name="contact" placeholder="연락처"  required/></label></div>
             <div class="birth">
                 <div>
                     <span style="font-weight: bold;">생년월일</span>

@@ -8,6 +8,7 @@
     <style>
         #wrap {
             width: 80%;
+            max-width: 600px;
             margin: auto;
             border: 1px solid;   
             border-radius: 10px;    
@@ -21,9 +22,17 @@
         #wrap form div input {width: 100%;height: 2rem;}
         #wrap form button {
             margin: 0 1rem;
-            width: 40%;
+            width: 30%;
             height: 60px;
-            font-size: 1.2rem;
+            font-size: 1rem;
+            border: 1px solid rgb(181, 240, 255);
+            border-radius: 30px;
+            font-weight: bolder ;
+            background-color: rgb(255, 255, 252);
+        }
+        #wrap form button:hover{
+            background-color: rgb(36, 0, 168);
+            color: white;
         }
         #wrap form .buttonDiv {
             text-align: center;
@@ -41,8 +50,8 @@
             <input type="text" name="id" placeholder="아이디 입력"/></div>
             <div><input type="password" name="password" placeholder="비밀번호 입력" /></div>
             <div class="buttonDiv" >
-                <button type="submit">로그인하기</button>
-                <button type="button" onclick="location.href='/account/signup';">회원가입하기</button>            
+                <button type="submit">로그인</button>
+                <button type="button" onclick="location.href='/account/signup';">회원가입</button>            
             </div>
         </form>
     </div>

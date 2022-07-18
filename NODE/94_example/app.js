@@ -24,10 +24,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use((err, req, resp, next) => {
-    
-});
-
 app.use("/account",accountRouter);
 app.use("/user",userRouter);
 
