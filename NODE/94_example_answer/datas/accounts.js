@@ -14,7 +14,7 @@ async function getById(value) {
 }
 
 async function getAll() {
-    return await getCollection().find().toArray(); 
+    return await getCollection().find({}).toArray(); 
 }
 
 

@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -12,7 +11,7 @@ router.route("/signup")
         let got = await accountsDB.getById(req.body.id);
         if(got) {
             resp.render("account/signup", {err : "이미 사용 중인 아이디입니다."});
-        }else {
+        } else {
             const obj = {
                 id : req.body.id, 
                 pass : req.body.pass,
@@ -28,6 +27,7 @@ router.route("/signup")
             resp.redirect("/account/signin");
         }
     });
+
 router.route("/signin")
     .get((req, resp) => {
         resp.render("account/signin");
@@ -35,7 +35,8 @@ router.route("/signin")
     .post(async (req, resp) => {
         let got = await accountsDB.getById(req.body.loginid);
         if(got && got.pass == req.body.loginpass) {
-            req.session.authUser = got;
+            req.session.auth = true;
+            req.session.user = got;
             resp.redirect("/user/myinfo")
         } else {
             resp.status(401).render("account/signinError");

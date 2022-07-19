@@ -7,46 +7,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple SNS</title>
     <style>
-        .signup input {
-            padding: 5px;
-            width: 97%;
-        }
-
-        .signup button {
-            padding: 5px;
-            width: 100%;
-        }
-
-        .signup select {
-            padding: 5px;
-        }
-
-        .signup div {
-            margin: 10px 0px 10px 0px;
+        .info {
+            margin: 5px;
+            text-align: center;
+            background-color: rgba(3, 199, 90, .08);
+            padding: 10px;
+           
         }
     </style>
 </head>
 
 <body>
-    <%- include("../common/top.ejs"); %>
-    <div style="width: 95%; margin: auto; display: flex;">
-        <div style="margin: 5px; text-align: center; background-color:rgba(3,199,90,.08); padding: 10px;">
-            <div>
-                <img src="/avatar/default.png" style="border-radius: 30%; width: 120px;"/>
+    <%- include("../common/top.ejs", {src : "aaa"}); %>
+        <div style="width: 95%; margin: auto; display: flex;">
+            <div class="info">
+                <div>
+                    <img src="/avatar/default.png" style="border-radius: 30%; width: 120px;" />
+                </div>
+                <div style="margin-top: 10px">
+                    <span style="display: block; font-size: 1.5rem;">
+                        <%=user.name %>
+                    </span>
+                    <span style="font-size: small; color: silver;">
+                        @<%=user.id %>
+                    </span>
+                </div>
+                <div style="margin-top: 10px">
+                    <a href="/user/exit"><button type="button">로그아웃</button></a>
+                </div>
             </div>
-            <div style="margin-top: 10px">
-                <span style="display: block; font-size: 1.5rem;"><%=user.name %></span>
-                <span style="font-size: small; color: silver;"><%=user.id %></span>
-            </div>
-            <div style="margin-top: 10px">
-                <button type="button">로그아웃</button>
+            <div style="margin: 5px; ">
+                <h3>오늘 <span style="color: cornflowerblue;">
+                        "<%=user.name %>"
+                    </span> 님에겐 어떤 일이 있었나요?</h3>
+               
             </div>
         </div>
-        <div style="margin: 5px;">
-            <h3>오늘 <span style="color: cornflowerblue;"><%=user.name %></span> 님의 기분은 어떠신가요?</h3>
-            
-        </div>
-    </div>
 </body>
 
 </html>
