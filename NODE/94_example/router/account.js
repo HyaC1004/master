@@ -1,4 +1,7 @@
 const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const router = express.Router();
 
 const accounts = require("../collections/accounts");
@@ -14,11 +17,36 @@ router.get("/",(req,res)=>{
 });
 
 // 회원가입
+/* const uploadProfile = multer({
+    storage: multer.diskStorage({
+        destination : function(req,file,cb) {
+            const dest = path.join(__dirname,"profile",req.body.id);          
+            if(!fs.existsSync(dest)){
+                fs.mkdirSync(dest,{recursive:true});
+            }        
+            cb(null,dest);
+        },
+        filename : function(req, file, cb) {           
+            let arr = file.originalname.split(".");
+            arr[0] = Date.now();
+            let newName = arr.join(".");
+            cb(null,newName);
+        }
+    }),
+    fileFilter : function(req, file, cb) {
+        if(file.mimetype.startsWith("image")){
+            cb(null,true);
+        }else{
+            cb(null,false);
+        }
+    }
+}); */
 router.route("/signup")
     .get(async(req,res)=>{
         res.render("signup",{msg:""});
     })    
     .post(async(req,res)=>{
+        console.log(req.file,req.body);
         let obj = {
             _id: req.body.id,
             password: req.body.password,   
@@ -31,7 +59,6 @@ router.route("/signup")
                 day : req.body.day
             }
         };
-        console.log(obj);
         try{
             let result = await accounts.insertOne(obj);            
             if (result.acknowledged) {

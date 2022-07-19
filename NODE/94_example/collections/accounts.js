@@ -38,11 +38,16 @@ async function updateById(id,obj) {
             "name" : obj.name,            
             "email" : obj.email,
             "contact" : obj.contact,
-            "birth" : obj.birth
+            "birth" : obj.birth,
+            "image" : obj.image
         }});
     return result;
 }
+async function updateUserImage(id,url) {
+    return await connect().updateOne({_id:id},{$set : { image : url  }});
+}
+
 
 module.exports = {
-    insertOne, findAll, findById, deleteById, updateById
+    insertOne, findAll, findById, deleteById, updateById, updateUserImage
 };

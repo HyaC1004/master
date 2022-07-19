@@ -17,6 +17,11 @@ async function getAll() {
     return await getCollection().find({}).toArray(); 
 }
 
+async function updateUserImage(userId, url) {
+    return await getCollection().updateOne({id : userId}, { $set : { image : url  } });
+}
+
+
 
 module.exports = {
     add, getById, getAll

@@ -5,6 +5,8 @@ const session = require("express-session");
 const session_secret = "P@ssw0rd";
 const morgan = require("morgan");
 const fileStore = require('session-file-store')(session);
+const multer = require("multer");
+const fs = require("fs");
 //===================================================
 const accounts = require("./collections/accounts");
 

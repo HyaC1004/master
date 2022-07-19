@@ -1,4 +1,7 @@
 const express = require("express");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 const router = express.Router();
 
@@ -12,6 +15,40 @@ router.use((req, resp, next)=>{
 router.get("/myinfo", (req, resp)=>{
     resp.render("user/myinfo", {user : req.session.user});
 });
+//=================================================================
+// multer conifg
+const profileuUpload = multer({
+    storage : multer.diskStorage({
+        destination : (req, file, callback)=>{
+            const uploadPath = path.join(__dirname, "..", "static", "profile", req.session.user.id);
+            if(!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath);
+            }
+            callback(null, uploadPath);
+        },
+        filename : (req, file, callback)=> {
+            // let newName = Date.now() + path.parse(file.originalname).ext;    
+            // let newName = Date.now() + "." + file.originalname.split(".")[1];
+            let newName = "image_" + Date.now();
+            callback(null, newName);
+        }
+    })
+});
+
+router.route("/profile")
+    .get( (req, resp) =>{
+    resp.render("user/profile", {user : req.session.user});
+    })
+    .post( (req, resp)=>{
+
+    });
+
+
+
+
+
+
+
 router.get("/exit", (req, resp)=>{
     req.session.auth = null;
     req.session.user = null;

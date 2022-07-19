@@ -1,0 +1,14 @@
+
+
+<div>
+    <div>
+        <h4>
+            <%=user.name %> @<%=user.id%>
+        </h4>
+        <img src="<%=user.image ?? '/profile/default.png' %>" style="width: 180px;"/>
+    </div>
+    <form action="/user/profile" method="post" enctype="multipart/form-data">
+        <input type="file" name="profile" accept="image/*" />
+        <button type="submit">적용</button>
+    </form>
+</div>

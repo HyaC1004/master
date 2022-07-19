@@ -60,42 +60,64 @@
             <a href="/user/logout">로그아웃</a>
         </div>
         <div class="content">
-            <table>
-                <tr>
-                    <td>사진</td>
-                    <td class="profile_img"><img src="/default.png" width="200px" alt="기본" /></td>
-                </tr>
-                <tr>
-                    <td>아이디</td>
-                    <td><%= obj._id %></td>
-                </tr>
-                <tr>
-                    <td>비밀번호</td>
-                    <td><%= %></td>
-                </tr>
-                <tr>
-                    <td>이름</td>
-                    <td><%= obj.name %></td>
-                </tr>
-                <tr>
-                    <td>이메일</td>
-                    <td><%= obj.email %></td>
-                </tr>
-                <tr>
-                    <td>연락처</td>
-                    <td><%= obj.contact %></td>
-                </tr>
-                <tr>
-                    <td>생일</td>
-                    <td><%= obj.birth.year %>년 <%= obj.birth.month %>월 <%= obj.birth.day %>일</td>
-                </tr>
-                <tr>
-                    <td>소개</td>
-                    <td>미구현</td>
-                </tr>                
-            </table>            
+            <form action="/user/user" method="post" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td>사진</td>
+                        <td class="profile_img">
+                            <img src="<%=obj.image ?? '/profile/default.png' %> " width="200px" alt="기본" id="image" />
+                            <input type="file" name="profile" accept="image/*" onchange="preview(event);" />
+                            <button type="submit">변경</button>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>아이디</td>
+                        <td><%= obj._id %></td>
+                    </tr>
+                    <tr>
+                        <td>비밀번호</td>
+                        <td><%= %></td>
+                    </tr>
+                    <tr>
+                        <td>이름</td>
+                        <td><%= obj.name %></td>
+                    </tr>
+                    <tr>
+                        <td>이메일</td>
+                        <td><%= obj.email %></td>
+                    </tr>
+                    <tr>
+                        <td>연락처</td>
+                        <td><%= obj.contact %></td>
+                    </tr>
+                    <tr>
+                        <td>생일</td>
+                        <td><%= obj.birth.year %>년 <%= obj.birth.month %>월 <%= obj.birth.day %>일</td>
+                    </tr>
+                    <tr>
+                        <td>소개</td>
+                        <td>미구현</td>
+                    </tr>                
+                </table>   
+            </form>         
         </div>        
     </div>
     <%- include("./footer.ejs"); %>
+    <script>
+        function preview(evt) {
+            if(evt.target.files && evt.target.files[0]){
+                console.log(evt.target.files[0]);
+                let reader = new FileReader(); // browser host 객체
+
+                reader.readAsDataURL(evt.target.files[0]);
+                reader.onload = function(e) {
+                    document.getElementById('image').src= e.target.result;
+                }
+            }else{
+                document.getElementById('image').src = "";
+            }
+        }
+    </script>
 </body>
 </html>

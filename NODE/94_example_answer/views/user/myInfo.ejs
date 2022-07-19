@@ -22,7 +22,11 @@
         <div style="width: 95%; margin: auto; display: flex;">
             <div class="info">
                 <div>
-                    <img src="/avatar/default.png" style="border-radius: 30%; width: 120px;" />
+                    <img src="/pofile/default.png" style="border-radius: 30%; width: 120px;" />
+                    <form action="/user/profile" method="post" enctype="multipart/form-data">
+                        <input type="file" name="profile" accept="image/*" />
+                        <button type="submit">적용</button>
+                    </form>
                 </div>
                 <div style="margin-top: 10px">
                     <span style="display: block; font-size: 1.5rem;">
@@ -36,12 +40,7 @@
                     <a href="/user/exit"><button type="button">로그아웃</button></a>
                 </div>
             </div>
-            <div style="margin: 5px; ">
-                <h3>오늘 <span style="color: cornflowerblue;">
-                        "<%=user.name %>"
-                    </span> 님에겐 어떤 일이 있었나요?</h3>
-               
-            </div>
+           
         </div>
 </body>
 

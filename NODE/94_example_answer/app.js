@@ -24,6 +24,7 @@ app.use(session({ secret: session_secret, resave: true, saveUninitialized: true 
 app.use("/account", require("./routers/accountRoute"));
 app.use("/user", require("./routers/userRoute"));
 
+
 app.use((err, req, resp, next) => {
     console.log(err.message);
     resp.status(500).send(err.message);

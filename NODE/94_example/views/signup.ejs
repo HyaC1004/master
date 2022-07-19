@@ -13,7 +13,11 @@
             border: 1px solid;   
             border-radius: 10px;    
             background-color: rgb(194, 239, 250); 
+            margin-bottom: 200px;
         }
+        #wrap .img-preview {width:150px;height:150px;}
+        #wrap .img-input {width:calc(90% - 160px);}
+        #wrap .img-input input {vertical-align: 100px;}
         #wrap h2 {text-align: center;}
         #wrap form {width: 80%; margin: auto;}
         #wrap form div {            
@@ -51,14 +55,15 @@
     <div id="wrap">
         <h2>회원가입하기</h2>
         <form action="/account/signup" method="post">
+            
             <div>
-                <label><input type="text" name="id" placeholder="아이디" required/></label><br />
+                <input type="text" name="id" placeholder="아이디" required/><br />
                 <p style="color: red;"><%= msg %></p>
-            </div>
-            <div><label><input type="password" name="password" placeholder="비밀번호" required/></label></div>
-            <div><label><input type="text" name="name" placeholder="이름" required/></label></div>
-            <div><label><input type="email" name="email" placeholder="이메일@example" required/></label></div>
-            <div><label><input type="text" name="contact" placeholder="연락처"  required/></label></div>
+            </div>            
+            <div><input type="text" name="name" placeholder="이름" required/></div>
+            <div><input type="password" name="password" placeholder="비밀번호" required/></div>            
+            <div><input type="email" name="email" placeholder="이메일@example" required/></div>
+            <div><input type="text" name="contact" placeholder="연락처"  required/></div>
             <div class="birth">
                 <div>
                     <span style="font-weight: bold;">생년월일</span>
@@ -86,9 +91,9 @@
                 <button type="submit">회원가입</button>            
                 <button type="button" onclick="location.href='/account/signin';">로그인하기</button>            
             </div>
-        </form>
+        </form>        
     </div>
-    <%- include("./footer.ejs"); %>
+    <%- include("./footer.ejs"); %>    
 </body>
 
 </html>
