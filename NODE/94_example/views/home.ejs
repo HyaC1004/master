@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록 작성</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"  />
+    <style>
+        a{text-decoration: none;color:black;}
+        small{color:rgb(110, 110, 110);}
+        #wrap{
+            width: 80%;
+            margin: auto;
+        }
+        .writeWrap {width:100%;padding:1rem;margin-bottom: 3rem;background-color: rgb(147, 209, 250);border-radius: 10px;}
+        .writeForm {display: flex;width:100%;flex-direction:row;}
+        .writeForm .writerProfile{width:100px;}
+        .writeForm .writerProfile img {width:80%;border-radius: 50%;}
+        .writeForm .writerPost{
+            width:calc(100% - 120px);           
+        }
+        .writeForm .writerPost textarea{width: 100%;height: 100px;}
+
+        .articleList{width:100%;padding:1rem; background-color: rgb(147, 209, 250);border-radius: 10px;}
+        .articleList .postContent .postContentImg img{
+            width:150px;
+        }
+    </style>
+</head>
+<body>    
+    <%- include("./top.ejs"); %>
+    <a href="/user/logout">로그아웃</a>
+    <div id="wrap">
+        <div class="writeWrap">
+            <form action="/article/upload" method="post" enctype="multipart/form-data">                  
+                <div class="writeForm">
+                    <div class="writerProfile">
+                        <img src="<%=obj.image ?? '/profile/default.png' %> " alt="user_profile" id="image" />
+                    </div>
+                    <div class="writerPost">
+                        <div>
+                            <label><input type="radio" name="type" value="public" />공개</label>
+                            <label><input type="radio" name="type" value="private" checked />비공개</label>
+                        </div>
+                        <textarea name="post" cols="30" rows="10"></textarea>
+                        <div id="preview">
+
+                        </div>
+                        <div>
+                            <input type="file" name="attach" accept="image/*" onchange="preview(event);" multiple />
+                            <button type="submit" style="float:right">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </div>
+        <div class="articleList">
+            <a href="/article/view?articleId=<%= obj._id.toString()%>"></a>
+            <% array.forEach(data=>{%>
+                <div class="postContent">
+                    <small>[<%=data._id.toString()%>]</small>                    
+                    <a href="/article/view?articleId=<%=data._id.toString()%>">
+                        <div style="display: flex; flex-direction:row;">
+                            <span><img src="<%=data.writerImage ?? '/profile/default.png'%>" style="width:50px;border-radius:50%;margin: 5px;"></span>
+                            <h4 style="margin: 0;line-height: 3.5rem;"><%=data.writerName%><small>@<%=data.writerId%></small> / <small><%=data.createdAt.toLocaleString() %></small></h4>
+                        </div>
+                        <p>
+                            <%=data.post %>
+                        </p>
+                        <p class="postContentImg">
+                            <% for(let i=0;i<data.attach.length;i++){%>
+                                <img src="<%= data.attach[i] %>" />
+                            <%}%>
+                        </p>
+                    </a>
+                    <p>💭 <%=data.comment.length%></p>
+                </div>
+                <hr />
+            <% }); %>
+        </div>  
+    </div> 
+    <script>
+        function preview(evt) {
+                document.querySelector("#preview").innnerHTML =" ";
+                if (evt.target.files) {
+                    for (let i = 0; i < evt.target.files.length; i++) {
+                        let reader = new FileReader();
+                        reader.readAsDataURL(evt.target.files[i]);
+                        reader.onload = function(rst){
+                            const img = document.createElement("img");
+                            img.src = rst.target.result;
+                            img.style.width = "40px";
+                            img.style.marginRight = "5px";
+                            document.querySelector("#preview").appendChild(img);
+                        }
+                    }
+                }
+            }
+    </script>
+</body>
+</html>

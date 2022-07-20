@@ -8,7 +8,7 @@ function getCollection() {
 async function add(account) {
     return getCollection().insertOne(account);
 }
-
+ 
 async function getById(value) {
     return await getCollection().findOne({id : value}); 
 }
@@ -24,6 +24,6 @@ async function updateUserImage(userId, url) {
 
 
 module.exports = {
-    add, getById, getAll
+    add, getById, getAll, updateUserImage
 }
 

@@ -20,7 +20,7 @@ const profileUpload = multer({
             }
             cb(null,uploadPath);
         },
-        filename : (req, file, cb)=>{
+        filename : (req, file, cb)=>{            
             let newName = Date.now() + path.parse(file.originalname).ext;            
             // let newName = Date.now() + "." + file.originalname.split(".")[1];
             cb(null,newName);
@@ -43,7 +43,12 @@ router.route("/user")
         // console.log(req.file);
         const url = `/profile/${req.session.user._id}/${req.file.filename}`;
         //if (req.file.size)
-        await accounts.updateUserImage(req.session.user._id,url);
+        
+        let filelist =fs.readdir(path.join(__dirname,"..","static","profile",req.session.user._id),function(e,filelist){
+            return filelist;
+        });
+        console.log(filelist);
+        await accounts.updateUserImage(req.session.user._id,url);        
         req.session.user = await accounts.findById(req.session.user._id);
         console.log(req.session.user);
         res.redirect("/user/user");

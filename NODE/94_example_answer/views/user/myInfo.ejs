@@ -22,7 +22,7 @@
         <div style="width: 95%; margin: auto; display: flex;">
             <div class="info">
                 <div>
-                    <img src="/pofile/default.png" style="border-radius: 30%; width: 120px;" />
+                    <img src="<%=user.image ?? '/profile/default.png'%>" style="border-radius: 30%; width: 120px;" />
                     <form action="/user/profile" method="post" enctype="multipart/form-data">
                         <input type="file" name="profile" accept="image/*" />
                         <button type="submit">적용</button>

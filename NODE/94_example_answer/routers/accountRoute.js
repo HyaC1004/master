@@ -11,7 +11,7 @@ router.route("/signup")
         let got = await accountsDB.getById(req.body.id);
         if(got) {
             resp.render("account/signup", {err : "이미 사용 중인 아이디입니다."});
-        } else {
+        } else { 
             const obj = {
                 id : req.body.id, 
                 pass : req.body.pass,

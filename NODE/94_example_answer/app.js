@@ -23,6 +23,7 @@ app.use(session({ secret: session_secret, resave: true, saveUninitialized: true 
 
 app.use("/account", require("./routers/accountRoute"));
 app.use("/user", require("./routers/userRoute"));
+app.use("/article", require("./routers/articleRoute"));
 
 
 app.use((err, req, resp, next) => {

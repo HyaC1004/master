@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세보기</title>
+    <style>
+        #wrap {
+            width: 80%;
+            margin: auto;            
+        }
+        .commentContent{
+            width:100%;
+            padding:1rem; 
+            background-color: rgb(147, 209, 250);
+            border-radius: 10px;
+        }
+        .commentContent img{max-width: 200px;}
+        .commentWrap {margin-top:2rem;}
+        .commentWrap .commentList .comment {width:100%;border-radius: 5px; background-color: rgb(197, 232, 255);padding:1rem;}
+        .commentWrite {width:100%;padding:1rem;margin-bottom: 3rem;background-color: rgb(147, 209, 250);border-radius: 10px;}
+        .writeForm {display: flex;width:100%;flex-direction:row;}
+        .writeForm .writerProfile{width:100px;}
+        .writeForm .writerProfile img {width:80%;border-radius: 50%;}
+        .writeForm .writeComment{
+            width:calc(100% - 120px);           
+        }
+        .writeForm .writeComment input{width: 100%; height: 40px;margin-bottom:5px;}
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <a href="/article/home">방명록가기</a>
+        <div class="commentContent">
+            <small>[<%=target._id.toString()%>]</small>
+            <div style="display: flex; flex-direction:row;">
+                <span><img src="<%=target.writerImage ?? '/profile/default.png'%>" style="width:50px;border-radius:50%;margin: 5px;" /></span>   
+                <h4 style="margin: 0;line-height: 3.5rem;"><%=target.writerName%><small>@<%=target.writerId%></small> / <small><%=target.createdAt.toLocaleString() %></small></h4>
+            </div>
+            <p>
+                <%=target.post %>
+            </p>
+            <p class="commentContentImg">
+                <% for(let i=0;i<target.attach.length;i++){%>
+                    <a href="<%= target.attach[i] %>" target="_blank"><img src="<%= target.attach[i] %>" /></a>
+                <%}%>
+            </p>            
+            <p>🗨 <%=target.comment.length%></p>
+        </div>        
+        <div class="commentWrap">
+            <div class="commentList">
+                <% for(let i=0;i<target.comment.length;i++){%>
+                    <p class="comment">↳ 댓글 : <%=target.comment[target.comment.length-i-1]%></p>
+                <%}%>
+            </div>
+            <div class="commentWrite">
+                <form action="/article/view" method="post">   
+                    <input type="hidden" name="articleId" value="<%=targetId%>">               
+                    <div class="writeForm">
+                        <div class="writerProfile">
+                            <img src="<%=target.image ?? '/profile/default.png' %> " alt="user_profile" id="image" />
+                        </div>
+                        <div class="writeComment">               
+                            <input type="text" name="comment" />             
+                            <div>
+                                <button type="submit">등록</button>
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+            </div>
+            
+        </div>
+    </div>    
+</body>
+</html>

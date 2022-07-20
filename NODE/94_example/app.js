@@ -8,11 +8,11 @@ const fileStore = require('session-file-store')(session);
 const multer = require("multer");
 const fs = require("fs");
 //===================================================
-const accounts = require("./collections/accounts");
 
 const app = express();
 const accountRouter = require("./router/account");
 const userRouter =  require("./router/user");
+const articleRouter = require("./router/article");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -28,9 +28,10 @@ app.use(session({
 
 app.use("/account",accountRouter);
 app.use("/user",userRouter);
+app.use("/article",articleRouter);
 
 app.all("/",(req,res)=>{
-    res.redirect("/account/signin");
+    res.redirect("/article/home");
 });
 
 

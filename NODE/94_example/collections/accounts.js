@@ -1,9 +1,9 @@
 // accounts 모듈
-const monogodb = require("mongodb");
+const mongodb = require("mongodb");
 const uri ="mongodb+srv://cheolyoung:jcy1107@mongodb.dbvp4ma.mongodb.net/?retryWrites=true&w=majority";
 
 function connect() {
-    return new monogodb.MongoClient(uri).db("study").collection("accounts");
+    return new mongodb.MongoClient(uri).db("study").collection("accounts");
 }
 
 async function insertOne(obj) {

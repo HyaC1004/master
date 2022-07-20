@@ -33,12 +33,16 @@ async function deleteById(id) {
 
 async function updateById(id, obj) {
     const guestbook = connect();
-    let result = await guestbook.updateOne({"_id" : new mongodb.ObjectId(id)} , { $set : {
-        "comment" : obj.comment,
-        "name" : obj.name,
-        "password" : obj.password,
-        "modifiedAt" : new Date()
-    }});
+    let result = await guestbook.updateOne(
+        {"_id" : new mongodb.ObjectId(id)} , 
+        { $set : {
+                "comment" : obj.comment,
+                "name" : obj.name,
+                "password" : obj.password,
+                "modifiedAt" : new Date()
+            }
+        }
+    );
     return result;
 }
 

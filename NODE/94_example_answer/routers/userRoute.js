@@ -3,6 +3,9 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 
+const accountsDB = require("../datas/accounts");
+
+
 const router = express.Router();
 
 router.use((req, resp, next)=>{
@@ -27,9 +30,9 @@ const profileuUpload = multer({
             callback(null, uploadPath);
         },
         filename : (req, file, callback)=> {
-            // let newName = Date.now() + path.parse(file.originalname).ext;    
+            let newName = Date.now() + path.parse(file.originalname).ext;    
             // let newName = Date.now() + "." + file.originalname.split(".")[1];
-            let newName = "image_" + Date.now();
+            // let newName = "image_" + Date.now();
             callback(null, newName);
         }
     })
@@ -37,10 +40,16 @@ const profileuUpload = multer({
 
 router.route("/profile")
     .get( (req, resp) =>{
-    resp.render("user/profile", {user : req.session.user});
+        resp.render("user/profile", {user : req.session.user});
     })
-    .post( (req, resp)=>{
+    .post( profileuUpload.single("profile") , async (req, resp)=>{
+        // console.log(req.file);
+        const url =`/profile/${req.session.user.id}/${req.file.filename}`;
+        let result = await accountsDB.updateUserImage(req.session.user.id, url);
 
+        req.session.user = await accountsDB.getById(req.session.user.id);
+        //
+        resp.sendStatus(200);
     });
 
 
