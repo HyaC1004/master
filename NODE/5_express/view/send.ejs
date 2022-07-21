@@ -1,0 +1,39 @@
+<h3>
+    AJAX 요청을 보낼때 데이터를 같이 보내고자 한다면?
+</h3>
+
+<div>
+    <input type="text" id="txt" onchange="test(event);" />
+    <div class="addresult"></div>
+</div>
+<hr />
+<div>
+    <input type="number" id="one" onkeyup="sendAddReq(event);" /> +
+    <input type="number" id="other" onkeyup="sendAddReq(event);" /> =
+    <div></div>
+</div>
+<script>
+    async function test(evt) {
+        let value = evt.target.value;
+        let response = await fetch(`/api/check?value=${value}`, {method:"get"});
+        let result = await response.json();
+        // {"success" : true / false }
+        if(result.success) {
+            evt.target.nextElementSibling.innerHTML = "<b>오케이 통과!</b>";
+        }else{
+            evt.target.nextElementSibling.innerHTML = "<i>이거 문제가 있다는데?!</i>";
+        }
+    }
+    async function sendAddReq(evt){
+        let one = document.querySelector("#one").value;
+        let other = document.querySelector("#other").value;        
+        if(one && other){
+            console.log(one, other);
+            let response = await fetch(`/api/add?one=${one}&other=${other}`,{method:"get"});
+            let result = await response.json()
+            evt.target.nextElementSibling.innerHTML = result.answer; 
+        }else{
+            evt.target.nextElementSibling.innerHTML = "<i>이거 문제가 있다는데?!</i>";
+        }
+    }
+</script>

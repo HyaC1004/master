@@ -10,11 +10,16 @@ async function add(article) {
 }
 
 async function getAll() {
-    return await getCollection().find({}).toArray();
+    return await getCollection().find({}).sort("createdAt", -1).toArray();
+}
+
+async function getVisibleSome(userId) {
+    const query = {"$or" : [{writerId : userId },  {  type : "public" } ] };
+    return await getCollection().find(query).sort("createdAt", -1).toArray();
 }
 
 async function getByWriter(writerId) {
-    return await getCollection().find({writerId : writerId }).sort("createdAt", -1 ).toArray();
+    return await getCollection().find({writerId : writerId }).sort("createdAt", -1).toArray();
 }
 
 async function getById(targetId) {
@@ -22,6 +27,6 @@ async function getById(targetId) {
 }
 
 module.exports={
-    add, getAll, getByWriter, getById
+    add, getAll, getByWriter, getById, getVisibleSome
 }
 

@@ -45,3 +45,7 @@ comments.length를 출력
 
 /article /view query로 넘어온 articlId에 해당하는 문서 상세보기를 만들면 된다.
     /article /home에서 개별 아티클마다 <a href="/article/view?articleId=<%=elm._id.toString()"%>
+
+데이터를 화면에 뿌려줄때, 필터링이 필요함
+    type == "public" 이거나 혹은
+    type == "private" and writerId == req.session.user.id

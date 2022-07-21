@@ -5,6 +5,7 @@ const fs = require("fs");
 const router = express.Router();
 
 const articles = require("../collections/articles.js");
+const { REPL_MODE_SLOPPY } = require("repl");
 
 // multer config
 const attachUpload = multer({
@@ -31,6 +32,10 @@ router.route("/home")
             //let obj = await accounts.findById(req.session.user._id);   
             //await articles.findByType         
             let array = await articles.findAll();
+            array = array.filter(elm=>{                
+                return ((elm.type == "public")||(elm.writerId == req.session.user._id));
+            })
+            
             res.render("home",{obj : req.session.user, array});
         }else{
             res.redirect("/account/signin");

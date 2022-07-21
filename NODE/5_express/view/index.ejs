@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX</title>
+</head>
+<body>
+    <h1>AJAX</h1>
+    <p>
+        AJAX는 Asynchronous JavaScript and XML의 약자로, 
+        말 그대로 JavaScript와 XML을 이용한 비동기적 정보 교환 기법이다.
+    </p>
+    <button id="bt">클릭!</button>
+    <button id="bt2">클릭!</button>
+    <button id="bt3">클릭!</button>
+    <script>
+        document.querySelector("#bt3").onclick = async function(evt){
+            let response = await fetch("/api/dest",{method:"get"});
+            // let txt = await response.text();
+            // console.log(txt);
+            let obj = await response.json();
+            console.log(obj,typeof obj);
+            console.log(obj.result);
+        };
+
+        document.querySelector("#bt2").onclick = (evt)=>{
+            fetch("/api/dest",{method:"get"})
+                .then(res=>{
+                    //console.log(res);
+                    return res.text();
+                }).then(result=>{
+                    console.log(result);
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
+        };
+
+
+
+        // document.querySelector("#bt").onclick=(evt)=>{};
+        document.querySelector("#bt").addEventListener("click",(target, evt)=>{
+            let xhr = new XMLHttpRequest();
+                xhr.open("get","/api/dest");
+                xhr.onload = function(req, evt){
+                    console.log("load",req.target.response);
+                }
+                xhr.onerror = function(req,evt) {
+                    console.log("error",req);
+                }
+                xhr.send();   
+                console.log("send 완료")             
+        });
+
+
+    </script>
+</body>
+</html>

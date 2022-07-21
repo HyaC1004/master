@@ -13,6 +13,7 @@ const app = express();
 const accountRouter = require("./router/account");
 const userRouter =  require("./router/user");
 const articleRouter = require("./router/article");
+const apiRouter = require("./router/api");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -29,6 +30,7 @@ app.use(session({
 app.use("/account",accountRouter);
 app.use("/user",userRouter);
 app.use("/article",articleRouter);
+app.use("/api",apiRouter);
 
 app.all("/",(req,res)=>{
     res.redirect("/article/home");

@@ -54,10 +54,10 @@
     <%- include("./top.ejs"); %>
     <div id="wrap">
         <h2>회원가입하기</h2>
-        <form action="/account/signup" method="post">
-            
+        <form action="/account/signup" method="post">            
             <div>
-                <input type="text" name="id" placeholder="아이디" required/><br />
+                <input type="text" name="id" placeholder="아이디" id="id" onkeyup="checkId(event)" required/><br />
+                <div id="checkResult" style="margin-top: 5px;"></div>
                 <p style="color: red;"><%= msg %></p>
             </div>            
             <div><input type="text" name="name" placeholder="이름" required/></div>
@@ -94,6 +94,21 @@
         </form>        
     </div>
     <%- include("./footer.ejs"); %>    
+
+    <script>
+        async function checkId(evt) {
+            let value = evt.target.value;            
+            let response = await fetch(`/api/idcheck?id=${value}`,{method:"get"})
+            let result = await response.json();
+            console.log(result.success);
+            if(result.success) {
+                document.querySelector("#checkResult").textContent = "사용하실수 있는 아이디입니다.";
+            } else {
+                document.querySelector("#checkResult").textContent = "이미 존재하는 아이디입니다.";
+            }
+        }        
+        
+    </script>
 </body>
 
 </html>

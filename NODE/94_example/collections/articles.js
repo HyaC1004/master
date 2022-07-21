@@ -50,11 +50,8 @@ async function addComment(id,comment) {
     );
     return result;    
 }
-async function updateUserImage(id,url) {
-    return await connect().updateOne({_id:id},{$set : { image : url  }});
-}
 
 
 module.exports = {
-    insertOne, findAll, findById, deleteById, updateUserImage, findByTargetId, findByType, addComment
+    insertOne, findAll, findById, deleteById, findByTargetId, findByType, addComment
 };

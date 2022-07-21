@@ -26,11 +26,17 @@
         .articleList .postContent .postContentImg img{
             width:150px;
         }
+        .logout {color:black;text-align: right;margin-bottom: 1rem;padding-right: 8%;}
+        .logout a{padding:10px;text-decoration: none;border-radius: 5px;background-color: rgb(108, 248, 115);}
+        .logout a:hover{color: aliceblue;background-color: black;}
     </style>
 </head>
 <body>    
     <%- include("./top.ejs"); %>
-    <a href="/user/logout">로그아웃</a>
+    <div class="logout">
+        <a href="/user/logout">로그아웃</a>
+        <a href="/user/user">마이페이지</a>
+    </div>
     <div id="wrap">
         <div class="writeWrap">
             <form action="/article/upload" method="post" enctype="multipart/form-data">                  
@@ -40,8 +46,8 @@
                     </div>
                     <div class="writerPost">
                         <div>
-                            <label><input type="radio" name="type" value="public" />공개</label>
-                            <label><input type="radio" name="type" value="private" checked />비공개</label>
+                            <label><input type="radio" name="type" value="public" checked />공개</label>
+                            <label><input type="radio" name="type" value="private"  />비공개</label>
                         </div>
                         <textarea name="post" cols="30" rows="10"></textarea>
                         <div id="preview">
@@ -63,7 +69,7 @@
                     <a href="/article/view?articleId=<%=data._id.toString()%>">
                         <div style="display: flex; flex-direction:row;">
                             <span><img src="<%=data.writerImage ?? '/profile/default.png'%>" style="width:50px;border-radius:50%;margin: 5px;"></span>
-                            <h4 style="margin: 0;line-height: 3.5rem;"><%=data.writerName%><small>@<%=data.writerId%></small> / <small><%=data.createdAt.toLocaleString() %></small></h4>
+                            <h4 style="margin: 0;line-height: 3.5rem;"><%=data.writerName%> <small>@<%=data.writerId%></small> / <small><%=data.createdAt.toLocaleString() %></small></h4>
                         </div>
                         <p>
                             <%=data.post %>

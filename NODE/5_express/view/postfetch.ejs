@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>postfetch</title>
+</head>
+<body>
+    <form action="/api/post" method="post">
+        <input type="checkbox" name="type" value="private" />
+        <button type="submit">섭밋</button>
+    </form>
+
+    <button id="b1">POST TEST</button>
+    <button id="b2">POST TEST-2</button>
+
+    <script>
+        document.querySelector("#b2").onclick = async (evt)=>{
+            // AJAX post 요청할때 전송 데이터를 application/x-www-form-urlencoded 보다는
+            // application/json 타입으로 전송한다.
+            const data = {
+                comment : "안녕하세요, 반갑습니다.",
+                score : 3
+            };
+            let response = await fetch("/api/post", {
+                method:"post", 
+                body: JSON.stringify(data), 
+                headers:{
+                    "Content-type" : "application/json"
+                }
+        });
+            let result = await response.json();
+            console.log(result);
+        };
+
+
+        document.querySelector("#b1").onclick = async (evt) =>{
+            let data = "comment=반갑습니다&visitor=루피";
+            let response = await fetch("/api/post",
+                { method:"post", body:data, headers:{"Content-type": "application/x-www-form-urlencoded"} });
+            let result = response.json();
+            console.log(result);
+        };
+    </script>
+</body>
+</html>
