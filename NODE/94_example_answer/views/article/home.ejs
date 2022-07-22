@@ -20,7 +20,7 @@
             <div style="background-color: floralwhite; padding: 5px; ">
                 <div style="margin-left: 5px;">
                     <h4 style="margin: 0">
-                        <span style="color: cornflowerblue;"><%=locals.user?.name %></span>
+                        <span style="color: cornflowerblue;">XXXXX</span>
                         님, 공유하고 싶은 경험이 있으신가요?
                     </h4>
                 </div>
@@ -75,18 +75,11 @@
         </div>
         <script>
             function preview(evt) {
-                document.querySelector("#preview").innerHTML ="";
                 if (evt.target.files) {
-                    for (let i = 0; i < evt.target.files.length; i++) {
-                        let reader = new FileReader();
-                        reader.readAsDataURL(evt.target.files[i]);
-                        reader.onload = function(rst){
-                            const img = document.createElement("img");
-                            img.src = rst.target.result;
-                            img.style.width = "40px";
-                            img.style.marginRight = "5px";
-                            document.querySelector("#preview").appendChild(img);
-                        }
+                    for (let i = 0; i < evt.traget.files.length; i++) {
+                        const img = document.createElement("img");
+                        img.src = "";
+                        document.querySelector("#preview").appendChild(img);
                     }
                 }
             }

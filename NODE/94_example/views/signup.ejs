@@ -102,10 +102,12 @@
             let result = await response.json();
             console.log(result.success);
             if(result.success) {
-                document.querySelector("#checkResult").textContent = "사용하실수 있는 아이디입니다.";
+                document.querySelector("#checkResult").innerHTML = `<p style='color:blue'>사용하실수 있는 아이디입니다.</p>`;
+                // document.querySelector("#checkResult").style.display = "none";
             } else {
-                document.querySelector("#checkResult").textContent = "이미 존재하는 아이디입니다.";
-            }
+                document.querySelector("#checkResult").innerHTML = "<p style='color:red'>이미 존재하는 아이디입니다.</p>";
+                // document.querySelector("#checkResult").style.display = "block";
+            }   
         }        
         
     </script>

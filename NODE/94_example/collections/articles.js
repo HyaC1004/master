@@ -20,7 +20,7 @@ async function findAll() {
 
 async function findByTargetId(targetId) {
     const articles = connect();
-    let obj = await articles.findOne({ _id : new ObjectId(targetId)});
+    let obj = await articles.findOne({ _id : ObjectId(targetId)});
     return obj;
 }
 async function findByType(type) {
@@ -34,24 +34,25 @@ async function findById(id) {
     return obj;
 }
 
-async function deleteById(id) {
-    const articles = connect();
-    let result = await articles.deleteOne({"_id": id});
-    return result;
+async function deleteComment(targetId,commentId) {
+    const articles = connect();   
+    console.log("targetId: ", ObjectId(targetId))
+    let obj = await articles.updateOne(
+        { _id : ObjectId(targetId) } , 
+        { $pull : { comment : {_id : ObjectId(commentId)} } }
+    );
+    return obj;
 }
-async function addComment(id,comment) {
+async function addComment(targetId,data) {
     const articles = connect();
     let result = await articles.updateOne(
-        {_id : new ObjectId(id)} , 
-        { $push : {
-                "comment" : comment                
-            }
-        }
+        {_id : new ObjectId(targetId)} , 
+        { $push : { comment : data } }
     );
     return result;    
 }
 
 
 module.exports = {
-    insertOne, findAll, findById, deleteById, findByTargetId, findByType, addComment
+    insertOne, findAll, findById, deleteComment, findByTargetId, findByType, addComment
 };

@@ -49,3 +49,7 @@ comments.length를 출력
 데이터를 화면에 뿌려줄때, 필터링이 필요함
     type == "public" 이거나 혹은
     type == "private" and writerId == req.session.user.id
+
+{댓글} ==> {
+    commenterId / commenterName / commenterImage / message / createdAt
+}

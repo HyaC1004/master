@@ -5,7 +5,7 @@ const fs = require("fs");
 const router = express.Router();
 
 const articles = require("../collections/articles.js");
-const { REPL_MODE_SLOPPY } = require("repl");
+
 
 // multer config
 const attachUpload = multer({
@@ -68,9 +68,15 @@ router.post("/upload",attachUpload.array("attach"),async(req,res)=>{
 
 router.route("/view")
     .get(async(req,res)=>{
-        let targetId = req.query.articleId;
-        let target = await articles.findByTargetId(targetId);        
-        res.render("view",{target,targetId});
+        if(req.session.user){
+            let targetId = req.query.articleId;
+            let target = await articles.findByTargetId(targetId); 
+            let comment = target.comment;       
+            // console.log(comment);
+            res.render("view",{obj : req.session.user,comment,target,targetId});
+        }else{
+            res.redirect("/account/signin");
+        }
     })
     .post(async(req,res)=>{
         let obj = req.body.comment;
