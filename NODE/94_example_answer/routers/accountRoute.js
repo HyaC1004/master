@@ -37,7 +37,7 @@ router.route("/signin")
         if(got && got.pass == req.body.loginpass) {
             req.session.auth = true;
             req.session.user = got;
-            resp.redirect("/user/myinfo")
+            resp.redirect("/article/home")
         } else {
             resp.status(401).render("account/signinError");
         }

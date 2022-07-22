@@ -13,7 +13,7 @@
             width: 80%;
             margin: auto;
         }
-        .writeWrap {width:100%;padding:1rem;margin-bottom: 3rem;background-color: rgb(147, 209, 250);border-radius: 10px;}
+        .writeWrap {width:96%;padding:1rem;margin-bottom: 3rem;background-color: rgb(147, 209, 250);border-radius: 10px;}
         .writeForm {display: flex;width:100%;flex-direction:row;}
         .writeForm .writerProfile{width:100px;}
         .writeForm .writerProfile img {width:80%;border-radius: 50%;}
@@ -22,22 +22,25 @@
         }
         .writeForm .writerPost textarea{width: 100%;height: 100px;}
 
-        .articleList{width:100%;padding:1rem; background-color: rgb(147, 209, 250);border-radius: 10px;}
+        .articleList{width:96%;padding:1rem; background-color: rgb(147, 209, 250);border-radius: 10px;}
+        .articleList .postContent {
+            padding-left: 1rem;
+        }
         .articleList .postContent .postContentImg img{
             width:150px;
         }
-        .logout {color:black;text-align: right;margin-bottom: 1rem;padding-right: 8%;}
-        .logout a{padding:10px;text-decoration: none;border-radius: 5px;background-color: rgb(108, 248, 115);}
-        .logout a:hover{color: aliceblue;background-color: black;}
+        .aBox {color:black;text-align: right;margin-bottom: 1rem;}
+        .aBox a{padding:10px;text-decoration: none;border-radius: 5px;background-color: rgb(108, 248, 115);}
+        .aBox a:hover{color: aliceblue;background-color: black;}
     </style>
 </head>
 <body>    
-    <%- include("./top.ejs"); %>
-    <div class="logout">
-        <a href="/user/logout">로그아웃</a>
-        <a href="/user/user">마이페이지</a>
-    </div>
+    <%- include("./top.ejs"); %>    
     <div id="wrap">
+        <div class="aBox">
+            <a href="/user/user">마이페이지</a>
+            <a href="/user/logout">로그아웃</a>
+        </div>
         <div class="writeWrap">
             <form action="/article/upload" method="post" enctype="multipart/form-data">                  
                 <div class="writeForm">
@@ -61,8 +64,7 @@
                 </div>
             </form> 
         </div>
-        <div class="articleList">
-            <a href="/article/view?articleId=<%= obj._id.toString()%>"></a>
+        <div class="articleList">            
             <% array.forEach(data=>{%>
                 <div class="postContent">
                     <small>[<%=data._id.toString()%>]</small>                    
@@ -80,13 +82,13 @@
                             <%}%>
                         </p>
                     </a>
-                    <p>💭 <%=data.comment.length%></p>
+                    <span>💭 <%=data.comment.length%></span> <span id="like"><i id="like_default">🤍</i> <%=data.comment.length%></span>
                 </div>
                 <hr />
             <% }); %>
         </div>  
     </div> 
-    <script>
+    <script>        
         function preview(evt) {
                 document.querySelector("#preview").innnerHTML =" ";
                 if (evt.target.files) {

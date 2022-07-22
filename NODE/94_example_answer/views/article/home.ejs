@@ -10,6 +10,17 @@
         * {
             font-family: "맑은 고딕";
         }
+
+        .article {
+            padding: 5px;
+            border: 1px solid lightgrey;
+
+        }
+
+        .article :hover {
+            background-color: whitesmoke;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -20,7 +31,9 @@
             <div style="background-color: floralwhite; padding: 5px; ">
                 <div style="margin-left: 5px;">
                     <h4 style="margin: 0">
-                        <span style="color: cornflowerblue;">XXXXX</span>
+                        <span style="color: cornflowerblue;">
+                            <%=locals.user?.name %>
+                        </span>
                         님, 공유하고 싶은 경험이 있으신가요?
                     </h4>
                 </div>
@@ -42,44 +55,63 @@
                     </div>
                 </form>
             </div>
-            <hr/>
+            <hr />
             <div>
                 <!-- 글 목록 출력 부분 -->
                 <% items.forEach(elm=> { %>
-                <div style="margin : 10px 0px; border-bottom: 1px solid aliceblue;">
-                    <div style="display: flex">
-                        <div style="padding: 3px;">
-                            <img src="<%=elm.writerImage ?? '/profile/default.png'%>" style="width: 40px; height: 40px; border-radius: 50%;"
-                            onerror="this.src='/profile/default.png'" />
-                        </div>
-                        <div>
-                            <div style="font-size: small;">
-                                <b><%=elm.writerName%></b> <span style="color: silver;">@<%=elm.writerId%></span>
-                                | [<%=elm.commments.length%>]
-                                <a href="/article/view?articleId=<%=elm._id.toString()%>">상세보기</a>
+                    
+                    <div style="margin : 1px 0px; border-bottom: 1px solid aliceblue;" class="article"
+                        onclick="location.href='/article/view?articleId=<%=elm._id.toString()%>' ">
+                        <div style="display: flex">
+                            <div style="padding: 3px;">
+                                <img src="<%=elm.writerImage ?? '/profile/default.png'%>"
+                                    style="width: 40px; height: 40px; border-radius: 50%;"
+                                    onerror="this.src='/profile/default.png'" />
+                            </div>
+                            <div style="width: 70%;">
+                                <div style="font-size: small;">
+                                    <b>
+                                        <%=elm.writerName%>
+                                    </b> <span style="color: silver;">@<%=elm.writerId%></span>
+                                    <span style="color: silver;">| <%=elm.createdAt.toISOString()%></span>
+                                   
 
-                            </div>
-                            <div>
-                                <pre><%=elm.message%></pre>                               
-                            </div>
-                            <div>
-                                <% elm.attaches.forEach(url => { %>
-                                    <img src="<%=url%>" width="200px"/>
-                                <% })%>
+
+                                </div>
+                                <div>
+                                    <pre><%=elm.message%></pre>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap;">
+                                    <% elm.attaches.forEach(url=> { %>
+                                        <div>
+                                            <img src="<%=url%>" height="150px"
+                                                style="border: 1px solid silver; border-radius: 10%; padding: 1px; margin: 3px;" />
+                                        </div>
+                                        <% })%>
+                                </div>
+                                <div>
+                                    <span>💬 <%=elm.comments.length%></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <% }) %>
+                    <% }) %>
             </div>
         </div>
         <script>
             function preview(evt) {
+                document.querySelector("#preview").innerHTML = "";
                 if (evt.target.files) {
-                    for (let i = 0; i < evt.traget.files.length; i++) {
-                        const img = document.createElement("img");
-                        img.src = "";
-                        document.querySelector("#preview").appendChild(img);
+                    for (let i = 0; i < evt.target.files.length; i++) {
+                        let reader = new FileReader();
+                        reader.readAsDataURL(evt.target.files[i]);
+                        reader.onload = function (rst) {
+                            const img = document.createElement("img");
+                            img.src = rst.target.result;
+                            img.style.width = "40px";
+                            img.style.marginRight = "5px";
+                            document.querySelector("#preview").appendChild(img);
+                        }
                     }
                 }
             }

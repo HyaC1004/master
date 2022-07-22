@@ -13,15 +13,31 @@ async function getAll() {
     return await getCollection().find({}).sort("createdAt", -1).toArray();
 }
 
+async function getVisibleSome(userId) {
+    const query = {"$or" : [{writerId : userId },  {  type : "public" } ] };
+    return await getCollection().find(query).sort("createdAt", -1).toArray();
+}
+
 async function getByWriter(writerId) {
     return await getCollection().find({writerId : writerId }).sort("createdAt", -1).toArray();
 }
 
 async function getById(targetId) {
-    return await getCollection().find({_id : new mongodb.ObjectId(targetId)}).toArray();
+    return await getCollection().findOne({_id : new mongodb.ObjectId(targetId)});
+}
+
+
+async function addComment(targetId, data) {
+    return await getCollection().updateOne({_id : new mongodb.ObjectId(targetId)}, 
+                                                            {$push : {comments : data }});
+}
+
+async function removeComment(targetId, dataId) {
+    return await getCollection().updateOne({_id : new mongodb.ObjectId(targetId)}, 
+                                                {$pull : {comments : {id : dataId } }});
 }
 
 module.exports={
-    add, getAll, getByWriter, getById
+    add, getAll, getByWriter, getById, getVisibleSome, addComment, removeComment
 }
 
