@@ -35,3 +35,6 @@ const foodSchema = mongoose.Schema({
 // 이 스키마라는 걸 이용해서 모델이라는 걸 만들어서 사용하게 된다
 
 const food = mongoose.model("food", foodSchema);    // foods라는 컬렉션으로 관리가 됨.
+
+const f1 = new food({ name: "??", calorie: "asdfdsafds"});
+f1.save();
