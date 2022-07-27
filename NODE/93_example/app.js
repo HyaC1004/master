@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const visitors = require("./collections/visitors");
+const mongoose = require("mongoose");
+const Visitor = require("./model/Visitor");
 //const visitorsRouter = require("./router/visitors");
 
 const app = express();
@@ -25,6 +27,7 @@ app.route("/write")
         };    
 
         let result = await visitors.insertOne(obj);
+        // let result2 = await Visitor.create(obj);
         if(result.insertedId) {
             res.redirect("/list");
             //res.send("데이터가 정상적으로 등록되었습니다.<a href='/list'>리스트로 가기</a>");
