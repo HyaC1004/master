@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화목록</title>
+    <style>
+        #wrap{width:90%;margin: auto;padding: 35px;}
+        .sch{margin-bottom:3rem;}
+        .sch form{
+            padding:31px 0;
+            border-top: 1px solid #afafaf;
+            border-bottom: 1px solid #afafaf;
+        }
+        .ins{
+            position: relative;
+            overflow: hidden;
+            padding-right: 155px;
+        }
+        .item {
+            float: left;
+            width: 50%;
+            margin: 5px 0;
+        }
+        table{
+            border-bottom: 2px solid #373737;
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            height: 45px;
+            padding: 0 12px;
+            vertical-align: middle;
+            border-left: 1px solid #d9d9d9;
+        }        
+        table th:last-child, table td:last-child{
+            border-right: 1px solid #d9d9d9;
+        }
+        thead th {
+            border-top: 2px solid #5076db;
+            background: #eee;
+            color: #212121;
+            font-weight: normal;
+        }
+        tbody tr:first-child td {
+            border-top: 2px solid #373737;
+        }
+        tbody td {
+            border-top: 1px solid #d9d9d9;
+            color: #666;
+        }
+        tbody td span {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            word-break: break-all;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <h2>영화 리스트</h2>
+
+        <div class="sch">
+            <form action="/movie" id="srchForm" autocomplete="off">           
+                <input type="hidden" name="page" id="page" value="1" >                                 
+                <div class="ins">
+                    <div>
+                        <strong>영화명</strong>
+                        <input type="text" name="mvNm" value="<%= locals.mvNm ?? "" %>" id="mvNm" list="mvNms" />                        
+                        <datalist id="mvNms">
+                            
+                        </datalist>
+                    </div>
+                    <div>
+                        <% genres.forEach(genre=>{%>                            
+                            <input type="checkbox" name="grNm" 
+                            value="<%=genre%>" <%= locals.grNm?.includes(genre)? 'checked': ""%>/>
+                            <label>
+                              <%=genre%>
+                            </label>
+                        <%})%>
+                    </div>
+                    <button type="submit">조회</button>
+                    <button type="reset">취소</button>
+                    <!--
+                    <div class="item">
+                        <strong>감독명</strong>
+                        <input type="text">
+                    </div>
+                    <div class="item">
+                        <strong>제작연도</strong>
+                        <select name="" id=""></select>~<select name="" id=""></select>
+                    </div>
+                    <div class="item">
+                        <strong>개봉일자</strong>
+                        <input type="text">~<input type="text">
+                    </div>     
+                    -->               
+                </div>
+            </form>
+        </div>
+        <div>
+            <p>총 <%= cnt ?? "-" %> 건</p>
+            <table>
+                <thead>
+                    <tr class="top-area">
+                        <th style="width:15%">영화명</th>
+                        <th style="width:15%">영화명(영문)</th>
+                        <th style="width:8%">영화코드</th>
+                        <th style="width:8%">제작연도</th>
+                        <th style="width:8%">제작국가</th>
+                        <th style="width:5%">유형</th>
+                        <th style="width:7%">장르</th>
+                        <th style="width:10%">제작상태</th>
+                        <th style="width:10%">감독</th>
+                        <th style="width:14%">제작사</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% array.forEach(data=>{%>
+                        <tr class="movie-area">
+                            <td><span><%= data.movieNm %></span></td>
+                            <td><span><%= data.movieNmEn %></span></td>
+                            <td><span><%= data.movieCd %></span></td>
+                            <td><span><%= data.prdtYear %></span></td>
+                            <td><span><%= data.repNationNm %></span></td>
+                            <td><span><%= data.typeNm %></span></td>
+                            <td><span><%= data.repGenreNm %></span></td>
+                            <td><span><%= data.prdtStatNm %></span></td>                    
+                            <td>
+                                <%for(let i =0;i<data.directors.length;i++){%>
+                                    <span><%= data.directors[i].peopleNm %></span>
+                                <%}%>
+                            </td>
+                            <td>
+                                <%for(let i =0;i<data.companys.length;i++){%>
+                                    <span><%= data.companys[i].companyNm %></span>
+                                <%}%>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <!-- page Navigaation -->
+        <div style="text-align: right;margin-top:2rem">
+            <% for(let p=1; p<=endPage; p++){%> 
+                <!--
+                <a href="/list?page=<%=p%>"><%=p%></a>                      
+                a href=의 값은 기본이 URL데이터라고 생각해서 javascript 함수 호출을 하려면
+                옆에 href="javascript:" 라고 명시를 하면 된다.
+                -->
+                <a href="#" onclick="goPage(event)" data-page="<%=p%>"><%=p%></a>
+            <%}%>            
+        </div>
+    </div>
+    <script>
+        function goPage(e) {
+            e.preventDefault();
+            document.querySelector("#page").value = e.target.dataset.page;
+            document.querySelector("#srchForm").submit();
+            console.log(e.target.dataset.page);
+        }
+        document.querySelector("#mvNm").onkeyup= async function(e) {
+            // console.log(e.target.value);
+            if(e.target.value.trim().length== 0) {
+                return;
+            }
+            // let words = ["자바스크립트","자전거","주전자"];
+            let response = await fetch("/api/match?mvNm="+e.target.value,{method:"get"});
+            let json = await response.json();
+            let words = json;
+            // console.log(json);
+            
+            wordsOpt = json.map((one)=>{
+                // console.log(one);
+                return `<option>${one.movieNm}</option>`;
+            });
+            document.querySelector("#mvNms").innerHTML = wordsOpt.join("");
+        }
+    </script>
+</body>
+</html>
