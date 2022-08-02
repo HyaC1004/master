@@ -40,12 +40,18 @@
         <div class="roomTitle">
             <h2 style="width:60%;padding: 10px;"> <%=room.title%></h2>
             <small>개설자: <%=room.owner%></small>
-            <button style="height: 2rem;margin: 2rem 0 0 2rem">나가기</button>            
+            <button style="height: 2rem;margin: 2rem 0 0 10rem" onclick="location.href='/chats'">나가기</button>            
         </div>
         <div class="content">
             <div class="chatArea">
                 <div id="view" style="height: 400px; overflow-y: auto;" >
-
+                    <% message.forEach(msg=>{%>
+                        <%if(msg.talker===newJoin){%>
+                            <p style="text-align:right"><%=msg.talker%>: <%=msg.content%></p>
+                        <%}else{%>
+                            <p style="text-align:left"><%=msg.talker%>: <%=msg.content%></p>
+                        <%}%>                        
+                    <%})%>
                 </div> 
                 <div>
                     <input type="text" id="msg" style="width: 90%;"
@@ -74,6 +80,12 @@
                 return response.json();
             }).then(json=>{
                 console.log(json);
+                if(json.success){
+                    let messages = json.content.reverse().map((elm)=>{
+                        html = `<p style="text-align:${align}">: </p>`
+                        document.querySelector("#view").innerHTML += elm.content;
+                    })
+                }
             }).catch(err=>{
                 alert("서버통신 일시 장애")
             });

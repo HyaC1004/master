@@ -54,14 +54,15 @@ router.route("/open")
 router.route("/room")
     .get(async(req,resp)=>{
         let roomId = req.query._id;
-        let newJoin = req.session.userId;
+        let newJoin = req.session.userId;        
         // console.log(newJoin);
         
         let room = await Room.findByIdAndUpdate(roomId,{$addToSet:{joiner:newJoin}},{returnDocument:"after"});
-        // console.log(room);
-
+        let message = await Message.find({roomId:roomId}).lean();
+        console.log(message);
+        resp.locals.message = message;
         resp.locals.room = room;
-        resp.render("chats/room");
+        resp.render("chats/room",{newJoin});
     })
 
 // 채팅 룸에서 발생한 ajax요청을 처리할 곳
