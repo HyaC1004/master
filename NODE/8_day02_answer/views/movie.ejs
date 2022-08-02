@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화정보</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            font-size: small;
+            width: 100%
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            ;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <%# ejs 파일에서 데이터를 접근할때 locals 붙어서 접근을 할 필요가 꼭 있는 건 아니지만, 만약 붙인다면? not defined 를 피할수가 있다. %>
+        <div>
+            <form action="/movie" id="srchForm" autocomplete="off">
+                <div>
+                    영화명 <input type="text" name="mvNm" id="mvNm" list="mvNms" value="<%=locals.mvNm??''%>" />
+                    <datalist id="mvNms">
+                        <!-- <option>자바스크립트</option>
+                            <option>노드</option> -->
+                    </datalist>
+                </div>
+                <div id="two">
+                    <% genres.forEach((genre)=>{%>
+                        <% if (locals.grNm instanceof Array) { %>
+                            <input type="checkbox" name="grNm" id="<%=genre%>" value="<%=genre%>"
+                                <%=locals.grNm.includes(genre)?"checked":""%> />
+                            <%# locals.grNm && locals.grNm.includes(genre)?'checked':'' %>
+                                <%}else {%>
+                                    <input type="checkbox" name="grNm" id="<%=genre%>" value="<%=genre%>"
+                                        <%=(locals.grNm===genre)?"checked":""%> />
+                                    <%}%>
+                                        <label for="<%=genre%>">
+                                            <%=genre%>
+                                        </label>
+                                        <% })%>
+                </div>
+                <input type="hidden" name="page" value="1" id="page">
+                <button type="submit">조회</button>
+                <button onclick="inpReset(event)">취소</button>
+            </form>
+        </div>
+        <hr>
+        <div>
+            총 <b>
+                <%=cnt??"-"%>
+            </b>건
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>영화명</th>
+                        <th>제작연도</th>
+                        <th>개봉일</th>
+                        <th>유형</th>
+                        <th>장르</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% movie.forEach(elm=> { %>
+                        <tr onclick="location.href=`/info?_id=<%=elm._id.toString()%>`">
+                            <td>
+                                <%-elm.movieNm%>
+                                    <div>
+                                        (<small>
+                                            <%=elm.movieNmEn%>
+                                        </small>)
+                                    </div>
+                            </td>
+                            <td>
+                                <%=elm.prdtYear%>
+                            </td>
+                            <td>
+                                <%=elm.openDt%>
+                            </td>
+                            <td>
+                                <%=elm.typeNm%>
+                            </td>
+                            <td>
+                                <%=elm.genreAlt%>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <!-- page Navigation -->
+        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+            <span>
+                <button onclick="location.href='/reviews'">리뷰보러가기</button>
+            </span>
+            <span>
+                <!--
+            [<% for( let p=1; p <=endPage; p++ ) { %>
+                <% if (locals.grNm instanceof Array) { %>
+                    <a
+                        href="/movie?page=<%=p%>&mvNm=<%=locals.mvNm??''%><% locals.grNm.forEach(elm => {%>&grNm=<%=elm%><%})%>">
+                        <%=p%>
+                    </a>
+                    <% } else{ %>
+                        <a href="/movie?page=<%=p%>&grNm=<%=locals.grNm??''%>&mvNm=<%=locals.mvNm??''%>">
+                            <%=p%>
+                        </a>
+                        <% }} %>]
+                        -->
+                <% for( let p=1; p <=endPage; p++ ) { %>
+                    <!--
+                                <a href="/?page=<%=p%>"><%=p%></a>
+                                a href=의 값은 기본이 URL 데이터라고 생각해서 javascript 함수 호출을 하려면
+                                앞에 href="javascript: " 라고 명시를 하면 된다.
+
+                            -->
+                    <a href="#" onclick="goPage(event)" data-page="<%=p%>">
+                        <%=p%>
+                    </a>
+                    <% } %>
+
+            </span>
+        </div>
+        <script>
+            function inpReset(evt) {
+                document.querySelector("#mvNm").value = null;
+                let b = Array.from(document.getElementsByName("grNm"));
+                b.forEach((e) => {
+                    e.checked = false;
+                })
+                evt.preventDefault();
+            }
+            function goPage(e) {
+                e.preventDefault();
+                // console.log(e.target.dataset.page)
+                document.querySelector("#page").value = e.target.dataset.page;
+                document.querySelector("#srchForm").submit();
+            }
+            document.querySelector("#mvNm").onkeyup = async function (e) {
+                console.log(e.target.value);
+                if (e.target.value.trim().length === 0) {
+                    return;
+                }
+                // let words = ["자바스크립트","자전거","주전자"];
+                let response = await fetch("/api/match?mvNm=" + e.target.value, { method: "get" })
+                let json = await response.json();
+                console.log(json);
+                wordsOpt = json.map((one) => {
+                    return `<option>${one.movieNm}</option>`;
+                })
+                document.querySelector("#mvNms").innerHTML = wordsOpt.join("");
+            }
+        </script>
+</body>
+
+</html>

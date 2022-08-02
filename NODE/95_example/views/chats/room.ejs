@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅방</title>
+    <style>
+        #wrap{width:90%; margin:auto;}
+        small{color:#aaa;line-height: 6rem;}
+        .roomTitle{
+            display: flex;
+            flex-direction: row;
+            color: white; 
+            background-color: rgb(129, 73, 0);
+            margin-bottom:1rem;
+        }
+        .content{
+            display: flex;
+            flex-direction: row;
+            
+        }
+        .content .chatArea{
+            flex-grow: 1;
+            border: 1px solid;
+            padding: 1rem;
+            margin-right: 5%;
+        }
+        .content .joiner{
+            padding: 1rem;
+            width: 25%;
+            border: 1px solid;  
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <div class="roomTitle">
+            <h2 style="width:60%;padding: 10px;"> <%=room.title%></h2>
+            <small>개설자: <%=room.owner%></small>
+            <button style="height: 2rem;margin: 2rem 0 0 2rem">나가기</button>            
+        </div>
+        <div class="content">
+            <div class="chatArea">
+                <div id="view" style="height: 400px; overflow-y: auto;" >
+
+                </div> 
+                <div>
+                    <input type="text" id="msg" style="width: 90%;"/>
+                </div>
+            </div>
+            <div class="joiner">
+                <b>참가자 목록</b>
+                <%for(let i =0;i<room.joiner.length;i++){%>
+                    <p><%=room.joiner[i]%></p>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+    </script>
+</body>
+
+</html>

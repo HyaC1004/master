@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        * {
+            font-family: "맑은 고딕";
+        }
+        small{color: rgb(122, 122, 122);}
+        .room {
+            width: 80%;
+            margin:auto;
+            margin-bottom:2rem;
+            background-color: rgb(192, 141, 31);
+            border: 1px solid #fff;
+            padding: 0 1rem;
+            cursor: pointer;
+            border-radius: 1rem;
+        }
+
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs") %>
+    
+
+    <div style="text-align: right;">
+        <button onclick="location.href='/chats/open'">채팅방 개설</button>
+    </div>
+    <div>
+        <h3>개설된 방목록(<%=rooms.length%>)</h3>
+        <% rooms.forEach(data=>{ %>
+            <div class="room" onclick="location.href='/chats/room?_id=<%=data._id%>'">
+                <h3><%=data.title%> <small><%=data.type%></small> </h3>
+                <p style="text-align: right"><b>개설자:</b> <%=data.owner%> <b>개설일:</b> <%=data.createdAt.toLocaleString()%></p>
+            </div>
+        <% }) %>
+    </div>
+    <script>
+        const ws = new WebSocket("ws://"+location.host+"/chats/sse");
+
+        ws.onmessage = function(recv) {
+            console.log(recv);                
+            let message = JSON.parse(recv.data);
+            switch(message.type) {
+                case "new" :
+                    if(confirm("새로 개설된 채팅방이 있습니다.")){
+                        location.reload();
+                    };
+                    break;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 상세보기</title>
+    <style>
+        .star {
+            position: relative;
+            font-size: 2rem;
+            color: #ddd;
+        }
+
+        .star input {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .star span {
+            width: 0;
+            position: absolute;
+            left: 0;
+            color: red;
+            overflow: hidden;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <div>
+            <h1 style="margin-bottom: 0;"><%=movie.movieNm%></h1>
+            <small><%=movie.movieNmEn%></small>
+            <div style="margin-top: 5px;">평균평점 : <%=avg??""%></div>
+            <div style="margin-top:5px; margin-left: 35%;">
+                <button onclick="location.href='/reviews'">리뷰보러가기</button>
+                <button onclick="location.href='/movie'">영화목록</button>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center;">
+        <div style="margin-top: 5px; border:1px solid black; width: 50%; padding: 5px; border-radius: 10px;">
+            <form action="/create" method="post">
+                <div>
+                    <%=movie.movieNm%>
+                </div>
+                <input type="hidden" name="target" value="<%=movie._id%>">
+                <input type="hidden" name="targetCd" value="<%=movie.movieCd%>">
+                <input type="hidden" name="targetstr" value="<%=movie._id%>">
+                <input type="hidden" id="">
+                <span class="star">
+                    ★★★★★
+                    <span>★★★★★</span>
+                    <input type="range" name="score" oninput="drawStar(this)" value="1" step="1" min="1" max="5">
+                </span>
+                <div>
+                    <textarea name="comment" id="" cols="50" rows="5"></textarea>
+                </div>
+                <button type="submit">작성</button>
+            </form>
+        </div>
+    </div>
+        <div style="display: flex; flex-wrap:wrap; justify-content: center;">
+            <% reviews.forEach(elm => { %>
+                <div style="border: 1px solid black; margin: 10px 10px; width: 50%; border-radius: 10px;">
+                    <div>
+                       <%="⭐".repeat(elm.score)%>
+                </div>
+                <div>
+                    <%=elm.comment%>
+                </div>
+                <div>
+                    <%=elm.createdAt?.toLocaleDateString()%>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+<script>
+     const drawStar = (target) => {
+    document.querySelector(`.star span`).style.width = `${target.value * 20}%`;
+  }
+
+  let avg = document.querySelector("#avg");
+
+</script>
+</body>
+
+</html>

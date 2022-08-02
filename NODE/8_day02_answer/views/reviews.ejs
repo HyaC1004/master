@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화정보</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            font-size: small;
+            width: 100%
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            ;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width:70%; margin-left: 15%; margin-top: 10%;">
+        <div style="text-align: right; margin-bottom:5px;">
+            <button onclick="location.href='/movie'">영화목록</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>영화명</th>
+                    <th>평점</th>
+                    <th>코멘트</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% datas.forEach(elm=> { %>
+                    <tr onclick="location.href='/info?_id=<%=elm.target._id.toString()%>'">
+                        <td>
+                            <%=elm.target.movieNm%>
+                        </td>
+                        <td>
+                            <%="⭐".repeat(elm.score)%>
+                        </td>
+                        <td>
+                            <%=elm.comment%>
+                        </td>
+                    </tr>
+                    <% }) %>
+
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+
+    </script>
+</body>
+
+</html>

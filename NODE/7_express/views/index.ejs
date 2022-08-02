@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket</title>
+</head>
+
+<body>
+    <h1>WebSocket</h1>
+    <p>
+        서버와 클라이언트간 양방향 통신을 위해서 만들어진 기술
+    </p>
+    <script>
+        console.log(location);
+        const ws = new WebSocket(`ws://${location.host}/server`);
+        ws.onopen = (evt) => {
+            console.log("onopen");
+            console.log(evt);
+            ws.send("?????");
+        };
+        ws.onerror = (evt) => {
+            console.log("onerror");
+            console.log(evt);
+        };
+        ws.onclose = (evt) => {
+            console.log("onclose");
+            console.log(evt);
+        };
+        ws.onmessage = (evt) => {
+            console.log("onmessage");
+            console.log(evt);
+        }
+     /*   
+        window.addEventListener('beforeunload', (event) => {
+            // 표준에 따라 기본 동작 방지
+            event.preventDefault();
+            // Chrome에서는 returnValue 설정이 필요함
+            ws.close();
+            alert("??");
+            
+            event.returnValue = '';
+        });
+    */
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>

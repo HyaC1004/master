@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket</title>
+</head>
+
+<body>
+    <h1>WebSocket</h1>
+    <div id="view" style="height: 400px; overflow-y: auto;" >
+
+    </div>    
+    <div>
+        <input type="text" onchange="sendMessage(event);" style="width: 100%;"/>
+    </div>
+    <script>
+        let nick;
+        const ws = new WebSocket(`ws://${location.host}/chat`);
+        
+        ws.onopen = (evt) => {
+            nick = prompt("사용할 이름?");        
+            let html = "<div>Server Connected</div>"
+            document.querySelector("#view").innerHTML += html;
+
+            ws.send(JSON.stringify({"type": "join", "name" : nick}));
+        };
+
+        ws.onclose = (evt) => {
+            ws.send(JSON.stringify({"type": "exit", "name" : nick}));
+        };
+        
+        ws.onmessage = (evt) => {
+            console.log("onmessage");
+            // console.log(evt);        // 서버가 센트한 메세지값은 evt.data 안에 있다.
+            let got = JSON.parse(evt.data);
+            let html;
+
+            switch(got.type) {
+                case "join" :
+                    html = "<div style='text-align:center'>" + escapeXml(got.name) +" 님이 입장하였습니다.</div>";
+                    break;
+                case "exit" :
+                    html = "<div style='text-align:center'>" + escapeXml(got.name) +" 님이 퇴장하였습니다.</div>";
+                    break;
+                case "chat" :
+                    let align = (got.talker === nick) ? "right" : "left";
+                    html = `<div style="text-align : ${align}">
+                            <small>[${escapeXml(got.talker)}]</small><br/>
+                                ${escapeXml(got.ment)}
+                            </div>`
+            }
+            document.querySelector("#view").innerHTML += html;
+            rebalanceHeight();
+        }
+
+        function rebalanceHeight() {
+          //  console.log(document.querySelector("#view").scrollHeight);
+            document.querySelector("#view").scrollTop =
+                     document.querySelector("#view").scrollHeight;
+        }
+
+
+        function sendMessage(event) {
+            ws.send(JSON.stringify({type:"chat", talker : nick, ment : event.target.value }));
+            event.target.value="";
+        }
+
+      
+
+        function escapeXml (data) {
+            
+                return data.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        }
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
