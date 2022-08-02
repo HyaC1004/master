@@ -48,7 +48,8 @@
 
                 </div> 
                 <div>
-                    <input type="text" id="msg" style="width: 90%;"/>
+                    <input type="text" id="msg" style="width: 90%;"
+                        data-room-id="<%=room._id%>"/>
                 </div>
             </div>
             <div class="joiner">
@@ -60,7 +61,25 @@
         </div>
     </div>
     <script>
-        
+        document.querySelector("#msg").onchange = (evt)=>{
+            if(evt.target.value.trim().length === 0){
+                return;
+            }            
+            const headers = {"content-type":"application/json"};
+            fetch("/chats/api/message",{headers,method : "post", body: JSON.stringify({
+                roomId: evt.target.dataset.roomId,
+                content: evt.target.value
+            })})
+            .then(response=>{                
+                return response.json();
+            }).then(json=>{
+                console.log(json);
+            }).catch(err=>{
+                alert("서버통신 일시 장애")
+            });
+
+            evt.target.value ="";
+        }
     </script>
 </body>
 
