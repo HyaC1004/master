@@ -39,8 +39,18 @@
             flex-direction: column;
             height: 600px;
             padding-right: 0.5rem;
-            overflow-y: auto;   
-            
+            overflow-y: auto;               
+        }
+        #log::-webkit-scrollbar {
+            width: 10px;  /* 스크롤바의 너비 */
+        }
+        #log::-webkit-scrollbar-thumb{
+            height: 30%; /* 스크롤바의 길이 */
+            background: #a08300; /* 스크롤바의 색상 */            
+            border-radius: 10px;
+        }
+        #log::-webkit-scrollbar-track {
+            background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
         }
         .content .chatArea{
             flex-grow: 1;
@@ -85,8 +95,11 @@
 <body>
     <div id="wrap">
         <div class="roomTitle">
-            <h2 style="padding: 10px;"> <%=room.title%> <small style="font-size: 0.8rem;">개설자: <%=room.owner%></small></h2>            
-            <button class="exitBtn" onclick="location.href='/chats/exit?_id=<%=room._id%>'">나가기</button>                        
+            <h2 style="padding: 10px;"> <%=room.title%> <small style="font-size: 0.8rem;">개설자: <%=room.owner%></small></h2> 
+            <div >
+                <button class="exitBtn" onclick="location.href='/chats'">방목록</button>           
+                <button class="exitBtn" onclick="location.href='/chats/exit?_id=<%=room._id%>'">나가기</button>                        
+            </div>
         </div>
         <div class="content">
             <div class="chatArea">
