@@ -5,12 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple SNS</title>
+    <title>황토방</title>
     <style>
         * {
             font-family: "맑은 고딕";
         }
-        small{color: rgb(122, 122, 122);}
+        small{color: rgb(122, 122, 122);}  
+        ul{list-style:none;} 
+        a{text-decoration: none; color: #555;}
+        .tab_menu{position:relative;}
+        .tab_menu .list{overflow:hidden;}
+        .tab_menu .list li{float:left; margin-right:14px;}
+        .tab_menu .list .btn{font-size:1.2rem;margin-bottom: 1rem;}
+        .tab_menu .list .cont{
+            display:none; 
+            position:absolute;       
+            top:3rem;    
+            left: 0;
+            width:90%;
+        }
+        .tab_menu .list li.is_on .btn{font-weight:bold; color:rgb(255, 190, 106);}
+        .tab_menu .list li.is_on .cont{display:block;}     
         .room {
             width: 80%;
             margin:auto;
@@ -21,27 +36,64 @@
             cursor: pointer;
             border-radius: 1rem;
         }
-
     </style>
 </head>
 
 <body>
-    <%- include("../common/top.ejs") %>
-    
+    <%- include("../common/top.ejs") %>    
 
     <div style="text-align: right;">
         <button onclick="location.href='/chats/open'">채팅방 개설</button>
-    </div>
-    <div>
-        <h3>개설된 방목록(<%=rooms.length%>)</h3>
-        <% rooms.forEach(data=>{ %>
-            <div class="room" onclick="location.href='/chats/room?_id=<%=data._id%>'">
-                <h3><%=data.title%> <small><%=data.type%></small> </h3>
-                <p style="text-align: right"><b>개설자:</b> <%=data.owner%> <b>개설일:</b> <%=data.createdAt.toLocaleString()%></p>
-            </div>
-        <% }) %>
+    </div>     
+    <div class="tab_menu">
+        <ul class="list">
+            <li >
+              <a href="#tab1" class="btn">전체 방목록(<%=rooms.length%>)</a>
+                <div id="tab1" class="cont">
+                    <% rooms.forEach(data=>{ %>
+                        <div class="room" onclick="location.href='/chats/room?_id=<%=data._id%>'">
+                            <h3><%=data.title%> <small><%=data.type%></small> </h3>
+                            <p style="text-align: right"><b>개설자:</b> <%=data.owner%> <b>개설일:</b> <%=data.createdAt.toLocaleString()%></p>
+                        </div>
+                    <% }) %>
+                </div>    
+            </li>
+            <li class="is_on">
+                <a href="#tab2" class="btn">참여한 방목록(<%=joinRooms.length%>)</a>
+                <div id="tab2" class="cont">
+                    <% joinRooms.forEach(data=>{ %>
+                        <div class="room" onclick="location.href='/chats/room?_id=<%=data._id%>'">
+                            <h3><%=data.title%> <small><%=data.type%></small> </h3>
+                            <p style="text-align: right"><b>개설자:</b> <%=data.owner%> <b>개설일:</b> <%=data.createdAt.toLocaleString()%></p>
+                        </div>
+                    <% }) %>
+                </div>   
+            </li> 
+            <li>
+                <a href="#tab3" class="btn">미참여 방목록(<%=unJoinRooms.length%>)</a>
+                <div id="tab3" class="cont">
+                    <% unJoinRooms.forEach(data=>{ %>
+                        <div class="room" onclick="location.href='/chats/room?_id=<%=data._id%>'">
+                            <h3><%=data.title%> <small><%=data.type%></small> </h3>
+                            <p style="text-align: right"><b>개설자:</b> <%=data.owner%> <b>개설일:</b> <%=data.createdAt.toLocaleString()%></p>
+                        </div>
+                    <% }) %>
+                </div>  
+            </li>
+        </ul>  
     </div>
     <script>
+        const tabList = document.querySelectorAll('.tab_menu .list li');
+  
+        for(var i = 0; i < tabList.length; i++){
+            tabList[i].querySelector('.btn').addEventListener('click', function(e){
+            e.preventDefault();
+            for(var j = 0; j < tabList.length; j++){
+                tabList[j].classList.remove('is_on');
+            }
+            this.parentNode.classList.add('is_on');
+            });
+        }
         const ws = new WebSocket("ws://"+location.host+"/chats/sse");
 
         ws.onmessage = function(recv) {

@@ -8,90 +8,182 @@
     <title>채팅방</title>
     <style>
         #wrap{width:90%; margin:auto;}
-        small{color:#aaa;line-height: 6rem;}
+        span{cursor: pointer;}
         .roomTitle{
             display: flex;
-            flex-direction: row;
+            width: 100%;
             color: white; 
             background-color: rgb(129, 73, 0);
             margin-bottom:1rem;
+            justify-content: space-between;
+        }
+        .exitBtn{
+            height: 2rem;
+            width: 5rem;
+            margin: 2rem 1rem;
+            background-color: antiquewhite;
+            border: 0;
+            border-radius: 0.5rem;
+            font-weight: bolder;
+        }
+        .exitBtn:hover{
+            background-color: rgb(255, 233, 108);
         }
         .content{
             display: flex;
-            flex-direction: row;
+            flex-direction: row;            
+        }
+        
+        #log{
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            padding-right: 0.5rem;
+            overflow-y: auto;   
             
         }
         .content .chatArea{
             flex-grow: 1;
-            border: 1px solid;
             padding: 1rem;
             margin-right: 5%;
+            background-color: blanchedalmond;
+            border-radius: 1rem;
         }
         .content .joiner{
             padding: 1rem;
             width: 25%;
-            border: 1px solid;  
+            background-color: blanchedalmond;
+            border-radius: 1rem;
         }
+        .chatBox{
+            min-width: 10%;
+            max-width: 60%;
+            display: inline-block;
+            padding: 0.5rem;
+        }        
+        .mine{
+            align-self: flex-end;            
+            background-color: rgb(255, 197, 197);
+            border-radius: 1rem;
+        }
+        .other{
+            align-self: flex-start;            
+            background-color: rgb(255, 200, 50);
+            border-radius: 1rem;
+        }
+        .time{
+            color: #555;
+            padding: 0.2rem;
+            margin: 0 0 0.5rem 0;
+            font-size: 0.3rem;
+            background-color: #fff;
+        }
+        .alarm{text-align: center;margin:0.4rem 0}
     </style>
 </head>
 
 <body>
     <div id="wrap">
         <div class="roomTitle">
-            <h2 style="width:60%;padding: 10px;"> <%=room.title%></h2>
-            <small>개설자: <%=room.owner%></small>
-            <button style="height: 2rem;margin: 2rem 0 0 10rem" onclick="location.href='/chats'">나가기</button>            
+            <h2 style="padding: 10px;"> <%=room.title%> <small style="font-size: 0.8rem;">개설자: <%=room.owner%></small></h2>            
+            <button class="exitBtn" onclick="location.href='/chats/exit?_id=<%=room._id%>'">나가기</button>                        
         </div>
         <div class="content">
             <div class="chatArea">
-                <div id="view" style="height: 400px; overflow-y: auto;" >
-                    <% message.forEach(msg=>{%>
-                        <%if(msg.talker===newJoin){%>
-                            <p style="text-align:right"><%=msg.talker%>: <%=msg.content%></p>
-                        <%}else{%>
-                            <p style="text-align:left"><%=msg.talker%>: <%=msg.content%></p>
-                        <%}%>                        
+                <div id="log" >
+                    <% message.forEach(msg=>{%>                        
+                        
+                        <div class="chatBox <%=msg.type%>">
+                            <small><%=msg.talker%></small>
+                            <p style="margin: 0;"><%=msg.content%></p>
+                        </div>
+                        <span class="time <%=msg.type%>"><%=msg.createdAt.getHours()%>시 <%=msg.createdAt.getMinutes()%>분</span>  
                     <%})%>
                 </div> 
-                <div>
-                    <input type="text" id="msg" style="width: 90%;"
+                <div style="display: flex;flex-direction:row;">
+                    <input type="text" id="msg" style="width: 90%;height:2rem;font-size:1.2rem;margin-right: 0.5rem;"
                         data-room-id="<%=room._id%>"/>
+                        <span style="font-size: 1.5rem;">😀</span>
                 </div>
             </div>
             <div class="joiner">
                 <b>참가자 목록</b>
-                <%for(let i =0;i<room.joiner.length;i++){%>
-                    <p><%=room.joiner[i]%></p>
-                <%}%>
+                <div id="joiner">
+                    <p><%=room.joiner%></p>
+                </div>
             </div>
         </div>
     </div>
     <script>
-        document.querySelector("#msg").onchange = (evt)=>{
-            if(evt.target.value.trim().length === 0){
+        rebalanceHeight();
+        document.querySelector("#msg").onchange = (evt) => {
+            if (evt.target.value.trim().length === 0) {
                 return;
-            }            
-            const headers = {"content-type":"application/json"};
-            fetch("/chats/api/message",{headers,method : "post", body: JSON.stringify({
-                roomId: evt.target.dataset.roomId,
-                content: evt.target.value
-            })})
-            .then(response=>{                
+            }
+            const headers = { "content-type": "application/json" };
+            fetch("/chats/api/message", {
+                headers, method: "post", body: JSON.stringify({
+                    roomId: evt.target.dataset.roomId,
+                    content: evt.target.value
+                })
+            }).then(response => {
                 return response.json();
-            }).then(json=>{
-                console.log(json);
-                if(json.success){
-                    let messages = json.content.reverse().map((elm)=>{
-                        html = `<p style="text-align:${align}">: </p>`
-                        document.querySelector("#view").innerHTML += elm.content;
-                    })
-                }
-            }).catch(err=>{
-                alert("서버통신 일시 장애")
+            }).then(json => {
+                //console.log(json);
+            }).catch(err => {
+                alert("서버 통신 일시 장애");
             });
 
-            evt.target.value ="";
+            evt.target.value = "";
+        };
+        
+        const roomId = document.querySelector("#msg").dataset.roomId;
+        const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
+
+        ws.onmessage = function(rst) {
+            let msg = JSON.parse(rst.data);
+            if(msg.apply !== roomId){
+                return;
+            }
+
+            switch(msg.type) {
+                case "join" :
+                    //console.log("success");
+                    let div = document.createElement("div");
+                    div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
+                    div.classList.add("alarm");                    
+                    document.querySelector("#log").appendChild(div);
+                    //console.log(msg.joiner);
+                    document.querySelector("#joiner").innerHTML = `<p>${msg.joiner} </p>`;                  
+                    break;
+                case "exit" :
+                    let exitDiv = document.createElement("div");
+                    exitDiv.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
+                    exitDiv.classList.add("alarm");                    
+                    document.querySelector("#log").appendChild(exitDiv);
+                    //console.log(msg);
+                    document.querySelector("#joiner").innerHTML = `<p>${msg.joiner} </p>`;
+                    
+                    break;
+                case "new" :
+                    let newMessage = document.createElement("div");
+                    newMessage.classList.add("chatBox", `${msg.data.type}`); 
+                   
+                    newMessage.innerHTML = `<small>${msg.data.talker}</small>
+                            <p style="margin: 0;">${msg.data.content}</p>`                    
+                    document.querySelector("#log").appendChild(newMessage);                    
+                    console.log(msg);
+                
+            }
+            rebalanceHeight();
+            //console.log(msg);
         }
+
+        function rebalanceHeight() {
+          //  console.log(document.querySelector("#view").scrollHeight);
+            document.querySelector("#log").scrollTop =
+                     document.querySelector("#log").scrollHeight;
+        };
     </script>
 </body>
 
