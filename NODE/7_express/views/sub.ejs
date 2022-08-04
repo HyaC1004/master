@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sub</title>
+</head>
+<body>
+    <h1>Sub</h1>
+    <p>
+        당신은 지금 sub 있습니다.
+    </p>
+    <p>
+        (이 페이지는 서버측으로 메세지를 받을 수 있다.)
+    </p>
+    <script>
+        const ws = new WebSocket(`ws://${location.host}/ss/sub`);
+
+        ws.onmessage = function(recv) {
+            // recv에는 헤더를 포함해서 꽤 많은 속성들이 있는데
+            // 서버에서 보낸 본문은 data라는 프로퍼티에 들어있다. 
+            console.log("received: " + recv.data);
+        };
+
+
+    </script>
+</body>
+</html>

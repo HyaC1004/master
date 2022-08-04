@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>채팅방</title>
+    <title><%=room.title ?? 채팅방 %></title>
     <style>
         #wrap{width:90%; margin:auto;}
         span{cursor: pointer;}
@@ -39,7 +39,8 @@
             flex-direction: column;
             height: 600px;
             padding-right: 0.5rem;
-            overflow-y: auto;               
+            overflow-y: auto;          
+            margin-bottom: 1rem;     
         }
         #log::-webkit-scrollbar {
             width: 10px;  /* 스크롤바의 너비 */
@@ -68,27 +69,40 @@
         .chatBox{
             min-width: 10%;
             max-width: 60%;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
             padding: 0.5rem;
-        }        
+            border-radius: 0.8rem;
+        }    
+        .chatBox p img{
+            margin-top: 0.2rem;
+            max-width: 100%;
+        }    
         .mine{
             align-self: flex-end;            
             background-color: rgb(255, 197, 197);
-            border-radius: 1rem;
+            
         }
+        .mine small{align-self: flex-end;}
+        .mine p{align-self: flex-end;}
         .other{
             align-self: flex-start;            
             background-color: rgb(255, 200, 50);
-            border-radius: 1rem;
         }
         .time{
             color: #555;
             padding: 0.2rem;
             margin: 0 0 0.5rem 0;
             font-size: 0.3rem;
-            background-color: #fff;
+            background-color: blanchedalmond;
         }
         .alarm{text-align: center;margin:0.4rem 0}
+        #msg{
+            width: 90%;
+            height:2rem;
+            font-size:1.2rem;
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 
@@ -104,31 +118,71 @@
         <div class="content">
             <div class="chatArea">
                 <div id="log" >
-                    <% message.forEach(msg=>{%>                        
-                        
-                        <div class="chatBox <%=msg.type%>">
-                            <small><%=msg.talker%></small>
-                            <p style="margin: 0;"><%=msg.content%></p>
-                        </div>
-                        <span class="time <%=msg.type%>"><%=msg.createdAt.getHours()%>시 <%=msg.createdAt.getMinutes()%>분</span>  
+                    <% message.forEach(msg=>{%>     
+                        <%if(msg.author.includes(sessionId)){%>
+                            <div class="chatBox <%=msg.type%>">
+                                <small><%=msg.talker%></small>
+                                <%if(msg.data=="chat"){%>
+                                    <p style="margin: 0;"><%=msg.content%></p>
+                                <%}else{%>
+                                    <p><img src="<%=msg.content%>" /></p>
+                                <%}%>
+                            </div>
+                            <span class="time <%=msg.type%>"><%=msg.createdAt.getHours()%>시 <%=msg.createdAt.getMinutes()%>분</span>  
+                        <%}%>
                     <%})%>
                 </div> 
                 <div style="display: flex;flex-direction:row;">
-                    <input type="text" id="msg" style="width: 90%;height:2rem;font-size:1.2rem;margin-right: 0.5rem;"
-                        data-room-id="<%=room._id%>"/>
-                        <span style="font-size: 1.5rem;">😀</span>
+                    <input type="text" id="msg" data-room-id="<%=room._id%>"/>
+                    <span style="font-size: 1.5rem;">😀</span>
+                    <span id="virtuals" style="font-size: 1.5rem;">🔗</span>
+                    <input style="display:none;" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>"/>
                 </div>
             </div>
             <div class="joiner">
                 <b>참가자 목록</b>
                 <div id="joiner">
-                    <p><%=room.joiner%></p>
+                    <% for(let i=0;i<room.joiner.length;i++){%>
+                        <p><%=room.joiner[i]%></p>
+                    <%}%>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        function rebalanceHeight() {
+            //console.log(document.querySelector("#log").scrollHeight);
+            
+            document.querySelector("#log").scrollTop = document.querySelector("#log").scrollHeight;
+            //console.log(document.querySelector("#log").scrollTop);
+        };
+
         rebalanceHeight();
+
+        document.querySelector("#virtuals").onclick = (evt) => {
+            document.querySelector("#attach").dispatchEvent(new MouseEvent("click"));
+        };
+
+        function resetFile() {
+            console.log("reset");
+            document.querySelector("#attach").value="";
+        }
+        document.querySelector("#attach").onchange = async(evt) =>{
+            console.log(evt.target.files[0]);
+            // post + multipart/form-data로 요청을 보내야 파일이 전송이 됨
+            const body = new FormData();
+            body.append("attach",evt.target.files[0]);
+            body.append("roomId",evt.target.dataset.roomId);            
+            console.log("클라",body);
+            let response = await fetch("/chats/api/upload?roomId="+evt.target.dataset.roomId,{
+                method: "post",
+                body: body
+            });
+            let json = response.json();
+
+        };
+        
+
         document.querySelector("#msg").onchange = (evt) => {
             if (evt.target.value.trim().length === 0) {
                 return;
@@ -142,7 +196,7 @@
             }).then(response => {
                 return response.json();
             }).then(json => {
-                //console.log(json);
+                console.log(json);
             }).catch(err => {
                 alert("서버 통신 일시 장애");
             });
@@ -162,41 +216,56 @@
             switch(msg.type) {
                 case "join" :
                     //console.log("success");
-                    let div = document.createElement("div");
+                    console.log(msg);
+                    let div = document.createElement("div");     
                     div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
                     div.classList.add("alarm");                    
                     document.querySelector("#log").appendChild(div);
-                    //console.log(msg.joiner);
-                    document.querySelector("#joiner").innerHTML = `<p>${msg.joiner} </p>`;                  
+                  
+                    
+                    let a="";
+                    for(let i=0;i<msg.joiner.length;i++){
+                        a += `<p>${msg.joiner[i]} </p>`
+                    }                    
+                    document.querySelector("#joiner").innerHTML = a;                  
                     break;
                 case "exit" :
+                    console.log(msg);
                     let exitDiv = document.createElement("div");
                     exitDiv.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
                     exitDiv.classList.add("alarm");                    
                     document.querySelector("#log").appendChild(exitDiv);
                     //console.log(msg);
-                    document.querySelector("#joiner").innerHTML = `<p>${msg.joiner} </p>`;
+                    let b="";
+                    for(let i=0;i<msg.joiner.length;i++){
+                        b += `<p>${msg.joiner[i]} </p>`
+                    }                    
+                    document.querySelector("#joiner").innerHTML = b;
                     
                     break;
-                case "new" :
-                    let newMessage = document.createElement("div");
-                    newMessage.classList.add("chatBox", `${msg.data.type}`); 
-                   
-                    newMessage.innerHTML = `<small>${msg.data.talker}</small>
-                            <p style="margin: 0;">${msg.data.content}</p>`                    
-                    document.querySelector("#log").appendChild(newMessage);                    
-                    console.log(msg);
-                
+                case "new" :                    
+                    let hours = new Date().getHours();
+                    let minutes = new Date().getMinutes();                    
+                    let content;
+                    if (msg.data.data == "chat") {
+                        content = `<p style="margin: 0;">${msg.data.content}</p>`;
+                    } else {
+                        content = `<p><img src="${msg.data.content}" /></p>`;
+                    }
+                    let html = 
+                    `<div class="chatBox ${msg.data.type}">
+                        <small>${msg.data.talker}</small>
+                        ${content}
+                    </div>
+                    <span class="time ${msg.data.type}"> ${hours}시 ${minutes}분</span>`;
+
+                    document.querySelector("#log").innerHTML += html;                                        
             }
             rebalanceHeight();
             //console.log(msg);
         }
 
-        function rebalanceHeight() {
-          //  console.log(document.querySelector("#view").scrollHeight);
-            document.querySelector("#log").scrollTop =
-                     document.querySelector("#log").scrollHeight;
-        };
+        
     </script>
 </body>
 
