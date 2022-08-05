@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        * {
+            font-family: "맑은 고딕";
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            margin: 0;
+        }
+        .open {
+            border-radius: 5px;
+            
+            padding: 10px;
+        }
+
+        .open input[type=text], .open input[type=password]{
+            width: 100%;
+            padding: 5px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .open label {
+            font-weight: bold;
+        }
+        button {
+            width: 100%;  
+            padding: 5px;
+            margin: 8px 0;
+        }  
+    </style>
+</head>
+<body>
+    <%- include("../common/top.ejs") %>
+        <div class="open">
+            <h3>채팅방 개설</h3>
+            <form action="/chats/open" method="post">
+                <div>
+                    <label># 주제</label><input type="text" name="title">
+                </div>
+                <div>
+                    
+                    <label for="public"># 공개</label>
+                    <input id="public" type="radio" name="type" value="public" checked> |
+
+                    <label for="private"># 비공개</label>
+                    <input id="private" type="radio" name="type" value="private">
+                    <input type="password" name="password" id="password" style="padding: 5px;
+                    margin: 8px 0;" disabled/>
+                </div>
+                <div>
+                    <button type="submit">개설</button>
+                </div>
+            </form>
+        </div>
+        <script>
+            document.querySelector("#private").onchange = (evt) => {
+                console.log(evt.target.checked);
+                document.querySelector("#password").disabled = !evt.target.checked;
+            }
+            document.querySelector("#public").onchange = (evt) => {
+                console.log(evt.target.checked);
+                document.querySelector("#password").value="";
+                document.querySelector("#password").disabled = evt.target.checked;
+            }
+        </script>
+</body>
+
+
+</html>

@@ -89,6 +89,13 @@
             align-self: flex-start;            
             background-color: rgb(255, 200, 50);
         }
+        .readCnt{
+            color: #555;
+            padding: 0.2rem;
+            margin: 0;
+            font-size: 0.3rem;
+            background-color: blanchedalmond;
+        }
         .time{
             color: #555;
             padding: 0.2rem;
@@ -128,6 +135,7 @@
                                     <p><img src="<%=msg.content%>" /></p>
                                 <%}%>
                             </div>
+                            <span class="readCnt <%=msg.type%>" data-cnt="<%=(room.joiner.length-msg.read.length)==0 ? '' :room.joiner.length-msg.read.length%>"><%=(room.joiner.length-msg.read.length)==0 ? '' :room.joiner.length-msg.read.length%></span>
                             <span class="time <%=msg.type%>"><%=msg.createdAt.getHours()%>시 <%=msg.createdAt.getMinutes()%>분</span>  
                         <%}%>
                     <%})%>
@@ -135,7 +143,7 @@
                 <div style="display: flex;flex-direction:row;">
                     <input type="text" id="msg" data-room-id="<%=room._id%>"/>
                     <span style="font-size: 1.5rem;">😀</span>
-                    <span id="virtuals" style="font-size: 1.5rem;">🔗</span>
+                    <span id="virtuals" style="font-size: 1.5rem;">📁</span>
                     <input style="display:none;" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>"/>
                 </div>
             </div>
@@ -205,8 +213,9 @@
         };
         
         const roomId = document.querySelector("#msg").dataset.roomId;
+        // const cnt = document.querySelector("#readCnt").dataset.cnt;
         const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
-
+        const readCounts = document.querySelectorAll(".readCnt");
         ws.onmessage = function(rst) {
             let msg = JSON.parse(rst.data);
             if(msg.apply !== roomId){
@@ -216,12 +225,22 @@
             switch(msg.type) {
                 case "join" :
                     //console.log("success");
-                    console.log(msg);
+                    
                     let div = document.createElement("div");     
                     div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
                     div.classList.add("alarm");                    
                     document.querySelector("#log").appendChild(div);
-                  
+                    console.log(msg);
+                    
+
+                    for(let i=0; i<readCounts.length; i++){
+                        if (msg.message[i].readCnt>0){
+                            readCounts[i].innerHTML = `${msg.message[i].readCnt ?? '꿱'}`
+                        } else { 
+                            readCounts[i].innerHTML = ""
+                        }
+                    }
+                    
                     
                     let a="";
                     for(let i=0;i<msg.joiner.length;i++){
@@ -252,13 +271,22 @@
                     } else {
                         content = `<p><img src="${msg.data.content}" /></p>`;
                     }
+                    
                     let html = 
                     `<div class="chatBox ${msg.data.type}">
                         <small>${msg.data.talker}</small>
                         ${content}
                     </div>
+                    <span class="readCnt ${msg.data.type}">${msg.data.readCnt ?? '쀍'}</span>
                     <span class="time ${msg.data.type}"> ${hours}시 ${minutes}분</span>`;
-
+                    console.log(msg);
+                    // for(let i=0; i<readCounts.length; i++){
+                    //     if (msg.message[i].readCnt>0){
+                    //         readCounts[i].innerHTML = `${msg.message[i].readCnt ?? '꿱'}`
+                    //     } else { 
+                    //         readCounts[i].innerHTML = ""
+                    //     }
+                    // }
                     document.querySelector("#log").innerHTML += html;                                        
             }
             rebalanceHeight();

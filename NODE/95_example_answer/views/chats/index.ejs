@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        * {
+            font-family: "맑은 고딕";
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        .room {
+            border: 1px solid #d0ddbd;
+            padding: 10px 15px 10px 15px;
+            margin: 10px;
+        }
+
+        .room :hover {
+            cursor: pointer;
+        }
+
+        .btn {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .active {
+            
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs") %>
+
+        <div style="text-align: right;">
+            <button onclick="location.href='/chats/open'" class="btn">채팅방 개설</button>
+        </div>
+        <div style="color:white; background-color: darkgreen;">
+            <h3 style="padding: 0px 10px"># 채팅 ( <%=rooms.length %> )</h3>
+        </div>
+        <div style="text-align: left;">
+            <button onclick="location.href='/chats'" class="btn <%=locals.all ?? ''%>">전체 채팅방</button>
+            <button onclick="location.href='/chats?mode=joined'" class="btn <%=locals.joined ?? ''%>">참여중인 채팅방</button>
+        </div>
+        <div>
+            <% rooms.forEach( (one)=> { %>
+                <div onclick="location.href='/chats/room?_id=<%=one._id%>'" class="room">
+                    <div>
+                        <b>
+                            # <%=one.title %>    <span style="color: red;"><%=one.count ?? ''%></span>
+                        </b> <small>
+                            [<%=one.type %>]
+                        </small>
+                    </div>
+                    <div style="text-align: right; font-size: small;">
+                        방개설자 <%=one.owner %> (<%=one.joiner.length %> 명 참여중) | <%=one.createdAt.toLocaleDateString()%>
+                    </div>
+                </div>
+                <% }); %>
+
+        </div>
+        <script>
+            const ws = new WebSocket("ws://" + location.host + "/chats/sse");
+
+            ws.onmessage = function (recv) {
+                console.log(recv);
+                let message = JSON.parse(recv.data);
+                switch (message.type) {
+                    case "new":
+                        if (confirm("새로 개설된 채팅방이 있습니다.")) {
+                            location.reload();
+                        }
+                        break;
+                }
+            };
+
+        </script>
+</body>
+
+
+</html>

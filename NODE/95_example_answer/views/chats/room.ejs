@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        * {
+            font-family: "맑은 고딕";
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        .room {
+            border: 1px solid #d0ddbd;
+            padding: 10px 15px 10px 15px;
+        }
+
+        #log {
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: aliceblue;
+            border: 1px solid rgb(219, 230, 240);
+            padding: 4px;
+            margin: 1px 0px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .room :hover {
+            cursor: pointer;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        #msg {
+            padding: 10px;
+            border-radius: 25px;
+            border: 1px solid #d0ddbd;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 12pt;
+            flex-grow: 1;
+        }
+
+        #msg:focus {
+            outline: none;
+        }
+
+        .item {
+            padding: 5px 10px;
+            margin: 3px;
+        }
+
+        .mine {
+            background-color: khaki;
+            text-align: right;
+            max-width: 40vw;
+            align-self: flex-end;
+            border-radius: 3px;
+            border-radius: 15px;
+        }
+
+        .other {
+            background-color: white;
+            text-align: left;
+            max-width: 40vw;
+            border-radius: 15px;
+        }
+
+        #virtuals {
+            background-color: #d0ddbd;
+            border: none;
+            color: white;
+            padding: 10px;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 50%
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs") %>
+        <div style="text-align: right;">
+            <button onclick="exitCheck(event);" data-room-id="<%=room._id%>" class="btn">채팅방 나가기</button>
+        </div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column;">
+            <div class="room">
+                <div>
+                    <b># <%=room.title %></b>
+                    <small>
+                        [<%=room.type %>]
+                    </small>
+                </div>
+                <div style="text-align: right; font-size: smaller; margin-top: 2px;">
+                    방개설자 <%=room.owner %> | 참가자
+                        <span id="joiner">
+                            <%=room.joiner %>
+                        </span>
+                </div>
+            </div>
+            <div id="log">
+                <% messages.forEach(msg=>{%>
+                    <div class="<%=msg.type %>">
+                        <div class="item">
+                            <div style="font-size: smaller;">
+                                <%=msg.talker %>
+                            </div>
+                            <div>
+                                <%if(msg.data=="chat") {%>
+                                    <%=msg.content%>
+                                        <%}else {%>
+                                            <img src="<%=msg.content%>" />
+                                            <%} %>
+                            </div>
+                        </div>
+                    </div>
+                    <%})%>
+            </div>
+            <div style="padding : 2px 2px; display: flex">
+                <button id="virtuals">🍳</button>
+                <input type="text" id="msg" data-room-id="<%=room._id%>" />
+                <input style="display: none;" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>" />
+            </div>
+        </div>
+        <script>
+            function exitCheck(event) {
+                if(confirm("채팅방에서 나가시겠습니까?\n재입장을 하여도 이전 메시지는 확인할 수 없습니다.")){
+                    location.href='/chats/exit?_id='+event.target.dataset.roomId;
+                }
+            }
+
+            document.querySelector("#virtuals").onclick = (evt) => {
+                document.querySelector("#attach").dispatchEvent(new MouseEvent("click"));
+            };
+            document.querySelector("#attach").onchange = async (evt) => {
+                console.log(evt.target.files[0]);
+
+                // post + multipart/form-data 로 요청을 보내야 파일이 전송이 됨.
+                // multipart 용 바디는 FormData 라는 객체를 사용하면 된다.
+                const body = new FormData();
+                const roomId = evt.target.dataset.roomId;
+                body.append("attach", evt.target.files[0]);
+                body.append("roomId", roomId);
+
+                let response =
+                    await fetch("/chats/api/upload?roomId=" + roomId, {
+                        method: "post",
+                        body: body
+                    });
+                let json = response.json();
+                console.log(json);
+                evt.target.value = "";
+
+            };
+
+
+            document.querySelector("#msg").onchange = (evt) => {
+                if (evt.target.value.trim().length === 0) {
+                    return;
+                }
+                const headers = { "content-type": "application/json" };
+                fetch("/chats/api/message", {
+                    headers, method: "post", body: JSON.stringify({
+                        roomId: evt.target.dataset.roomId,
+                        content: evt.target.value
+                    })
+                }).then(response => {
+                    return response.json();
+                }).then(json => {
+                    console.log(json);
+                }).catch(err => {
+                    alert("서버 통신 일시 장애");
+                });
+
+                evt.target.value = "";
+            };
+
+
+            const roomId = document.querySelector("#msg").dataset.roomId;
+            const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
+
+            ws.onmessage = function (rst) {
+                let msg = JSON.parse(rst.data);
+                console.log(msg);
+                if (msg.apply !== roomId) {
+                    return;
+                }
+
+                switch (msg.type) {
+                    case "exit" : 
+                        document.querySelector("#joiner").innerHTML = msg.joiner;
+                        break;
+                    case "join":
+                        let div = document.createElement("div");
+                        div.appendChild(document.createTextNode(msg.id + "님이 입장하였습니다."));
+                        div.classList.add("alarm");
+                        document.querySelector("#log").appendChild(div);
+
+                        document.querySelector("#joiner").innerHTML = msg.joiner;
+                        break;
+                    case "new":
+                        console.log(msg.data);
+                        let content;
+                        if (msg.data.data == "chat") {
+                            content = msg.data.content;
+                        } else {
+                            content = `<img src="${msg.data.content}"/>`;
+                        }
+                        let html = `<div class="${msg.data.type}">
+                            <div class="item">
+                                <div style="font-size: smaller;">
+                                    ${msg.data.talker}
+                                </div>
+                                <div>
+                                    ${content}
+                                </div>
+                            </div>
+                        </div>`;
+                        document.querySelector("#log").innerHTML += html;
+                }
+                rebalanceHeight();
+                console.log(msg);
+            }
+
+            function rebalanceHeight() {
+                console.log(document.querySelector("#log").scrollHeight);
+                console.log(document.querySelector("#log").scrollTop);
+                document.querySelector("#log").scrollTop =
+                    document.querySelector("#log").scrollHeight;
+            }
+            rebalanceHeight();
+
+        </script>
+</body>
+
+
+</html>

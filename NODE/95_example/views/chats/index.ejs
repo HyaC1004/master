@@ -23,6 +23,7 @@
         .tab_menu{position:relative;}
         .tab_menu .list{overflow:hidden;}
         .tab_menu .list li{float:left; margin-right:14px;}
+        .tab_menu .list li a{background-color: antiquewhite;padding:0.3rem;border-radius: 1rem;}
         .tab_menu .list .btn{font-size:1.2rem;margin-bottom: 1rem;}
         .tab_menu .list .cont{
             display:none; 
@@ -31,7 +32,7 @@
             left: 0;
             width:100%;
         }
-        .tab_menu .list li.is_on .btn{font-weight:bold; color:rgb(255, 190, 106);}
+        .tab_menu .list li.is_on .btn{font-weight:bold; color:rgb(255, 190, 106);background-color: rgb(185, 101, 5);}
         .tab_menu .list li.is_on .cont{display:block;}     
         .room {
             width: 80%;
@@ -43,6 +44,38 @@
             cursor: pointer;
             border-radius: 1rem;
         }
+        .openBtn{
+            height: 2rem;
+            width: 10rem;
+            background-color: antiquewhite;
+            border: 0;
+            border-radius: 0.5rem;
+            font-weight: bolder;
+        }
+        .openBtn:hover{
+            background-color: rgb(255, 233, 108);
+        }
+        .unread{
+            width:1.5rem;            
+            height:1.5rem;
+            color:#fff;
+            padding:0 0.2rem;
+            border-radius: 30%; 
+            background-color:#e15151;
+        }
+        @media (max-width:520px) {
+            .tab_menu .list{
+                display: flex;
+                flex-direction: column;
+            }
+            .tab_menu .list li{
+                align-self: center;
+                margin-bottom:1rem;
+            }
+            .tab_menu .list .cont{
+                margin-top: 5rem;
+            }
+        }
     </style>
 </head>
 
@@ -50,7 +83,7 @@
     <%- include("../common/top.ejs") %>    
 
     <div style="text-align: right;">
-        <button onclick="location.href='/chats/open'">채팅방 개설</button>
+        <button class="openBtn" onclick="location.href='/chats/open'">채팅방 개설</button>
     </div>     
     <div class="tab_menu">
         <ul class="list">
@@ -70,10 +103,7 @@
                 <div id="tab2" class="cont">
                     <% joinRooms.forEach(data=>{ %>                        
                         <div class="room" onclick="location.href='/chats/room?_id=<%=data._id%>'">
-                            <h3><%=data.title%> <small><%=data.type%></small> </h3>
-                            <%if(!messages.read.includes(sessionId)){%>
-                                <span>❗</span>
-                            <%}%>
+                            <h3><%=data.title%> <small><%=data.type%></small> <span class="unread"><%=data.count%></span></h3>                             
                             <p style="text-align: right"><b>인원수:</b> <%=data.joiner.length%> / <b>개설자:</b> <%=data.owner%> / <b>개설일:</b> <%=data.createdAt.toLocaleString()%></p>
                         </div>
                     <% }) %>

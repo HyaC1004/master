@@ -5,8 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>황토방</title>
+    <title>Simple Chat</title>
     <style>
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            margin: 0;
+        }
         .signup input {
             padding: 5px;
             width: 97%;
@@ -31,10 +38,10 @@
     <%- include("../common/top.ejs"); %>
     <div style="width: 480px; margin: auto;">
         <div>
-            <h2>황토방에 로그인하기</h2>
+            <h2>로그인</h2>
         </div>
         <div class="signup">
-            <form action="/account/signin" method="post">
+            <form action="/account/login" method="post">
                 <div>
                     <input type="text" name="loginid" placeholder="사용자 아이디" />
                 </div>

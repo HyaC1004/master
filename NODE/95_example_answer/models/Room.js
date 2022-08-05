@@ -1,12 +1,14 @@
+
+
 const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema({
-    title: {type:String, required:true},
+    title: String,
     owner: String,
-    joiner: {type:[String], default:[]},
+    joiner: { type: [String], default: [] },
     type: String,
     password: String,
-    createdAt: {type:Date, default: Date.now}
+    createdAt: { type: Date, default: Date.now }
 },{
     toObject:{virtuals: true}
 });
@@ -17,4 +19,5 @@ roomSchema.virtual("key",{
     foreignField:"roomId"
 });
 
-module.exports = mongoose.model("room",roomSchema);
+
+module.exports = mongoose.model("room", roomSchema);

@@ -7,6 +7,8 @@ const messageSchema = new mongoose.Schema({
     data: {type: String, required: true},
     author: {type: [String], required: true},
     read: {type:[String],default:[]},
+    readCnt:{type:Number},
+    unread : [String],
     createdAt: {type: Date, default: Date.now}
 });
 
