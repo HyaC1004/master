@@ -100,11 +100,12 @@
 <body>
     <%- include("../common/top.ejs") %>
         <div style="text-align: right;">
-            <button onclick="exitCheck(event);" data-room-id="<%=room._id%>" class="btn">채팅방 나가기</button>
+            <button onclick="exitCheck(event);" data-room-id="<%=room._id%>" class="btn" style="align-self: flex-end;">채팅방 나가기</button>
         </div>
         <div style="flex-grow: 1; display: flex; flex-direction: column;">
-            <div class="room">
+            <div class="room" onclick="location.href='/chats/'">
                 <div>
+                    
                     <b># <%=room.title %></b>
                     <small>
                         [<%=room.type %>]
@@ -116,6 +117,7 @@
                             <%=room.joiner %>
                         </span>
                 </div>
+                
             </div>
             <div id="log">
                 <% messages.forEach(msg=>{%>

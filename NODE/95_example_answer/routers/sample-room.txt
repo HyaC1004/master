@@ -1,0 +1,76 @@
+{
+   
+    title: '',
+    owner: 'tester',
+    joiner: [
+      'tester', 'bmo',
+      '미니언', 'saansoo',
+      'totoro', 'master',
+      '티모',   '문도박사'
+    ],
+    type: 'public',
+    createdAt: 2022-08-04T04: 34: 41.130Z,
+    __v: 0,
+    key: [
+        {
+        _id: [ObjectId
+            ],
+        roomId: [ObjectId
+            ],
+        talker: 'master',
+        data: 'chat',
+        content: '아아아아아?',
+        readable: [Array
+            ],
+        unread: [Array
+            ],
+        createdAt: 2022-08-05T01: 34: 14.733Z,
+        __v: 0
+        },
+        {
+        _id: [ObjectId
+            ],
+        roomId: [ObjectId
+            ],
+        talker: 'master',
+        data: 'file',
+        content: '/room/62eb4c61afbabddde7c02786/85413cb60202d835870184118f326e21',
+        readable: [Array
+            ],
+        unread: [Array
+            ],
+        createdAt: 2022-08-05T01: 39: 22.044Z,
+        __v: 0
+        },
+        {
+        _id: [ObjectId
+            ],
+        roomId: [ObjectId
+            ],
+        talker: 'master',
+        data: 'chat',
+        content: 'ㄹㅇㄴㅁㄹㅇㄴㅁ',
+        readable: [Array
+            ],
+        unread: [Array
+            ],
+        createdAt: 2022-08-05T02: 06: 59.512Z,
+        __v: 0
+        },
+        {
+        _id: [ObjectId
+            ],
+        roomId: [ObjectId
+            ],
+        talker: '티모',
+        data: 'chat',
+        content: '"정찰대의 규율을 깔보지 마시길."',
+        readable: [Array
+            ],
+        unread: [Array
+            ],
+        createdAt: 2022-08-05T02: 10: 42.882Z,
+        __v: 0
+        }
+    ]
+}

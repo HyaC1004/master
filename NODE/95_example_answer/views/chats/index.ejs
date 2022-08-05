@@ -41,6 +41,19 @@
             background-color: #4CAF50;
             color: white;
         }
+        .count {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            text-align: center;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+        }
+        .heading {
+            border: 1px solid #d0ddbd;
+            padding: 5px 10px 5px 10px;
+        }
     </style>
 </head>
 
@@ -50,7 +63,7 @@
         <div style="text-align: right;">
             <button onclick="location.href='/chats/open'" class="btn">채팅방 개설</button>
         </div>
-        <div style="color:white; background-color: darkgreen;">
+        <div class="heading">
             <h3 style="padding: 0px 10px"># 채팅 ( <%=rooms.length %> )</h3>
         </div>
         <div style="text-align: left;">
@@ -59,13 +72,15 @@
         </div>
         <div>
             <% rooms.forEach( (one)=> { %>
-                <div onclick="location.href='/chats/room?_id=<%=one._id%>'" class="room">
-                    <div>
+                <div onclick="location.href='/chats/room?_id=<%=one._id%>'" class="room" id="<%=one._id%>">
+                    <div style="display: flex; align-items: center; gap : 5px">
                         <b>
-                            # <%=one.title %>    <span style="color: red;"><%=one.count ?? ''%></span>
-                        </b> <small>
-                            [<%=one.type %>]
-                        </small>
+                            # <%=one.title %>    
+                        </b>
+                        <%if(one.count) { %>
+                            <span id="cnt_<%=one._id%>" class="count"><%=one.count ?? ''%></span> 
+                        <%}%>
+                        <small>[<%=one.type %>]</small>
                     </div>
                     <div style="text-align: right; font-size: small;">
                         방개설자 <%=one.owner %> (<%=one.joiner.length %> 명 참여중) | <%=one.createdAt.toLocaleDateString()%>
@@ -86,8 +101,19 @@
                             location.reload();
                         }
                         break;
+                    case "added" :
+                        checkCount(message.roomId);
+                        break;
                 }
             };
+
+            async function checkCount(roomId) {
+                let response = await fetch("/chats/api/checkcount?roomId="+roomId);
+                let json = await response.json();
+                if(json.success) {
+                    document.querySelector("#cnt_"+roomId).innerHTML = json.count;
+                }
+            }
 
         </script>
 </body>

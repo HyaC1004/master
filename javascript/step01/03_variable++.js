@@ -4,7 +4,7 @@
 */
 
 console.log(count);
-var count=10;
-//let count = 10;
+// var count=10;
+let count = 10;
 
 console.log(count);

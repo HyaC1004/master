@@ -9,7 +9,7 @@ const session_secret = "P@ssw0rd";
 const expressWs = require("express-ws");
 
 const app = express();
-const wsInstance = expressWs(app);
+expressWs(app);
 
 mongoose.connect(uri, {dbName : "example"});
   
@@ -24,7 +24,6 @@ app.use(session({ secret: session_secret, resave: true, saveUninitialized: true 
 
 app.use("/account", require("./routers/accountRoute"));
 app.use("/chats", require("./routers/chatsRoute.js"));
-
 
 app.use((err, req, resp, next) => {
     resp.status(500).send(err.message);
