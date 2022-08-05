@@ -215,7 +215,7 @@
         const roomId = document.querySelector("#msg").dataset.roomId;
         // const cnt = document.querySelector("#readCnt").dataset.cnt;
         const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
-        const readCounts = document.querySelectorAll(".readCnt");
+        
         ws.onmessage = function(rst) {
             let msg = JSON.parse(rst.data);
             if(msg.apply !== roomId){
@@ -232,7 +232,7 @@
                     document.querySelector("#log").appendChild(div);
                     console.log(msg);
                     
-
+                    let readCounts = document.querySelectorAll(".readCnt");
                     for(let i=0; i<readCounts.length; i++){
                         if (msg.message[i].readCnt>0){
                             readCounts[i].innerHTML = `${msg.message[i].readCnt ?? '꿱'}`
@@ -280,13 +280,16 @@
                     <span class="readCnt ${msg.data.type}">${msg.data.readCnt ?? '쀍'}</span>
                     <span class="time ${msg.data.type}"> ${hours}시 ${minutes}분</span>`;
                     console.log(msg);
-                    // for(let i=0; i<readCounts.length; i++){
-                    //     if (msg.message[i].readCnt>0){
-                    //         readCounts[i].innerHTML = `${msg.message[i].readCnt ?? '꿱'}`
-                    //     } else { 
-                    //         readCounts[i].innerHTML = ""
-                    //     }
-                    // }
+                    let newReadCnts = document.querySelectorAll(".readCnt");
+                    console.log("길이:",newReadCnts.length);
+                    for(let i=0; i<newReadCnts.length; i++){
+                        if (msg.message[i].unread.length>0){
+                            console.log(msg.message[i].unread.length);
+                            newReadCnts[i].innerHTML = `${msg.message[i].unread.length ?? '꿱'}`
+                        } else { 
+                            newReadCnts[i].innerHTML = ""
+                        }
+                    }
                     document.querySelector("#log").innerHTML += html;                                        
             }
             rebalanceHeight();

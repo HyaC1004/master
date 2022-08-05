@@ -6,6 +6,7 @@ const fs = require("fs");
 
 const Room = require("../models/Room");
 const Message = require("../models/Message");
+const { KeyObject } = require("crypto");
 
 // multer config
 const upload = multer({
@@ -107,10 +108,10 @@ router.get("/room",async(req,resp)=>{
         
     msg1.forEach(async(elm)=>{
         if(elm.read.includes(req.session.userId)){
-            console.log(elm.read , elm.readCnt);
+            //console.log(elm.read , elm.readCnt);
             return;
         }else{
-            console.log(elm.read , elm.readCnt);
+            //console.log(elm.read , elm.readCnt);
             let newCnt = elm.readCnt-1>0 ? elm.readCnt-1 : 0 ;
             await Message.updateOne({_id : elm._id},{$set:{readCnt:newCnt}});
         }    
@@ -169,22 +170,17 @@ router.post("/api/message",async (req,resp)=>{
                 return false;
             }
         });
-        // const msg1 = await Message.find({roomId:req.body.roomId}).sort("createdAt").lean();    
+        const msg1 = await Message.find({roomId:req.body.roomId}).sort("createdAt").lean();    
         
-        // msg1.forEach(async(elm)=>{
-        //     if(elm.read.includes(req.session.userId)){
-        //         console.log(elm.read , elm.readCnt);
-        //         return;
-        //     }else{
-        //         console.log(elm.read , elm.readCnt);
-        //         let newCnt = elm.readCnt-1>0 ? elm.readCnt-1 : 0 ;
-        //         await Message.updateOne({_id : elm._id},{$set:{readCnt:newCnt}});
-        //     }    
-        // });
+        msg1.forEach(async(elm)=>{
+            if(elm.unread.includes(req.session.userId)){
+                await Message.updateOne({_id : elm._id},{$pull:{unread:req.session.userId}});
+            }    
+        });
         const message = await Message.find({roomId:req.body.roomId}).sort("createdAt").lean();
         const author = await Room.findOne({_id:req.body.roomId}).select("joiner -_id").lean();        
         let result = await Message.create({ ...req.body, unread,read:req.session.userId, author:author.joiner, readCnt:author.joiner.length-1, talker: req.session.userId, data:"chat" });
-        
+        // console.log(roomWss);
        
 
         // console.log("author: ", author);        
@@ -194,7 +190,7 @@ router.post("/api/message",async (req,resp)=>{
        
         roomWss.forEach((ws, ownerId )=>{
             result.type = result.talker === ownerId ? "mine" : "other";
-            ws.send(JSON.stringify({apply : req.body.roomId, type:"new", data : result}));
+            ws.send(JSON.stringify({apply : req.body.roomId, type:"new", data : result, message}));
         });
         resp.json({ "success": true, "result": result });
     }catch(err){
@@ -210,6 +206,14 @@ router.post("/api/upload", upload.single("attach"), async(req,resp)=>{
         const room = await Room.findById(req.body.roomId).lean();
         const unread = [...room.joiner];
         unread.splice(unread.indexOf(req.session.userId), 1);
+        const msg1 = await Message.find({roomId:req.body.roomId}).sort("createdAt").lean();    
+        
+        msg1.forEach(async(elm)=>{
+            if(elm.unread.includes(req.session.userId)){
+                await Message.updateOne({_id : elm._id},{$pull:{unread:req.session.userId}});
+            }    
+        });
+        const message = await Message.find({roomId:req.body.roomId}).sort("createdAt").lean();
         const author = await Room.findOne({_id:req.body.roomId}).select("joiner -_id").lean();
         let doc = {
             ...req.body,
@@ -226,7 +230,7 @@ router.post("/api/upload", upload.single("attach"), async(req,resp)=>{
        
         roomWss.forEach((ws, ownerId )=>{
             result.type = result.talker === ownerId ? "mine" : "other";
-            ws.send(JSON.stringify({apply : req.body.roomId, type:"new", data : result}));
+            ws.send(JSON.stringify({apply : req.body.roomId, type:"new", data : result, message}));
         });
         resp.json({ "success": true});
     }catch(err){
