@@ -1,0 +1,14 @@
+
+.present {
+    width: 200px;
+    margin: auto;
+    text-align: center;
+}
+
+.outer {
+    font-size: 100px;
+}
+
+button {
+    margin: 5px;
+}

@@ -27,8 +27,8 @@ Bravo.prototype = common;
 Alpha.prototype.go = function() {
     console.log("Gogogo");
 }
-//console.log(Alpha.prototype);
-//console.log(Bravo.prototype);
+// console.log(Alpha.prototype);
+// console.log(Bravo.prototype);
 
 const a = new Alpha();
 const b = new Bravo();

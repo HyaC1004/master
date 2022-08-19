@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <title>Study React</title>
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <input type="text" id="one" value="!!!"/>
+  <input type="text" id="two"/>
+  <input type="text" id="three"/>
+  <script>
+  function showAlert(evt) {
+      console.log(this);
+      alert(this.value);
+  }
+  // console.log(showAlert);
+  const  showAlert2 = showAlert.bind(document.querySelector("#one"));
+  // alert(showAlert === showAlert2);
+  // showAlert(null);
+  // showAlert2();
+   /*
+    const showAlert = (evt) =>{
+      console.log(this);
+      alert(this.value);
+    };
+    */
+   document.querySelector("#one").onchange = () =>{
+      console.log(this);
+      alert(this.value);
+   };
+
+    document.querySelector("#two").onchange = showAlert;
+    document.querySelector("#three").onchange = showAlert;
+
+  </script>
+</body>
+
+
+
+</html>

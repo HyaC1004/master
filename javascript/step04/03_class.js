@@ -24,8 +24,8 @@ console.log(r.position());
 //console.log(r.#x);
 
 /*
-    privat property를 왜 만들어놨냐
+    private property를 왜 만들어놨냐
     외부에서 접근 불가능하고 변경도 불가능하게 처리해준것
     의도한대로 값을 가질수 있게 설정함수를 지정할수있다.
-    공개 비굥개의 차이
+    공개 비공개의 차이
 */
