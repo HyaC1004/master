@@ -1,0 +1,34 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.exchangeForm {
+    border: 1px solid lightgray;
+    width: 300px;
+    font-size: 1.1rem;
+    padding: 10px 5px;
+    margin-bottom: 20px;
+}
+.exchangeForm select , .exchangeForm input {
+    width: 100%;
+    border: none;
+    font-size : 1.1rem;
+    padding: 3px;
+}
+.exchangeForm input {
+    text-align: right;    
+}
+.exchangeForm select:focus , .exchangeForm input:focus {
+    outline: none;
+}
+
+.exchange-inner {
+    text-align: right;
+    margin-right: 10px;
+    border-top: 1px solid lightgray;;
+}
+.exchange-inner span{
+    color: gray;
+}

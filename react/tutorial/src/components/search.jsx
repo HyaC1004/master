@@ -9,7 +9,8 @@ class Search extends Component {
     }
     handleSearch = (evt) =>{
         evt.preventDefault();
-        console.log(this.search.current.value);
+        //console.log(this.search.current.value);
+        this.props.onSearch(this.search.current.value);
     }
     render() { 
         return (

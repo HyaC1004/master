@@ -1,14 +1,9 @@
-import "./index.css";
-
 import React from "react";
-import ReactDOM from "react-dom/client";
-
-import Clicker from "./components/clicker";
-import RandBox from "./components/randomBox";
-import Buttons from "./components/buttons";
-import List from "./components/list";
-import Contents from "./components/contents";
+import ReactDOM  from "react-dom/client";
+//import Exchange from "./components/exchange";
+import Exchanger from "./components/exchanger";
+import "./exchange.css";
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 
-
-root.render(<Contents />);
+//kr, us, jp, cn
+root.render(<Exchanger />);

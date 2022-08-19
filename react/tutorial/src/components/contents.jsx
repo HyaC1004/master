@@ -15,7 +15,7 @@ class Contents extends Component {
             { name : "이혜주", hp : "010-3291-4687", email : "kr.yoonju@gmail.com" , grade : 8 },
             { name : "이솔", hp : "010-8683-3176", email : "kr.yoonju@gmail.com" , grade : 8 },
         ];
-        this.state = { datas }; 
+        this.state = { datas: datas, backup: datas }; 
     }
 
     handleCreate = (name, hp, email) => {
@@ -45,12 +45,13 @@ class Contents extends Component {
     }
 
     handleSearch = (word) => {
-        this.state.datas.filter( (one)=>{
-            if(one.name.includes(word) || one.hp.replace("-","").includes(word)) {
+        const filtered = this.state.datas.filter( (one)=>{
+            if(one.name.includes(word) || one.hp.replaceAll("-","").includes(word)) {
                 return true;
             }
             return false;
-        })  
+        });
+        this.setState({filtered:filtered});
     }
 
     render() {
@@ -64,7 +65,7 @@ class Contents extends Component {
                 <hr/>
                 <CreateNameCard onCreate={this.handleCreate} />
                 <hr/>
-                <Search />
+                <Search onSearch={this.handleSearch}/>
                 <hr/>
                 <div>
                     {cards}
