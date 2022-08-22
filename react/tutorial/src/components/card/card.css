@@ -1,0 +1,12 @@
+.card{
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    background-color: pink;
+    border-radius: 1rem;
+}
+
+.danger {
+    color: green;
+    font-size: 30px;
+}

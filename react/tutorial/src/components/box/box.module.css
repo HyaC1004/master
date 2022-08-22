@@ -1,0 +1,14 @@
+.box{
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 2rem;
+}
+.box:hover{
+    background-color: darkgray;
+}
+.danger{
+    color: red;
+}

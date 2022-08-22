@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 
 export default class searchBar extends Component {
     constructor(props){
-        super(props);
-        this.handleFilterChange = this.handleFilterChange.bind(this);
-        this.handleInStockChange = this.handleInStockChange.bind(this);
+        super(props);       
     }
 
     handleFilterChange = (evt)=>{
