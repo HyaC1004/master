@@ -33,6 +33,11 @@
 }
 .submitBox{
     display: flex;
+    
+}
+.submitBox select{
+    margin-right: 0.2rem;
+    
 }
 .search-form button {
     width: 60px;
