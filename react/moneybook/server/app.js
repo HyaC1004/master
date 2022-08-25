@@ -21,3 +21,13 @@ app.use("/api", api);
 app.listen(8080, ()=>{
     console.log("[server] start.");
 });
+
+
+/*
+    cors
+    morgan
+    express
+    mongoose
+    mongodb
+    dotenv
+*/
