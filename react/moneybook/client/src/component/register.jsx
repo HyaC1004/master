@@ -1,13 +1,13 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RegisterApi from "../service/registerApi";
 
-function Register() {
+function Register({accountAPI, setLogon}) {
     const email = useRef();
     const password = useRef();
     const username = useRef();
     const gender = useRef();    
     const birth = useRef();
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
     const checkEmail = (email)=>{
@@ -21,11 +21,19 @@ function Register() {
     }
     const handleSubmit = (event) =>{
         event.preventDefault();
-        RegisterApi
-            .register(email.current.value,password.current.value,username.current.value,gender.current.value,birth.current.value)
-            .then(ret =>{
-                console.log(ret.result);
-                return ret.result === true ? navigate("/") : navigate("/register");
+        accountAPI.register(email.current.value,password.current.value,username.current.value,gender.current.value,birth.current.value)
+            .then(recv =>{
+                console.log(recv);
+                if(recv.result){
+                    setLogon(recv.message.email);
+                    localStorage.setItem("token", recv.token);
+                    console.log(localStorage.token); 
+                    navigate("/");
+                    setError(false);
+                }else{
+                    setError(true);
+                }
+                
             })
     }
 
@@ -38,7 +46,7 @@ function Register() {
             <label htmlFor="floatingInput">Email address</label>
         </div>        
         <div className="form-floating mt-3 mb-3">
-        <input type="text" className="form-control" id="floatingPassword" placeholder="Enter password" ref={password} required />
+        <input type="password" className="form-control" id="floatingPassword" placeholder="Enter password" ref={password} required />
             <label htmlFor="floatingPassword">Password</label>
         </div>
         <div className="form-floating mt-3 mb-3">
@@ -56,7 +64,7 @@ function Register() {
             <input type="date" className="form-control" id="floatingBirth" required ref={birth} />
             <label htmlFor="floatingBirth">Birth</label>
         </div>
-        <button type="submit" className="btn btn-primary " style={{width:"100%"}}>Submit</button>
+        <button type="submit" className="btn btn-dark " style={{width:"100%"}}>Submit</button>
     </form>
     </>);
 }

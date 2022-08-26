@@ -1,21 +1,28 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import authApi from "../service/authApi";
-import AccountAPI from "../service/accountAPI";
 
-function Login() {
+function Login({accountAPI, setLogon}) {
     const email = useRef();
     const password = useRef();
-
-
     const navigate = useNavigate();
+    const [error, setError] = useState(false);
+
+
     const handleLogin = (event) =>{
         event.preventDefault();
-        AccountAPI
-            .auth(email.current.value,password.current.value)
-            .then(ret =>{
-                console.log(ret.result, ret.token);
-                return ret.result===true ? navigate("/") : alert("아이디나 비밀번호가 틀렸습니다.");
+        accountAPI.auth(email.current.value, password.current.value)
+            .then(recv =>{
+                console.log(recv);
+                if(recv.result){
+                    setLogon(recv.rst.email);
+                    localStorage.setItem("token", recv.token);
+                    console.log(localStorage.token); 
+                    navigate("/");
+                    setError(false);
+                }else{
+                    setError(true);
+                }
+                
             })
     }
     return (<>
@@ -30,7 +37,7 @@ function Login() {
             <input type="password" className="form-control" id="floatingPassword" placeholder="Enter password" ref={password} required />
             <label htmlFor="floatingPassword">Password</label>
         </div>
-        <button type="submit" className="btn btn-primary " style={{width:"100%"}}>Submit</button>
+        <button type="submit" className="btn btn-dark " style={{width:"100%"}}>Submit</button>
     </form>
     </>);
 }

@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 
 const expendSchema = new mongoose.Schema({
     userId:{type:mongoose.SchemaTypes.ObjectId, ref:"account",required:true},
-    date: {type: Date},
-    dateString: String,
+    date: String,
     purpose: {type: String, required: true},
-    pay: {type: String, required:true},
-    price:Number,
+    cashAmt:String,
+    cardAmt:String,
     category:{type:String},
     tag:{type:String},
     createdAt:{type: Date, default: Date.now}

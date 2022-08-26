@@ -1,6 +1,6 @@
 class AccountAPI {
-    constructor() {
-        this.baseURL="http://127.0.0.1:8080";
+    constructor(baseURL) {
+        this.baseURL=baseURL;
         this.getOption = {
             method: "get"
         }
@@ -24,6 +24,14 @@ class AccountAPI {
             body: JSON.stringify({email, password, name, gender, birth})
         });
         return await response.json();
+    }
+
+    async valid(token) {
+        const respone = await fetch(this.baseURL+"/api/account/valid",{
+            ...this.postOption,
+            body: JSON.stringify({token})
+        });
+        return await respone.json();
     }
 }
 

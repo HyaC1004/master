@@ -8,6 +8,17 @@ dotenv.config();
 
 const router = express.Router();
 
+router.post("/valid", async(req, resp)=>{
+    console.log(req.body);
+    try{
+        const data = jwt.verify(req.body.token, process.env.SECRET_KEY);
+        console.log(data)
+        resp.status(200).json({result:true, owner: data.email});
+    }catch(e){
+        resp.status(401).json({result:false, message: e.message});
+    }
+});
+
 router.post("/register", async(req, resp)=>{
     const pw = await bcrypt.hash(req.body.password,10);
     try{
@@ -24,7 +35,7 @@ router.post("/auth", async(req, resp)=>{
         const check = await bcrypt.compare(req.body.password,rst.password);
         if(rst && check){
             const token = jwt.sign({email: rst.email}, process.env.SECRET_KEY,{expiresIn:60*60*12 });
-            resp.status(200).json({result:true, message: rst, token});
+            resp.status(200).json({result:true, rst, token});
         }else{
             throw new Error("invalid email / password")
         }
