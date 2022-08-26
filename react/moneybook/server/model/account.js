@@ -5,7 +5,7 @@ const accountSchema = new mongoose.Schema({
     password : String,
     name : String,
     gender : String,
-    birth : Number
+    birth : String
 },{
     toObject:{virtuals: true}
 });

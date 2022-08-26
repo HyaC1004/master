@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import authApi from "../api/authApi";
+import authApi from "../service/authApi";
+import AccountAPI from "../service/accountAPI";
 
 function Login() {
     const email = useRef();
@@ -10,8 +11,8 @@ function Login() {
     const navigate = useNavigate();
     const handleLogin = (event) =>{
         event.preventDefault();
-        authApi
-            .login(email.current.value,password.current.value)
+        AccountAPI
+            .auth(email.current.value,password.current.value)
             .then(ret =>{
                 console.log(ret.result, ret.token);
                 return ret.result===true ? navigate("/") : alert("아이디나 비밀번호가 틀렸습니다.");
