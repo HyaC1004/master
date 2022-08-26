@@ -14,7 +14,7 @@ function Index() {
         <div className="card-body">
         <h4 className="card-title">John Doe</h4>
         <p className="card-text">Some example text.</p>
-        <a onClick={moveLogin} className="btn btn-primary">See Profile</a>
+        <b onClick={moveLogin} className="btn btn-primary">See Profile</b>
         </div>
     </div>
     );

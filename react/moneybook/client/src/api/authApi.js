@@ -4,7 +4,7 @@ class AuthAPI {
     }
 
     async login(email, password) {
-        const response = await fetch(`${this.baseURL}/api/login`, {
+        const response = await fetch(`${this.baseURL}/api/account/auth`, {
             method : "POST",
             body : JSON.stringify({email, password}),
             headers: { 'Content-Type': 'application/json' }

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가계부</title>
+    <style>
+        #wrap{margin: auto;width: 80%;}
+        table{
+            border-bottom: 2px solid #373737;
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            height: 45px;
+            padding: 0 12px;
+            vertical-align: middle;
+            border-left: 1px solid #d9d9d9;
+        }        
+        table th:last-child, table td:last-child{
+            border-right: 1px solid #d9d9d9;
+        }
+        thead th {
+            border-top: 2px solid #5076db;
+            background: #eee;
+            color: #212121;
+            font-weight: normal;
+        }
+        tbody tr:first-child td {
+            border-top: 2px solid #373737;
+        }
+        tbody td {
+            border-top: 1px solid #d9d9d9;
+            color: #666;
+        }
+        tbody td span {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            word-break: break-all;
+            text-overflow: ellipsis;
+        }        
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div>
+            <button class="exitBtn" onclick="location.href='/book/delete'">소비내역 삭제</button>                       
+        </div>
+        <div>
+            <h2>소비내역 입력</h2>
+            <form action="/book/accountbook" method="post">
+                <input type="hidden" name="userId" value="<%=id%>">
+                <table style="border-collapse: 10;">
+                    <thead>
+                        <tr>
+                            <th style="width:15%">날짜</th>
+                            <th style="width:30%">사용내역</th>
+                            <th style="width:18%">결제수단</th>
+                            <th style="width:12%">금액</th>
+                            <th style="width:15%">분류</th>
+                            <th style="width:10%">태그</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="date" name="date" id="currentDate" style="width: 100%;" /></td>
+                            <td><input type="text" name="purpose" style="width: 100%;"/></td>
+                            <td style="width: 100px;">
+                                <input type="radio" name="pay" value="cash" checked/>현금
+                                <input type="radio" name="pay" value="card" />카드
+                            </td>                        
+                            <td><input type="number" name="price" placeholder="0" style="width: 100%;"/></td>
+                            <td><select name="category">
+                                <option value="미분류">미분류</option>   
+                                <option value="식비">식비</option>
+                                <option value="주거/통신">주거/통신</option>
+                                <option value="생활용품">생활용품</option>
+                                <option value="의복/미용">의복/미용</option>
+                                <option value="건강/문화">건강/문화</option>
+                                <option value="교통/차량">교통/차량</option>
+                                <option value="용돈/기타">용돈/기타</option>
+                            </select></td>
+                            <td><input type="text" name="tag" style="width: 100%;"></td>
+                        </tr>  
+                        
+                    </tbody>                  
+                </table>
+                <button type="submit">저장하기</button>
+            </form>
+        </div>
+
+        <div>
+            <h2>소비내역 조회</h2>
+            <form action="/book/accountbook">
+                <div>
+                    <p>카테고리</p>
+                    <% categories.forEach(data =>{%>                            
+                        <input type="checkbox" name="category" 
+                        value="<%=data%>" id="<%=data%>" <%= locals.category?.includes(data)? 'checked': ""%>/>
+                        <label for="<%=data%>">
+                          <%=data%>
+                        </label>
+                    <%})%>   
+                </div>
+                <div>
+                    <p>소비유형</p>  
+                    <% payments.forEach(data =>{%>                            
+                        <input type="radio" name="pay" 
+                        value="<%=data%>" id="<%=data%>" <%= locals.pay?.includes(data)? 'checked': ""%>/>
+                        <label for="<%=data%>">
+                            <%if(data=="cash"){%>
+                                현금        
+                            <%}else{%>
+                                카드
+                            <%}%>
+                        </label>
+                    <%})%>                  
+                </div>
+                <div>
+                    <p>조회기간</p>
+                    <input type="date" name="firstDate" id="first">~<input type="date" name="lastDate" id="last">
+                </div>
+                <button type="submit" id="search">조회</button>
+                <button type="reset">초기화</button>
+            </form>
+            <hr />
+            <div style="width: 100%;margin:auto;height: auto;">                
+                <table>
+                    <thead>
+                        <tr class="top-area">
+                            <th>날짜</th>
+                            <th>사용내역</th>
+                            <th>현금</th>
+                            <th>카드</th>
+                            <th>분류</th>
+                            <th>태그</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% array.forEach(data=>{%>
+                            <tr class="list-area">                                
+                                <td><span><%= data.dateString%></span></td>
+                                <td><span><%= data.purpose %></span></td>
+                                <%if(data.pay == "cash"){%>
+                                    <td><span><%= data.price %></span></td>
+                                    <td><span>0</span></td>
+                                <%}else{%>
+                                    <td><span>0</span></td>
+                                    <td><span><%= data.price %></span></td>                                    
+                                <%}%>                                
+                                <td><span><%= data.category %></span></td>
+                                <td><span><%= data.tag %></span></td>
+                            </tr>
+                        <% }); %>
+                        
+                    </tbody>
+                    <tfoot style="border-top: 1px solid">
+                        <tr>
+                            <td></td>
+                            <td style="border-left:0px"></td>
+                            <td><%=sumCash%></td>
+                            <td><%=sumCard%></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>                       
+        </div>
+    </div>
+    <script>
+       document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
+       document.getElementById('first').value = new Date().toISOString().substring(0, 8)+"01";
+       let month= new Date().getMonth();
+       let year= new Date().getFullYear();
+       
+       console.log(new Date(year,month,0).getDate())
+       document.getElementById('last').value = new Date().toISOString().substring(0,8)+new Date(year,month,0).getDate();
+    </script>
+</body>
+</html>

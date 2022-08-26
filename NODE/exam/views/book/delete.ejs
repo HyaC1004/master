@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소비내역 삭제</title>
+    <style>
+        #wrap{margin: auto;width: 80%;}
+        table{
+            border-bottom: 2px solid #373737;
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            height: 45px;
+            padding: 0 12px;
+            vertical-align: middle;
+            border-left: 1px solid #d9d9d9;
+        }        
+        table th:last-child, table td:last-child{
+            border-right: 1px solid #d9d9d9;
+        }
+        thead th {
+            border-top: 2px solid #5076db;
+            background: #eee;
+            color: #212121;
+            font-weight: normal;
+        }
+        tbody tr:first-child td {
+            border-top: 2px solid #373737;
+        }
+        tbody td {
+            border-top: 1px solid #d9d9d9;
+            color: #666;
+        }
+        tbody td span {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            word-break: break-all;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">    
+        <div>
+            <button class="exitBtn" onclick="location.href='/book/accountbook'">소비내역 조회</button>           
+        </div>
+        <h2>소비내역 삭제</h2>
+        <form action="/book/delete">            
+            <div style="margin-bottom:2rem">
+                <p>조회기간</p>
+                <input type="month" name="month" id="currentDate" value="2022-08" style="margin-right: 1rem;">
+                <button type="submit" id="search">조회</button>
+            </div>            
+        </form>    
+        <div style="width: 100%;margin:auto;height: auto;">    
+            <form action="/book/delete" method="post">          
+                <table>
+                    <thead>
+                        <tr class="top-area">
+                            <th style="width: 5%;"><input type="checkbox"></th>
+                            <th>날짜</th>
+                            <th>사용내역</th>
+                            <th>현금</th>
+                            <th>카드</th>
+                            <th>분류</th>
+                            <th>태그</th>
+                        </tr>
+                    </thead>
+                    
+                        <tbody>                        
+                            <% array.forEach(data=>{%>
+                                <tr class="list-area">
+                                    <td><input type="checkbox" name="_id" value="<%=data._id%>"></td>
+                                    <td><span><%= data.date%></span></td>
+                                    <td><span><%= data.purpose %></span></td>
+                                    <%if(data.pay == "cash"){%>
+                                        <td><span><%= data.price %></span></td>
+                                        <td><span>0</span></td>
+                                    <%}else{%>
+                                        <td><span>0</span></td>
+                                        <td><span><%= data.price %></span></td>                                    
+                                    <%}%>                                
+                                    <td><span><%= data.category %></span></td>
+                                    <td><span><%= data.tag %></span></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                        
+                    </form>
+                </table>
+                <div style="margin-top: 1rem;">
+                    <button type="submit">삭제</button>
+                </div> 
+            </form>  
+        </div>
+    </div>
+    <script>
+        document.getElementById('currentDate').value = new Date().toISOString().substring(0,7);        
+        
+    </script>
+</body>
+</html>
