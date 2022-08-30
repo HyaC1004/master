@@ -13,12 +13,16 @@ import History from './component/history';
 import AccountAPI from './service/accountAPI';
 import HistoryAPI from './service/historyAPI';
 
-const accountAPI = new AccountAPI("http://192.168.4.69:8080");
-const historyAPI = new HistoryAPI("http://192.168.4.69:8080");
+// const accountAPI = new AccountAPI("http://192.168.4.69:8080");
+// const historyAPI = new HistoryAPI("http://192.168.4.69:8080");
+
+const accountAPI = new AccountAPI("http://15.165.15.168:8080");
+const historyAPI = new HistoryAPI("http://15.165.15.168:8080");
 
 function App() {
-  const[logon,setLogon] = useState(false);
   
+  const[logon,setLogon] = useState(false);
+  //console.log(logon)
   useEffect(()=>{
     if(localStorage.getItem("token")){
       accountAPI.valid(localStorage.getItem("token"))
@@ -37,8 +41,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/write" element={<Write />} />
-          <Route path="/history" element={<History/>} />
-          <Route path='/login' element={<Login accountAPI={accountAPI} setLogon={setLogon}/>}/>
+          <Route path="/history" element={<History historyAPI={historyAPI} logon={logon}/>} />
+          <Route path='/login' element={<Login accountAPI={accountAPI} logon={logon} setLogon={setLogon}/>}/>
           <Route path='/register' element={<Register accountAPI={accountAPI} setLogon={setLogon}/>}/>
         </Routes>
       </BrowserRouter>

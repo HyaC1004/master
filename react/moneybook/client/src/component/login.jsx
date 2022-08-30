@@ -1,26 +1,28 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({accountAPI, setLogon}) {
+function Login({accountAPI, setLogon, logon}) {
     const email = useRef();
     const password = useRef();
     const navigate = useNavigate();
-    const [error, setError] = useState(false);
+    //const [error, setError] = useState(false);
+    useEffect(()=>{
 
+    },[]);
 
     const handleLogin = (event) =>{
         event.preventDefault();
         accountAPI.auth(email.current.value, password.current.value)
             .then(recv =>{
-                console.log(recv);
+                //console.log(recv);
                 if(recv.result){
                     setLogon(recv.rst.email);
                     localStorage.setItem("token", recv.token);
-                    console.log(localStorage.token); 
+                    //console.log(localStorage.token); 
                     navigate("/");
-                    setError(false);
+                    //setError(false);
                 }else{
-                    setError(true);
+                    //setError(true);
                 }
                 
             })

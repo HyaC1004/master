@@ -9,10 +9,10 @@ dotenv.config();
 const router = express.Router();
 
 router.post("/valid", async(req, resp)=>{
-    console.log(req.body);
+    //console.log(req.body);
     try{
         const data = jwt.verify(req.body.token, process.env.SECRET_KEY);
-        console.log(data)
+        //console.log(data)
         resp.status(200).json({result:true, owner: data.email});
     }catch(e){
         resp.status(401).json({result:false, message: e.message});

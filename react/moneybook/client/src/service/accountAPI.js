@@ -27,11 +27,11 @@ class AccountAPI {
     }
 
     async valid(token) {
-        const respone = await fetch(this.baseURL+"/api/account/valid",{
+        const response = await fetch(this.baseURL+"/api/account/valid",{
             ...this.postOption,
             body: JSON.stringify({token})
         });
-        return await respone.json();
+        return await response.json();
     }
 }
 
