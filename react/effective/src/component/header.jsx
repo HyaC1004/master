@@ -1,0 +1,29 @@
+import { useMemo } from "react";
+
+function dayDisplay() {
+    const today = new Date();
+    const weeks = new Array('일요일','월요일','화요일','수요일','목요일','금요일','토요일');
+    
+    const year = today.getFullYear();
+    const month = today.getMonth()+1;
+    const date = today.getDate();
+    console.log("dayDisplay... ")
+    return {date:`${year}년 ${month}월 ${date}일`, day:weeks[today.getDay()]};
+}
+
+function Header({counts}) {
+    const txt = useMemo(()=>{
+        return dayDisplay();
+    },[])
+    //const txt = dayDisplay();
+    return ( <div>
+        <h1>{txt.date}</h1>
+        <h3 style={{color:"gray"}}>{txt.day}</h3>
+        <div>
+            남은 목표 : {counts}
+        </div>
+        <hr />
+    </div> );
+}
+
+export default Header;

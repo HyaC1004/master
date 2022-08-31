@@ -1,0 +1,43 @@
+.App {
+  text-align: center;
+  margin: auto;
+  width: 90%;
+  background-color: #c5faee;
+  border-radius: 2rem;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+}
+.bodyContents{
+  min-height: 40vh;
+}
+.todoBox{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+.todoBox button{
+  border: 0;
+  color:red;
+  background-color: #c5faee;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.todoBox button:hover{
+  background-color: rgb(191, 236, 205);
+}
+.footerBox input{
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+.footerBox button{
+  font-size: 1.2rem; 
+  font-weight: bolder; 
+  padding: 0.2rem 0.5rem;
+  background-color: #fff;
+  border: 0;
+}
+.footerBox button:hover{
+  background-color: rgb(111, 191, 223);
+}
