@@ -1,5 +1,6 @@
 
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+
 import './App.css';
 import Body from './component/body';
 import Footer from './component/footer';
@@ -30,6 +31,7 @@ function todoReducer(state, action) {
       return filtered;
   }
 }
+export const Store = React.createContext(null);
 
 function App() {
   //const [todos,setTodos] = useState([]);
@@ -43,7 +45,7 @@ function App() {
   },[]);
 
   useEffect(()=>{
-   
+   setCounts(4)
   },[]);
 
   
@@ -59,11 +61,15 @@ function App() {
     todosDispatch({type:"update",target:id,flag:done})
   },[todos]);
   
+  const actions = {checkTodo,deleteTodo}
+
   return (
     <div className="App">
       <Header />
       <HeadLine counts={counts} />
-      <Body todos={todos} deleteTodo={deleteTodo} checkTodo={checkTodo}/>
+      <Store.Provider value={actions}>
+        <Body todos={todos} deleteTodo={deleteTodo} checkTodo={checkTodo}/>
+      </Store.Provider>
       <Footer addTodo={addTodo}/>
     </div>
   );
