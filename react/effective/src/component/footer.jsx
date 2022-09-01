@@ -8,10 +8,14 @@ function Footer({addTodo}) {
             setTodo("");
         }
     }
-
+    const button = (e)=>{
+        if(e.key==='Enter'){
+            handleClick();
+        }
+    }
     return ( <div className="footerBox">
-        <input type="text" value={todo} onChange={(evt)=>{setTodo(evt.target.value)}} />
-        <button onClick={handleClick}>추가</button>
+        <input type="text" value={todo} onKeyDown={button} onChange={(evt)=>{setTodo(evt.target.value)}} />
+        <button onClick={handleClick} >추가</button>
     </div> );
 }
 

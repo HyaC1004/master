@@ -8,7 +8,7 @@ const Todo = memo(function ({data,todos,deleteTodo,checkTodo}) {
         checkTodo(data.id,evt.target.checked);
     }
     const handleDelete = ()=>{
-        const idx = todos.findIndex(i=>i.id ==data.id);
+        const idx = todos.findIndex(i=>i.id ===data.id);
         console.log(todos[idx]);        
         if(idx>-1){
             todos.splice(idx,1);

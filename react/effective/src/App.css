@@ -27,6 +27,13 @@
 .todoBox button:hover{
   background-color: rgb(191, 236, 205);
 }
+.todoBox div:first-child{
+  width: 80%;
+  text-align: left;
+}
+.todoBox div:last-child{
+  width: 20%;
+}
 .footerBox input{
   font-size: 1.5rem;
   margin-right: 1rem;
