@@ -3,13 +3,14 @@ import { createContext, Fragment, useState,useEffect, useReducer } from 'react';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Header from './component/header';
 import Content from './component/content';
-import Detail from './component/detail';
 import Error from './component/error';
-
-import { TourAPI } from "./service/tourAPI";
 import Details from './component/details';
 
+import { TourAPI } from "./service/tourAPI";
+import { ReviewAPI } from './service/reviewAPI';
+
 const tourAPI = new TourAPI();
+const reviewAPI = new ReviewAPI();
 
 const reducer = function(state, action) {
 
@@ -30,6 +31,7 @@ function App() {
       dispatch({type : "setDatas", datas : recv.TourDestBaseInfo });
     });
   },[]);
+  
 
   return (
     <div className='app'>
@@ -38,7 +40,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Content datas={ state.datas } />} />
-            <Route path='/details/:id' element={<Details />} />
+            <Route path='/details/:id' element={<Details reviewAPI={reviewAPI}/>} />
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>

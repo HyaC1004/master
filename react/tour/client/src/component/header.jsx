@@ -9,7 +9,7 @@ function Header() {
         <div className="container-fluid">
             <a className="navbar-brand " >광주 명소</a>
             <input className="d-flex form-control me-2 search" type="search" 
-                onChange={searchHandle} placeholder="검색해보실" ref={searchData}/>
+                onChange={searchHandle} placeholder="검색해보실" ref={searchData} disabled/>
         </div>
     </nav> );
 }

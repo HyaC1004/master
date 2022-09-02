@@ -10,10 +10,11 @@ router.use((req,resp,next)=>{
 
 // query로 전달받은 id에 해당하는 리뷰를 응답보내는게 목적
 router.get("/get", async(req,resp)=>{
-    const {id} = req.query;
+    const id = req.query;
     try{
-        const found = await Review.find({target:id}).lean();
-        return resp.status(200).json({result:true, datas:found });
+        const found = await Review.find({target:id.target}).lean();
+        
+        return resp.status(200).json({result:true, datas:found });        
     }catch(e){
         console.log(e.message);
         return resp.status(500).json({result:false});

@@ -4,7 +4,7 @@ import Detail from "./detail";
 import { Store } from "../app";
 import Map from "./map";
 
-function Details({datas}) {
+function Details({reviewAPI}) {
     const value = useContext(Store);
     const params = useParams(); 
     const target = value.find(e=>e.id===params.id);
@@ -14,7 +14,7 @@ function Details({datas}) {
         <div className="mapBox">
             <Map select={target}/>
         </div>
-        <Detail target={target}/>
+        <Detail target={target} reviewAPI={reviewAPI}/>
     </div>  
     );
 }

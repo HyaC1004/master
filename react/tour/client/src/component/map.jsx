@@ -50,7 +50,7 @@ function Map({select}) {
     
 
     return (
-    <div className="d-flex">
+    <div className="d-flex p-2">
         <div id="map" ref={divRef} >
         </div>
     </div>);

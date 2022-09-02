@@ -1,21 +1,12 @@
-import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Store } from "../app";
 import Loading from "./loading/loadingspinner"
+import Review from "./review";
 
-function Detail({target}) {
+function Detail({target,reviewAPI}) {
     const navigate = useNavigate();
-    // const params = useParams();  
-    // const value = useContext(Store);
-
-    // const target = value.find(e=>e.id===params.id);
-
-    
     const closeHandle = ()=>{
         navigate("/");
     }
-
-    //console.log(target)
     if(target){
         document.title=`${target.tourDestNm}`;
 
@@ -23,7 +14,7 @@ function Detail({target}) {
             <div className="card detailCard">
                 <span className="closeBtn" onClick={closeHandle}>닫기</span>
                 <div className="card-body">
-                    <h3 className="card-title">{target.tourDestNm}</h3>
+                    <h3 className="card-title" style={{width:"90%"}}>{target.tourDestNm}</h3>
                     <h6 className="card-subtitle mb-3 text-muted">{target.addrRoad}</h6>
                     <h5 className="card-title">편의시설</h5>
                     <h6 className="card-subtitle mb-3 text-muted">{target.publicConvFcltInfo}</h6>
@@ -37,6 +28,7 @@ function Detail({target}) {
                     <h6 className="card-subtitle mb-3 text-muted">{target.mngAgcTel}</h6>
                     <p className="card-text">{target.tourDestIntro}</p>                
                 </div>
+                <Review data={target} reviewAPI={reviewAPI}/>
             </div>
         </div> );
     }else{

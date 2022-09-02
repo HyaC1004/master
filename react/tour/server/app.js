@@ -17,6 +17,6 @@ app.use(express.json());
 app.use("/api/tour", reviewRouter);
 
 
-app.listen(8080, ()=>{
+app.listen(8070, ()=>{
     console.log("[server] start.");
 });
