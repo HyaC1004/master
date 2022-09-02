@@ -1,11 +1,25 @@
+body{
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+.app{height: 100%;}
+
 /*Header*/
 .navbar{
   background-color: #9be7bb;
 }
+.search{max-width: 20rem;}
 
 /*Content*/
+.wrap{
+  margin: auto;
+  width: 100%;
+}
 .mapBox{
-  width:60%;
+  flex-grow: 1;
 }
 #map{
   width:100%;
@@ -13,11 +27,12 @@
 }
 
 .itemList{
-  width: 40%;
-  height: 100vh;
+  width: 20rem;
+  height: 90vh;
   overflow-y: scroll;
 }
 .itemList::-webkit-scrollbar {
+  display: block;
   width: 10px;  /* 스크롤바의 너비 */
 }
 
@@ -31,11 +46,32 @@
   background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
 }
 
-
-.card{
+/*Item*/
+.itemCard{
+  margin:auto;
   margin-right: 2rem;
 }
-.card:hover{
+.itemCard:hover{
   cursor: pointer;
   background-color: rgb(240, 214, 238);
+}
+/*Detail*/
+.detail{width: 40%;}
+.detailCard{
+  width: 100%;
+}
+.closeBtn{position: absolute;right: 1rem;top: 1rem;cursor: pointer;}
+.customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+.customoverlay .title {display:block;text-align:center;background:rgb(255, 255, 255);border-radius:0.5rem;padding:10px 15px;font-size:14px;font-weight:bold;}
+.customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+
+
+/** 미디어 쿼리 **/
+@media (max-width:766px) {
+  .wrap{flex-direction: column;}
+  .mapBox{width:100%}
+  #map{height: 400px;}
+  .itemList{margin-top:3rem; width: 90%;}
+  .detail{width: 100%;}
 }

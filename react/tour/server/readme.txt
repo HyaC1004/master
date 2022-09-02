@@ -1,0 +1,1 @@
+cors, mongoose, express, morgan, dotenv

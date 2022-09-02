@@ -1,7 +1,13 @@
-function Item({data,onSelected}) {
+import { useNavigate } from "react-router-dom";
 
+function Item({data}) {
+    const navigate = useNavigate();
+
+    const clickHandle = () =>{
+        navigate("/details/"+data.id);
+    }
     return (
-        <li className="card p-2 mb-4" style={{width: "18rem"}} onClick={()=>onSelected(data.addrRoad)}>
+        <li className="card itemCard p-2 mb-4" onClick={clickHandle}>
             <h5 className="card-title">{data.tourDestNm}</h5>         
             <h6 className="card-subtitle mb-2 text-muted">{data.addrRoad}</h6>                     
             <p className="card-text">편의시설: {data.publicConvFcltInfo}</p>    

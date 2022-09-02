@@ -1,5 +1,5 @@
 import './app.css';
-import { Fragment, useEffect, useReducer } from 'react';
+import { createContext, Fragment, useState,useEffect, useReducer } from 'react';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Header from './component/header';
 import Content from './component/content';
@@ -7,6 +7,7 @@ import Detail from './component/detail';
 import Error from './component/error';
 
 import { TourAPI } from "./service/tourAPI";
+import Details from './component/details';
 
 const tourAPI = new TourAPI();
 
@@ -18,10 +19,12 @@ switch(action.type) {
   }
  return state;
 }
+export const Store = createContext({});
+
 
 function App() {
   const [state, dispatch ] = useReducer(reducer, {version : 1.0, datas : [] } );
- 
+
   useEffect(()=>{
     tourAPI.getInfos().then(recv=>{
       dispatch({type : "setDatas", datas : recv.TourDestBaseInfo });
@@ -29,17 +32,18 @@ function App() {
   },[]);
 
   return (
-    <Fragment>
-      <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Content datas={ state.datas  } />} />
-          <Route path="/detail/:id" element={<Detail />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </BrowserRouter>
-
-    </Fragment>
+    <div className='app'>
+      <Store.Provider value={state.datas}>
+        <Header />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Content datas={ state.datas } />} />
+            <Route path='/details/:id' element={<Details />} />
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </BrowserRouter>
+      </Store.Provider>
+    </div>
   );
 }
 

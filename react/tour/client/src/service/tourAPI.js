@@ -13,4 +13,6 @@ export class TourAPI{
         const response = await fetch(this.baseURL+"?serviceKey="+serviceKey+"&type="+type);
         return response.json();
     }
+
+    
 }
