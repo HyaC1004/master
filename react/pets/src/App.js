@@ -74,7 +74,7 @@ function App() {
       <div className='app'>
         { selected && <Detail target = {selected}/>}
         <List pets={pets} onSelected={handleSelected}/>  
-      </div>
+      </div> 
     </div>
   );
 }
