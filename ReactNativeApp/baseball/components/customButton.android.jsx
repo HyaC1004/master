@@ -1,9 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable,Platform,StyleSheet, Text, View } from "react-native";
+
+console.log(Platform.OS);
 
 function CustomButton({children, onPress}) {
     
     return (
-    <Pressable onPress={onPress} style={({pressed})=>pressed?[styles.buttonContainer,{opacity:0.8}]:styles.buttonContainer}>
+    <Pressable onPress={onPress} android_ripple={{color:"#000"}} style={({pressed})=>pressed?[styles.buttonContainer,{opacity:0.8}]:styles.buttonContainer}>
         <View style={styles.buttonInnerContainer}>
             <Text style={styles.buttonText}>{children}</Text>
         </View>
@@ -12,7 +14,7 @@ function CustomButton({children, onPress}) {
 }
 const styles = StyleSheet.create({
     buttonContainer : {        
-        backgroundColor:"black",        
+        backgroundColor:"#495c4e",        
         borderRadius: 8,
         paddingHorizontal: 8,
         paddingVertical: 4,   

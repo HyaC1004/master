@@ -8,7 +8,7 @@ function PlayGame({target,setTarget}) {
     //console.log("history",history);
     
     return ( 
-    <View>
+    <View style={{flex:1}}>
         <NumberInput setHistory={setHistory} setTarget={setTarget} target={target} />        
         <FlatList style={styles.list} data={history} renderItem={(item)=>{
             return <CheckResult result={item} setTarget={setTarget} />
@@ -18,7 +18,7 @@ function PlayGame({target,setTarget}) {
 const styles = StyleSheet.create({
     list:{
         backgroundColor:"white",
-        paddingVertical: 16,
+        paddingVertical: 8,
         marginHorizontal: 16,
         borderRadius:8
     }

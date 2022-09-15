@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ImageBackground, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Button, ImageBackground, KeyboardAvoidingView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import PlayGame from './screens/playGame';
 import ReadyToGame from './screens/readyToGame';
 
@@ -27,6 +27,8 @@ export default function App() {
   }
 
   return (
+    <>
+    <KeyboardAvoidingView style={{flex:1}} behavior="">
     <View style={styles.container}>
       {target?<ImageBackground source={require("./assets/images/background2.png")} resizeMode="cover" style={styles.image}>
        {currentScreen}
@@ -34,6 +36,8 @@ export default function App() {
        {currentScreen}
       </ImageBackground>}
     </View>
+    </KeyboardAvoidingView>
+    </>
   );
 }
 
