@@ -1,7 +1,7 @@
 import { Dimensions, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import CustomButton from "../components/customButton";
 import Heading from "../components/heading";
-
+import Ionicons from "@expo/vector-icons/Ionicons"
 // Dimensions - window (실제 뷰 영역), screen
 // orientation을 landscape 혹은 portrait하나로 고정을 해두었으면 이것만 해도댐
 const {height,width} = Dimensions.get("screen");
@@ -16,7 +16,7 @@ function ReadyToGame({onStart}) {
 
     return (
     <View style={[styles.readyContainer,{paddingHorizontal:current.width/10}]}>
-        <View style={styles.buttonWrap}>
+        <View style={styles.titleWrap}>
             <Heading size="5">숫 자 야 구</Heading>
         </View>
         <View style={styles.buttonWrap}>
@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     readyContainer:{
         flex:1,
         justifyContent: "space-between",
+    },
+    titleWrap:{
+        width:'100%',
+        paddingHorizontal:24
     },
     buttonWrap:{
         width:'100%',

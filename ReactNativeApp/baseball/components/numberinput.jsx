@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StyleSheet, Text,TextInput, View, Button } from "react-native";
 import CustomButton from "./customButton"
 
-function NumberInput({setHistory,target,setTarget}) {
+function NumberInput({history,setHistory,target,setTarget,onEnd}) {
     const [number, setNumber] = useState("");
     const changeHandle = (num) =>{
         setNumber(num);
@@ -18,19 +18,20 @@ function NumberInput({setHistory,target,setTarget}) {
             ball: 0,
             out:0,
             win:false
-        }
+        }        
         let ar = number.split("").map((e)=>Number(e));
         if(ar.length<3){
             return alert("3개입력")
         }
-        console.log("ar:",ar)
-        console.log("target:",target)
+        // console.log("ar:",ar)
+        // console.log("target:",target)
         if(JSON.stringify(ar)===JSON.stringify(target)){
             console.log("굳");
-            log.win=true;
+            log.win=true;        
+            onEnd((history.length)+1);
             setHistory([]);
         }else{
-            for(let i =0; i<3; i++){
+            for(let i =0; i<4; i++){
                 if (ar[i] === target[i]) {
                     log.strike ++;
                 } else if (target.includes(ar[i])) {
@@ -54,7 +55,7 @@ function NumberInput({setHistory,target,setTarget}) {
     <View style={styles.numberContainer}>
         <View style={{flexDirection:"column"}}>
             <Text style={{textAlign:"center"}}>숫자를 입력하세요</Text>
-            <TextInput style={styles.numberInput} maxLength={3} 
+            <TextInput style={styles.numberInput} maxLength={4} 
                 keyboardType="number-pad" onChangeText={changeHandle} value={number} returnKeyType="done"/>
         </View>
         <View style={{flexDirection:"row"}}>
@@ -66,7 +67,7 @@ function NumberInput({setHistory,target,setTarget}) {
 
 const styles = StyleSheet.create({
     numberContainer: {
-        marginTop: 40,
+        marginTop: 20,
         backgroundColor:'white',
         alignItems:"center",
         borderRadius:8,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
         padding:12,
         borderBottomColor:"black",
         borderBottomWidth:4,
-        fontSize:48,
+        fontSize:36,
         textAlign: "center",
         width:160,
         marginBottom:12

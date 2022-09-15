@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
         marginLeft:12
     },
     buttonInnerContainer: {
-        paddingHorizontal: 16,
-        paddingVertical: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
         elevation: 1
     },
     buttonText: {
         color: "white",
-        fontSize: 18,
+        fontSize: 16,
         textAlign:"center"
     }
 })

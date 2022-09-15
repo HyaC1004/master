@@ -10,10 +10,10 @@ function Heading({children, size}) {
 const styles = StyleSheet.create({
     heading:{
         fontWeight:"bold",
-        color: "white",
+        color: "yellow",
         lineHeight: 84,
         textAlign: "center",
-        backgroundColor: "#000000c0",
+        backgroundColor: "green",
         borderRadius: 16
     }
 })
