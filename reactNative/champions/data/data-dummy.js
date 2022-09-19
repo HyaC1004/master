@@ -1,11 +1,11 @@
 
 export const categories = [
-    { "id": "c01", "name": "Tank" },
-    { "id": "c02", "name": "Fighter" },
-    { "id": "c03", "name": "Assassin" },
-    { "id": "c04", "name": "Mage" },
-    { "id": "c05", "name": "Markman" },
-    { "id": "c06", "name": "Support" },
+    { "id": "c01", "name": "Tank", "role" : "탱커", "src":require('../assets/icons/Tank.jpg') },
+    { "id": "c02", "name": "Fighter", "role" : "전사", "src":require('../assets/icons/Fighter.jpg') },
+    { "id": "c03", "name": "Assassin", "role" : "암살자", "src":require('../assets/icons/Assassin.jpg') },
+    { "id": "c04", "name": "Mage", "role" : "마법사", "src":require('../assets/icons/Mage.jpg') },
+    { "id": "c05", "name": "Marksman", "role" : "원거리 딜러", "src":require('../assets/icons/Markman.jpg') },
+    { "id": "c06", "name": "Support", "role" : "서포터", "src":require('../assets/icons/Support.jpg') },
 ];
 
 export const champoions = [
