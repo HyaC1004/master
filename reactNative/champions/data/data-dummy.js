@@ -8,7 +8,7 @@ export const categories = [
     { "id": "c06", "name": "Support", "role" : "서포터", "src":require('../assets/icons/Support.jpg') },
 ];
 
-export const champoions = [
+export const champions = [
     {
         "key": "266",
         "id": "Aatrox",
