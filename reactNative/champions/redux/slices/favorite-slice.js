@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const favoriteSlice = createSlice({
     name:"favorite",
@@ -13,6 +14,7 @@ const favoriteSlice = createSlice({
             return state.filter(one=> one!==action.payload);
         },
     }
+
 });
 
 export const {addFavorite, removeFavorite} = favoriteSlice.actions;
