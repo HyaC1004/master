@@ -11,3 +11,14 @@
 
     - loginScreen 에서 사용자가 로그인을 요청했을때 서버와 통신하여
     결과를 얻어오는 것까지만 구현을 하면 됨 (토큰 처리는 아직)
+
+0922 
+인증유지
+
+로그인 인증을 성공했을떄
+    - ctx에 업데이트를 시키고 있는데
+    + async storage 를 이용해서 여기에 auth값을 저장
+
+    + app-context.js의 프로바이더 컴포넌트
+    useEffect로 최초 마운트 될때
+    async storage에 저장된 토큰이 있다면, 그걸로 ctx auth값 업데이트

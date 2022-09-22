@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Button, Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import CustomButton from "../components/customButton";
+import { AppContext } from "../context/app-context";
 import { sendLoginReq } from "../util/accounts";
 import globalStyles from "./stylesheet";
 
@@ -11,6 +12,8 @@ function LoginScreen() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
+    const ctx = useContext(AppContext);
+
     useEffect(() => {
         navigation.setOptions({ title: "Login"});
     }, []);
@@ -19,25 +22,24 @@ function LoginScreen() {
         navigation.navigate("register");
     }
     
-    const loginHandle = () =>{
+    const loginHandle = async() =>{
+        console.log(email,password)
         if(!email || !password){
             return Alert.alert("With","이메일이나 패스워드를 입력해주세요");
         }
-        !async function () {
-            setLoading(true);
-            try{
-                const recv = await sendLoginReq(email,password);            
-                console.log("recv",recv);   
-                if(recv===undefined){
-                    return Alert.alert("With","로그인 실패");
-                }
-            }catch(e){
-                Alert.alert("With","로그인이 처리되지 않았습니다.");
-                console.log(e);
-            }
+        setLoading(true);
+        try{
+            const recv = await sendLoginReq(email,password);     
+            ctx.dispatch({ type: "login", payload: recv });
             setLoading(false);                   
             navigation.navigate("home");
-        }();
+        }catch(e){
+            Alert.alert("With","로그인이 처리되지 않았습니다.");
+            setLoading(false);
+            console.log(e);
+        }
+        setEmail("");
+        setPassword("");
     }
 
     if(loading) {
@@ -71,7 +73,7 @@ function LoginScreen() {
             />
         </View>
         <CustomButton onPress={loginHandle}>Login</CustomButton>        
-        <Pressable onPress={moveRegisterHandle}><Text>Regist New Account</Text></Pressable>
+        <Pressable onPress={moveRegisterHandle}><Text>Register New Account</Text></Pressable>
     </View></TouchableWithoutFeedback>  );
 }
 const styles = StyleSheet.create({
