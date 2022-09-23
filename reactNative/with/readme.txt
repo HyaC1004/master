@@ -22,3 +22,22 @@
     + app-context.js의 프로바이더 컴포넌트
     useEffect로 최초 마운트 될때
     async storage에 저장된 토큰이 있다면, 그걸로 ctx auth값 업데이트
+
+0923
+[firebase RealTime DB]
+https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/
+
+데이터 생성하고 싶을때 (POST)
+    엔드포인트: https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/{컬렉션이름}.json?auth={idToken}
+
+데이터 가져오고 싶을때 (GET)
+    엔드포인트: https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/{컬렉션이름}.json
+
+특정id 하나가져오고 싶을때 (GET)
+    엔드포인트: https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/{컬렉션이름}/{name}.json
+
+특정데이터 수정하고 싶을때 (PUT / PATCH)
+    엔드포인트: https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/{컬렉션이름}/{name}.json?auth={idToken}
+
+특정데이터 삭제 (DELETE)
+    엔드포인트: https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/{컬렉션이름}/{name}.json?auth={idToken}

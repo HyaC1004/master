@@ -1,12 +1,18 @@
+import { useFonts } from 'expo-font';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { useContext } from 'react';
 import { StyleSheet } from 'react-native';
+import { initialWindowMetrics } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { AppContext, AppContextProvider } from './context/app-context';
+import FeedChange from './screens/feedChange';
+import FeedDetail from './screens/feedDetail';
 import FeedScreen from './screens/feedScreen';
+import FeedWrite from './screens/feedWrite';
 
 import HomeScreen from './screens/homeScreen';
 import InfoScreen from './screens/infoScreen';
@@ -30,6 +36,15 @@ function MemberStack() {
       <Stack.Screen name='info' component={InfoScreen} options={{title:"Info"}} />
     </Stack.Navigator>  )
 }
+function FeedStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{headerTintColor:"#C69EFA"}}>
+      <Stack.Screen name='feedScreen' component={FeedScreen} options={{title:"Feed"}} />
+      <Stack.Screen name='feedWrite' component={FeedWrite} options={{title:"FeedWrite",presentation:"modal"}} />
+      <Stack.Screen name='feedDetail' component={FeedDetail} options={{title:"FeedDetail"}}/>
+      <Stack.Screen name='feedChange' component={FeedChange} options={{title:"FeedChange",presentation:"modal"}} />      
+    </Stack.Navigator>  )
+}
 
 function AccountStackNavigator(){
   const ctx = useContext(AppContext);
@@ -40,6 +55,16 @@ function AccountStackNavigator(){
 }
 
 export default function App() {
+  const [loaded] = useFonts({
+    "Dangrek_eng":require("./assets/fonts/Dangrek-Regular.ttf"),
+    "Nanumpen_kor" : require("./assets/fonts/NanumPenScript-Regular.ttf"),
+    "Passions_eng" : require("./assets/fonts/PassionsConflict-Regular.ttf")
+  });
+
+  if(!loaded) {
+    return <></>;
+  }
+
   return (
     <>
       <StatusBar style="auto" />
@@ -59,11 +84,11 @@ export default function App() {
           },
           headerTintColor:"#C69EFA",
           tabBarActiveTintColor: '#C69EFA',
-          tabBarInactiveTintColor: '#C69EFA',
+          tabBarInactiveTintColor: '#C69EFA',          
         })}>
-          <Tab.Screen name='home' component={HomeScreen} />
-          <Tab.Screen name='feed' component={FeedScreen} />
-          <Tab.Screen name='account' component={AccountStackNavigator} options={{headerShown:false}}/>          
+          <Tab.Screen name='home' component={HomeScreen} options={{tabBarShowLabel:false}}  />
+          <Tab.Screen name='feed' component={FeedStackNavigator} options={{headerShown:false, tabBarShowLabel:false}} />
+          <Tab.Screen name='account' component={AccountStackNavigator} options={{headerShown:false, tabBarShowLabel:false}}/>          
         </Tab.Navigator>
       </NavigationContainer>
       </AppContextProvider>

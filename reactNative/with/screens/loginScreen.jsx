@@ -51,7 +51,6 @@ function LoginScreen() {
     }
 
     return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={globalStyles.container}>
         <View style={globalStyles.inputBox}>
             <TextInput
@@ -74,7 +73,7 @@ function LoginScreen() {
         </View>
         <CustomButton onPress={loginHandle}>Login</CustomButton>        
         <Pressable onPress={moveRegisterHandle}><Text>Register New Account</Text></Pressable>
-    </View></TouchableWithoutFeedback>  );
+    </View>  );
 }
 const styles = StyleSheet.create({
   
