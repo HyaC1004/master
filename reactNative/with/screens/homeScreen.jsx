@@ -28,7 +28,7 @@ console.disableYellowBox = true;
     try {
       //자바스크립트 함수의 실행순서를 고정하기 위해 쓰는 async,await
       //권한 얻기
-      const {granted} = await Location.requestPermissionsAsync();
+      const {granted} = await Location.requestForegroundPermissionsAsync();
       if(!granted) {
         return setOk(false);
       }

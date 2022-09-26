@@ -7,6 +7,7 @@ import { sendFeed } from "../util/feed";
 import globalStyles from "./stylesheet";
 
 function FeedWrite() {
+    
     const ctx = useContext(AppContext);
     const navigation = useNavigation();
     const [feed, setFeed] = useState({ title: "", contents: "" });
@@ -18,12 +19,12 @@ function FeedWrite() {
     }
 
     return (
-    <View style={globalStyles.root}> 
+    <View style={globalStyles.container}> 
         <View style={[globalStyles.feedInputBox,{height:40}]}>
             <TextInput
                 style={{padding:10}}
                 placeholderTextColor="#003f3c"
-                placeholder="Title"
+                placeholder="Title"                
                 onChangeText={(text) => setFeed({...feed,title:text})}
             />
         </View>

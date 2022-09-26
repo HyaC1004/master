@@ -18,6 +18,7 @@ import HomeScreen from './screens/homeScreen';
 import InfoScreen from './screens/infoScreen';
 import LoginScreen from './screens/loginScreen';
 import RegisterScreen from './screens/registerScreen';
+import PlaceAddScreen from './screens/placeAddScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -36,6 +37,7 @@ function MemberStack() {
       <Stack.Screen name='info' component={InfoScreen} options={{title:"Info"}} />
     </Stack.Navigator>  )
 }
+
 function FeedStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{headerTintColor:"#C69EFA"}}>
@@ -43,6 +45,13 @@ function FeedStackNavigator() {
       <Stack.Screen name='feedWrite' component={FeedWrite} options={{title:"FeedWrite",presentation:"modal"}} />
       <Stack.Screen name='feedDetail' component={FeedDetail} options={{title:"FeedDetail"}}/>
       <Stack.Screen name='feedChange' component={FeedChange} options={{title:"FeedChange",presentation:"modal"}} />      
+    </Stack.Navigator>  )
+}
+
+function PlaceAddStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{headerTintColor:"#C69EFA"}}>
+      <Stack.Screen name='placeAdd' component={PlaceAddScreen} options={{title:"placeAdd"}} />
     </Stack.Navigator>  )
 }
 
@@ -79,6 +88,8 @@ export default function App() {
               iconName = focused ? 'person' : 'person-outline';
             } else if (route.name === 'feed') {
               iconName = focused ? 'bookmarks' : 'bookmarks-outline';
+            } else if (route.name === 'place') {
+              iconName = focused ? 'map' : 'map-outline';
             }
             return <Ionicons name={iconName} size={36} color={color} />;
           },
@@ -87,6 +98,7 @@ export default function App() {
           tabBarInactiveTintColor: '#C69EFA',          
         })}>
           <Tab.Screen name='home' component={HomeScreen} options={{tabBarShowLabel:false}}  />
+          <Tab.Screen name='place' component={PlaceAddStackNavigator} options={{headerShown:false, tabBarShowLabel:false}} />
           <Tab.Screen name='feed' component={FeedStackNavigator} options={{headerShown:false, tabBarShowLabel:false}} />
           <Tab.Screen name='account' component={AccountStackNavigator} options={{headerShown:false, tabBarShowLabel:false}}/>          
         </Tab.Navigator>
