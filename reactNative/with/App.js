@@ -19,6 +19,7 @@ import InfoScreen from './screens/infoScreen';
 import LoginScreen from './screens/loginScreen';
 import RegisterScreen from './screens/registerScreen';
 import PlaceAddScreen from './screens/placeAddScreen';
+import SelectLocationScreen from './screens/selectLocationScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -52,6 +53,7 @@ function PlaceAddStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{headerTintColor:"#C69EFA"}}>
       <Stack.Screen name='placeAdd' component={PlaceAddScreen} options={{title:"placeAdd"}} />
+      <Stack.Screen name='selectLocation' component={SelectLocationScreen} options={{title:"selectLocation",presentation:"modal"}} />
     </Stack.Navigator>  )
 }
 
@@ -89,7 +91,7 @@ export default function App() {
             } else if (route.name === 'feed') {
               iconName = focused ? 'bookmarks' : 'bookmarks-outline';
             } else if (route.name === 'place') {
-              iconName = focused ? 'map' : 'map-outline';
+              iconName = focused ? 'navigate-circle' : 'navigate-circle-outline';
             }
             return <Ionicons name={iconName} size={36} color={color} />;
           },

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Alert, Image, View } from "react-native";
 import IconButton from "./iconButton";
 
-function ImagePicker() {
+function ImagePicker({onPicked}) {
     const [imageUri,setImageUri] = useState(null);
     const [cmaeraPermission, requestCameraPermission] = useCameraPermissions();
     const [albumPermission, requestAlbumPermission] = useMediaLibraryPermissions();
@@ -26,6 +26,7 @@ function ImagePicker() {
         //console.log(rst);
         if(!rst.cancelled){
             setImageUri(rst.uri);
+            onPicked(rst.uri);
         }
     }
 
@@ -42,11 +43,16 @@ function ImagePicker() {
         const rst = await launchImageLibraryAsync({
             quality: 0.5,
             allowsEditing: true,
-            aspect: [16,9]
+            aspect: [16,9],
+            exif: true
         });
-        console.log(rst);
+        
         if(!rst.cancelled){
+            const lat = rst.exif.GPSLatitude;
+            const lng = rst.exif.GPSLongitude;
             setImageUri(rst.uri);
+            onPicked(rst.uri);
+            //console.log(lat,lng);
         }
     }
 
