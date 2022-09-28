@@ -20,6 +20,7 @@ import LoginScreen from './screens/loginScreen';
 import RegisterScreen from './screens/registerScreen';
 import PlaceAddScreen from './screens/placeAddScreen';
 import SelectLocationScreen from './screens/selectLocationScreen';
+import PlaceScreen from './screens/placeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,9 +50,10 @@ function FeedStackNavigator() {
     </Stack.Navigator>  )
 }
 
-function PlaceAddStackNavigator() {
+function PlaceStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{headerTintColor:"#C69EFA"}}>
+      <Stack.Screen name='placeScreen' component={PlaceScreen} options={{title:"placeScreen"}} />
       <Stack.Screen name='placeAdd' component={PlaceAddScreen} options={{title:"placeAdd"}} />
       <Stack.Screen name='selectLocation' component={SelectLocationScreen} options={{title:"selectLocation",presentation:"modal"}} />
     </Stack.Navigator>  )
@@ -100,7 +102,7 @@ export default function App() {
           tabBarInactiveTintColor: '#C69EFA',          
         })}>
           <Tab.Screen name='home' component={HomeScreen} options={{tabBarShowLabel:false}}  />
-          <Tab.Screen name='place' component={PlaceAddStackNavigator} options={{headerShown:false, tabBarShowLabel:false}} />
+          <Tab.Screen name='place' component={PlaceStackNavigator} options={{headerShown:false, tabBarShowLabel:false}} />
           <Tab.Screen name='feed' component={FeedStackNavigator} options={{headerShown:false, tabBarShowLabel:false}} />
           <Tab.Screen name='account' component={AccountStackNavigator} options={{headerShown:false, tabBarShowLabel:false}}/>          
         </Tab.Navigator>

@@ -29,29 +29,19 @@ export async function sendLoginReq(email,password) {
     }
 }
 
-export async function sendFeed(idToken,email,feed) {
-    console.log("feed Loading...");
-    console.log("token: ",idToken);
+export async function sendRefreshReq(refreshToken) {
+    console.log("Refresh Loading...");
     try{
-        const response = await axios.post("https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json?auth="+idToken,{
-            text:feed, email:email, createdAT:Date.now()
+        const response = await axios.post("https://securetoken.googleapis.com/v1/token?key="+APP_KEY,{
+            grant_type:"refresh_token", refresh_token:refreshToken
         });
         //console.log(response);
         return response;
     }catch(e){
-        console.log("Feed Error");
+        console.log("Refresh Error");
         console.log(e.message);
     }
 }
 
-export async function recieveFeed() {
-    console.log("feed Loading...");
-    try{
-        const response = await axios.get("https://with-c5480-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json");
-        //console.log("resp: ", response);
-        return response;
-    }catch(e){
-        console.log("feed Error");
-        console.log(e.message);
-    }
-}
+
+

@@ -21,12 +21,24 @@ function ImagePicker({onPicked}) {
         const rst = await launchCameraAsync({
             quality: 0.5,
             allowsEditing: true,
-            aspect: [16,9]
+            aspect: [16,9],
+            exif: true,
+            base64: true
         })
         //console.log(rst);
         if(!rst.cancelled){
             setImageUri(rst.uri);
-            onPicked(rst.uri);
+            // console.log(rst);
+            const lat = rst.exif.GPSLatitude;
+            const lng = rst.exif.GPSLongitude;
+            console.log("photo",lat,lng);
+            if (lat && lng) {
+                onPicked(rst.uri, rst.base64,
+                    { latitude: lat, logitude: lng }
+                );
+            } else {
+                onPicked(rst.uri, rst.base64);
+            }
         }
     }
 
@@ -44,15 +56,23 @@ function ImagePicker({onPicked}) {
             quality: 0.5,
             allowsEditing: true,
             aspect: [16,9],
-            exif: true
+            exif: true,
+            base64: true
         });
         
         if(!rst.cancelled){
+            setImageUri(rst.uri);
+            // console.log(rst);
             const lat = rst.exif.GPSLatitude;
             const lng = rst.exif.GPSLongitude;
-            setImageUri(rst.uri);
-            onPicked(rst.uri);
-            //console.log(lat,lng);
+            console.log("photo",lat,lng);
+            if (lat && lng) {
+                onPicked(rst.uri, rst.base64,
+                    { latitude: lat, logitude: lng }
+                );
+            } else {
+                onPicked(rst.uri, rst.base64);
+            }
         }
     }
 

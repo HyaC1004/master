@@ -6,7 +6,7 @@ import {createStaticMapURI, getAddresses} from "../util/maps";
 import IconButton from "./iconButton";
 
 
-function LocationPicker({select,onPicked}) {
+function LocationPicker({select,onPicked, placeLocation}) {
     const [mapURI, setMapURI] = useState(null);
     const [address, setAddress] = useState(null);
     const [location, setLocation] = useState({
@@ -16,18 +16,22 @@ function LocationPicker({select,onPicked}) {
     const navigation = useNavigation();
     useEffect(()=>{
         if(select){
-            const temp = createStaticMapURI(select.coordinate.latitude,select.coordinate.longitude);
-            getAddresses(select.coordinate.latitude,select.coordinate.longitude).then(val=>{
+            const lat = select.coordinate.latitude;
+            const lng = select.coordinate.longitude;
+            const temp = createStaticMapURI(lat,lng);
+            getAddresses(lat,lng).then(val=>{
                 setAddress(val.formatted_address);
             }).catch(e=>{console.log(e.message)})
             onPicked({...select.coordinate,address:address});
             setMapURI(temp);
         }else{
             getCurrentPositionAsync().then(result=>{
-                const temp = createStaticMapURI(result.coords.latitude,result.coords.longitude);
-                setLocation({latitude:result.coords.latitude,longitude:result.coords.longitude});
-                onPicked({latitude:result.coords.latitude,longitude:result.coords.longitude,address:address})
-                getAddresses(result.coords.latitude,result.coords.longitude).then(val=>{
+                const lat = result.coords.latitude;
+                const lng = result.coords.longitude;
+                const temp = createStaticMapURI(lat,lng);
+                setLocation({latitude:lat,longitude:lng});
+                onPicked({latitude:lat,longitude:lng,address:address})
+                getAddresses(lat,lng).then(val=>{
                     setAddress(val.formatted_address);
                 }).catch(e=>{console.log(e.message)})
                 setMapURI(temp);

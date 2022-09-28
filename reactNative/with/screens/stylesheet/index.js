@@ -10,11 +10,10 @@ const globalStyles =  StyleSheet.create({
     },
     container:{
         flex:1,
-        alignItems:"center",
-        marginTop: 36
+        alignItems:"center"
     },
     weatherContainer:{
-        
+        marginVertical: 12
     },
     feedContainer:{
         flex:1,
