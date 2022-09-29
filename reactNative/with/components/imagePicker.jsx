@@ -31,7 +31,7 @@ function ImagePicker({onPicked}) {
             // console.log(rst);
             const lat = rst.exif.GPSLatitude;
             const lng = rst.exif.GPSLongitude;
-            console.log("photo",lat,lng);
+            // console.log("photo",lat,lng);
             if (lat && lng) {
                 onPicked(rst.uri, rst.base64,
                     { latitude: lat, logitude: lng }
@@ -65,7 +65,7 @@ function ImagePicker({onPicked}) {
             // console.log(rst);
             const lat = rst.exif.GPSLatitude;
             const lng = rst.exif.GPSLongitude;
-            console.log("photo",lat,lng);
+            //console.log("photo",lat,lng);
             if (lat && lng) {
                 onPicked(rst.uri, rst.base64,
                     { latitude: lat, logitude: lng }

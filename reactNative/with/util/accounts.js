@@ -31,12 +31,11 @@ export async function sendLoginReq(email,password) {
 
 export async function sendRefreshReq(refreshToken) {
     console.log("Refresh Loading...");
+    const query = `grant_type=refresh_token&refresh_token=${refreshToken}`;
     try{
-        const response = await axios.post("https://securetoken.googleapis.com/v1/token?key="+APP_KEY,{
-            grant_type:"refresh_token", refresh_token:refreshToken
-        });
+        const response = await axios.post("https://securetoken.googleapis.com/v1/token?key="+APP_KEY,query);
         //console.log(response);
-        return response;
+        return response.data;
     }catch(e){
         console.log("Refresh Error");
         console.log(e.message);

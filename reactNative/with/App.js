@@ -21,6 +21,7 @@ import RegisterScreen from './screens/registerScreen';
 import PlaceAddScreen from './screens/placeAddScreen';
 import SelectLocationScreen from './screens/selectLocationScreen';
 import PlaceScreen from './screens/placeScreen';
+import PlaceDetail from './screens/placeDetail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,8 +54,9 @@ function FeedStackNavigator() {
 function PlaceStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{headerTintColor:"#C69EFA"}}>
-      <Stack.Screen name='placeScreen' component={PlaceScreen} options={{title:"placeScreen"}} />
-      <Stack.Screen name='placeAdd' component={PlaceAddScreen} options={{title:"placeAdd"}} />
+      <Stack.Screen name='placeScreen' component={PlaceScreen} options={{title:"PlaceScreen"}} />
+      <Stack.Screen name='placeAdd' component={PlaceAddScreen} options={{title:"PlaceAdd"}} />
+      <Stack.Screen name='placeDetail' component={PlaceDetail} options={{title:"PlaceDetail"}}/>
       <Stack.Screen name='selectLocation' component={SelectLocationScreen} options={{title:"selectLocation",presentation:"modal"}} />
     </Stack.Navigator>  )
 }

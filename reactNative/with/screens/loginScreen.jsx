@@ -51,7 +51,7 @@ function LoginScreen() {
     }
 
     return (
-    <View style={globalStyles.container}>
+    <View style={globalStyles.loginContainer}>
         <View style={globalStyles.inputBox}>
             <TextInput
                 style={globalStyles.TextInput}

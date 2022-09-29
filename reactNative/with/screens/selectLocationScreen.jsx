@@ -30,10 +30,12 @@ function SelectLocationScreen({route,navigation}) {
 
     const pressHandle = ({nativeEvent}) =>{
         setCoordinate(nativeEvent.coordinate);
+        
         getAddresses(nativeEvent.coordinate.latitude,nativeEvent.coordinate.longitude).then(val=>{
+            // console.log(val);
             setAddress(val.formatted_address);
         }).catch(e=>{console.log(e.message)})
-        // console.log(coordinate);
+        console.log(address);
         // console.log(nativeEvent.coordinate);
     }
     return (

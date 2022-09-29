@@ -9,6 +9,7 @@ import globalStyles from "./stylesheet";
 function FeedWrite() {
     
     const ctx = useContext(AppContext);
+    
     const navigation = useNavigation();
     const [feed, setFeed] = useState({ title: "", contents: "" });
 
@@ -19,7 +20,7 @@ function FeedWrite() {
     }
 
     return (
-    <View style={globalStyles.container}> 
+    <View style={globalStyles.loginContainer}> 
         <View style={[globalStyles.feedInputBox,{height:40}]}>
             <TextInput
                 style={{padding:10}}

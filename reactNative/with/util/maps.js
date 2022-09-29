@@ -9,7 +9,7 @@ export function createStaticMapURI(lat,lng) {
 export async function getAddresses(lat,lng) {    
     const endPoint= `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}&language=ko`;
     const response = await axios.get(endPoint);
-    //    console.log(response.data);
+    // console.log(response.data);
 
     return response.data.results[0];
 }

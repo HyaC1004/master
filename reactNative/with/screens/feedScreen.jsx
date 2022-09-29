@@ -9,6 +9,7 @@ import { AppContext } from "../context/app-context";
 
 function FeedScreen() {
     const[feeds,setFeeds] = useState([]);
+    const [refresh,setRefresh] = useState(false);
     const navigation = useNavigation();
     const isFocused = useIsFocused();
     const ctx = useContext(AppContext);
@@ -35,6 +36,12 @@ function FeedScreen() {
     <View style={globalStyles.feedContainer}>
         <FlatList data={feeds} renderItem={({index,item})=>{
             return <FeedComponenet item={item} />
+        }} refreshing={false} onRefresh={()=>{
+            setRefresh(true);
+            console.log("refresh");
+            setTimeout(()=>{
+                setRefresh(false);
+            },2000)
         }}/>    
         {ctx.auth?<IconButton onPress={onAddItemHandle}
                 name="add-circle" size={48} color={"#C69EFA"} style={{ bottom: 12, right: 12, position: "absolute" }} />:<></>}

@@ -64,7 +64,7 @@ function LocationPicker({select,onPicked, placeLocation}) {
             console.log("take")
             const temp = createStaticMapURI(result.coords.latitude,result.coords.longitude);
             getAddresses(result.coords.latitude,result.coords.longitude).then(val=>{
-                //console.log(val.formatted_address);
+                // console.log(val.formatted_address);
                 setAddress(val.formatted_address);
             }).catch(e=>{console.log(e.message)})
            setMapURI(temp);

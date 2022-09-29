@@ -38,14 +38,14 @@ export default function PlaceAddScreen({route}) {
             location: placeLocation,
             createdAt: new Date()
         }
-        sendAddPlaceRequest(data , placeImageBase64, placeImage, ctx.auth.data.idToken);
+        sendAddPlaceRequest(data , placeImageBase64, placeImage, ctx.auth.data);
         navigation.navigate("placeScreen");
     }
 
     useEffect(()=>{
-        console.log(placeInfo);
-        console.log(placeImage);
-        console.log(placeLocation);
+        // console.log(placeInfo);
+        // console.log(placeImage);
+        // console.log(placeLocation);
     },[isFocused,placeInfo,placeImage,placeLocation])
 
     const imagePickedHandle = async(uri, base64, coordinate)=>{

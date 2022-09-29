@@ -12,6 +12,11 @@ const globalStyles =  StyleSheet.create({
         flex:1,
         alignItems:"center"
     },
+    loginContainer:{
+        flex:1,
+        alignItems:"center",
+        marginTop:24
+    },
     weatherContainer:{
         marginVertical: 12
     },

@@ -10,7 +10,10 @@ import { sendFeed } from "../util/accounts";
 function InfoScreen() {    
     const navigation = useNavigation();
     const ctx = useContext(AppContext);
-   
+    console.log("ctx");
+    if(!ctx.auth){
+        navigation.navigate("login")
+    }
 
     const logoutHandle = () =>{
         ctx.dispatch({type:"logout"});
@@ -22,10 +25,10 @@ function InfoScreen() {
     
     return (
     <ScrollView>
-    <View style={globalStyles.container}> 
-        <Text style={{fontSize:24,marginBottom:16}}>{ctx.auth.data.email}</Text>  
-        <Pressable onPress={logoutHandle}><Image style={{width:100,height:100}} source={require('../assets/images/ebichu/ebichu_cry.gif')} /></Pressable>        
-    </View>
+        <View style={globalStyles.container}> 
+            <Text style={{fontSize:24,marginVertical:16}}>{ctx?.auth.data.email}</Text>  
+            <Pressable onPress={logoutHandle}><Image style={{width:100,height:100}} source={require('../assets/images/ebichu/ebichu_cry.gif')} /></Pressable>        
+        </View>
     </ScrollView>     );
 }
 export default InfoScreen;
