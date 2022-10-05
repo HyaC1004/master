@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "with",
+    "name": "withHya",
     "slug": "with",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,16 +27,38 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.2"
     },
     "android": {
+      "versionCode": 3,
+      "config": {
+        "googleMaps": {
+          "apiKey" : "AIzaSyAvROcjCAGzrXWnRDdbogCv2wrsN6p6hnw"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "CAMERA",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.hyac.with"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "73a50c8f-e96a-4d93-aa49-27974e4b642f"
+      }
     }
   }
 }
