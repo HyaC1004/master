@@ -1,0 +1,10 @@
+.petNav{
+    display: flex;
+    flex-direction: row;
+    width: 100%;        
+    gap:20px;
+}
+.petNav li {
+    list-style: none;
+    font-size: 2rem;
+}
