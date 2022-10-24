@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./animal-preview.module.css";
 
@@ -15,7 +16,8 @@ function AnimalPreview({ data }) {
             <a>
                 <div className={styles.item}>
                     <div className={styles.image}>
-                        <img src={data.popfile} alt={data.kindCd} />
+                        <Image src={data.popfile} alt={data.kindCd} width={10} height={10}
+                            layout={"responsive"} />
                     </div>
                     <ul className={styles.list}>
                         <li>{data.kindCd}  <small>{data.colorCd}</small></li>

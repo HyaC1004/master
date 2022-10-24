@@ -1,15 +1,16 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import { Fragment } from 'react'
+import Layout from '../components/common/layout'
 import Navigator from '../components/common/navigatior'
 
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Fragment>
-      <Navigator />
+    <Layout>
       <Component {...pageProps} />
-    </Fragment >
+    </Layout>
   )
 }
 

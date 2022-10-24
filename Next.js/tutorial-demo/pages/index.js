@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import AnimalAlbum from "../components/animal/animal-album";
+import Head from "next/head";
 import { getLatestAnimalData } from "../services/animal-util";
 /*
   전체 동물 정보 제공 페이지
@@ -11,7 +12,10 @@ export default function Home(props) {
     return <p>데이터 불러오는 중</p>
   }
   return (
-    <AnimalAlbum animals={animals} />
+    <>
+      
+      <AnimalAlbum animals={animals} />
+    </>
   )
 }
 

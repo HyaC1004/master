@@ -5,7 +5,7 @@ import Image from "next/image";
 function Navigator() {
     return (<header className={styles.header}>
         <div className={styles.logo}>
-            <Link href="/"><a>유기동물조회</a></Link>
+            <Link href="/"><Image src={"/images/logo.png"} width={100} height={40} /></Link>
         </div>
         <nav className={styles.navigation}>
             <ul>
@@ -15,6 +15,7 @@ function Navigator() {
                     pathname: "/[upkind]", query: { upkind: "etc" }
                 }}><a>기타</a></Link></li>
                 <li><Link href={"/favorite"}><a>관심동물</a></Link></li>
+                <li><Link href={"/help"}><a>도움</a></Link></li>
             </ul>
         </nav>
     </header>);

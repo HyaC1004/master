@@ -1,6 +1,10 @@
+import Image from "next/image";
+
 function Help() {
-    return (<div>
-        <h3>문의사항은 이 페이지를 활용해주세요.</h3>
+    return (
+    <div style={{width:"80%", height:"90vh", margin:"auto"}}>
+        {/* <img src="/images/poster.jpg" alt="poster" width="100%" height="100%" /> */}
+        <Image src={"/images/poster.jpg"} width={20} height={30} layout={"responsive"} />
     </div>);
 }
 

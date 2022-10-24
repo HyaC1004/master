@@ -1,16 +1,20 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import AnimalAlbum from "../../components/animal/animal-album";
 import { getLatestAnimalData } from "../../services/animal-util";
 
-export default function HomeOfUpkind({ animals }) {
+export default function HomeOfUpkind({ animals, type }) {
     const router = useRouter();
     console.log("isFallBack ? " + router.isFallback);
     if (!animals) {
         return <p>해당데이터를 찾을 수 업습니다.</p>
     }
     return (
-        <AnimalAlbum animals={animals} />
+        <>
+            <Head><title>{type}</title></Head>
+            <AnimalAlbum animals={animals} />
+        </>
     )
 }
 export async function getStaticPaths() {
@@ -42,7 +46,8 @@ export async function getStaticProps(context) {
     const datas = await getLatestAnimalData(code);
     return {
         props: {
-            animals: datas
+            animals: datas,
+            type: type
         },
         revalidate: 30
     }

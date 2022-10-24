@@ -1,12 +1,11 @@
 .header {
     width: 100%;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     padding: 1rem 0.5rem;
     height: 4.5rem;
     border-bottom: 0.1rem solid #e0dcdc;
     margin-bottom: 0.3rem;
-    background-color: antiquewhite;
   }
   
   .logo {
