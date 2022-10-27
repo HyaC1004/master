@@ -1,8 +1,13 @@
 /*
     모든 request method 가 다 여기로 들어옴.
 */
+import mongooseInit from "../../../lib/mongo-init";
+
+
+
 export default function (req, res) {
     // console.log(req.method);    // "GET" || "POST" ||
+    mongooseInit();
     const { method } = req;
 
     switch (method) {
