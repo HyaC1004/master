@@ -1,40 +1,25 @@
+"use strict";
+/*
+    typescript는 abstract class뿐만 아니라
+    interface라는 개념을 도입했다. (추구하는 바는 abstract class랑 비슷)
+
+    type이랑 interface랑 거의 비슷한듯
+*/
 {
-    // return 이 결코 되지않는 함수 never
-    function invoke(message) {
-        if (message.length === 0) {
-            throw { message: message, time: new Date() };
+    class RealPiece {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
         }
-        else {
-            return message;
+        moveTo(dx, dy) {
+            return true;
         }
+        ;
     }
-    // invoke("error ");
-    // ======================================================
-    function testA(str) {
-        return str.length;
-    }
-    function testB(str1, str2) {
-        return str1.length + str2.length;
-    }
-    var swing = void 0;
-    swing = testB;
-    // swing("111");
-    var fix = void 0;
-    // fix = testB;
-    function addListener(evt, cb) { }
-    ;
-    function optionalFunc(n, flag) {
-        console.log(flag);
-        if (flag === undefined || flag === false) {
-            return -n;
+    let p = {
+        x: 1, y: 1,
+        moveTo(dx, dy) {
+            return false;
         }
-        else {
-            return n;
-        }
-    }
-    optionalFunc(3);
-    //==========================
-    var xz = // any랑 비슷하게 돌아감.
-     void 0; // any랑 비슷하게 돌아감.
-    xz = 4;
+    };
 }

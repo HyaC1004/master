@@ -1,42 +1,26 @@
+/*
+    typescript는 abstract class뿐만 아니라
+    interface라는 개념을 도입했다. (추구하는 바는 abstract class랑 비슷)
+
+    type이랑 interface랑 거의 비슷한듯
+*/
 {
-    // return 이 결코 되지않는 함수 never
-    function invoke(message: string):string| never{
-        if(message.length === 0){
-            throw {message: message, time: new Date()};
-        }else{
-            return message;
+    type Pieces = {
+        x:number;
+        y:number;
+        moveTo: (dx:number, dy:number) => boolean;
+    }
+    class RealPiece implements Pieces {
+        constructor(public x:number, public y:number){}
+        moveTo(dx: number, dy: number) {
+            return true;
+        };
+    }
+
+    let p: Pieces = {
+        x:1, y:1,
+        moveTo(dx:number, dy:number) {
+            return false;
         }
     }
-    // invoke("error ");
-    // ======================================================
-
-    function testA(str: string) {
-        return str.length;
-    }
-    function testB(str1: string, str2: string) {
-        return str1.length+str2.length;
-    }
-
-    let swing: Function;
-    swing = testB;
-    // swing("111");
-    
-    let fix: (s:string) => number;
-    // fix = testB;
-
-    function addListener(evt: string, cb:() => number):void {};
-
-    function optionalFunc(n: number, flag?: boolean):number {
-        console.log(flag);
-        if(flag === undefined || flag === false){
-            return -n;
-        }else{
-            return n;
-        }
-    }
-    optionalFunc(3);
-    //==========================
-
-    let xz: unknown; // any랑 비슷하게 돌아감.
-    xz = 4;
 }
