@@ -1,25 +1,18 @@
 "use strict";
 /*
-    typescript는 abstract class뿐만 아니라
-    interface라는 개념을 도입했다. (추구하는 바는 abstract class랑 비슷)
-
-    type이랑 interface랑 거의 비슷한듯
+   typescript 는 overload 를 지원한다.
+    - 과적 / 같은이름의 함수 혹은 생성자 를 여러개 정의내리는 걸 오버로드
 */
 {
-    class RealPiece {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
+    function combine(one, two, three) {
+        if (typeof one === "number" && typeof two === "number") {
+            return one + two;
         }
-        moveTo(dx, dy) {
-            return true;
+        else {
+            return one.toString() + "," + two.toString();
         }
-        ;
     }
-    let p = {
-        x: 1, y: 1,
-        moveTo(dx, dy) {
-            return false;
-        }
-    };
+    //==========================================
+    let ret = combine("aa", "bbb");
+    let ret2 = combine(1, 2);
 }
