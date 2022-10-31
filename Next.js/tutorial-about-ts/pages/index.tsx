@@ -1,5 +1,6 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import AnimalAlbum from '../components/animalAlbum';
+import Animal from '../interfaces/animal';
 import styles from '../styles/Home.module.css'
 
 export default function Home(
@@ -16,10 +17,6 @@ export default function Home(
       </ul>
     </div>
   )
-}
-type Animal = {
-  id: string;
-  kind: string;
 }
 
 type Props = {
