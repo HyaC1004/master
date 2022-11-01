@@ -4,8 +4,10 @@ import styles from '../styles/Home.module.css'
 const Guide = () => {
     const [alarm, setAlarm] = useState<{
         type:string, 
-        message: string} | null
+        message?: string} | null
     >(null);
+    
+    const [count, setCount] = useState<number>(0);
 
     const clickHandler: MouseEventHandler = (evt) => {
         console.log(evt.currentTarget.id);
