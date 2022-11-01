@@ -1,7 +1,7 @@
 import AnimalPreview from "./animal-preview";
 import React from "react";
+import { Animal } from "../../interface";
 
-type Animal = {id: string; kind: string; desertionNo:string}
 type AnimalAlbumProps = {
     animals: Animal[]
 }

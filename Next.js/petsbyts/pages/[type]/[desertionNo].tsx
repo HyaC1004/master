@@ -1,6 +1,8 @@
+import { GetStaticProps } from "next";
 import AnimalPreview from "../../components/animal/animal-preview";
+import { Animal } from "../../interface";
 
-function DetailOnAnimal({ target }) {
+const DetailOnAnimal = (target:Animal) => {
     if (!target) {
         return <p>Loading..</p>
     }
@@ -17,7 +19,7 @@ export async function getStaticPaths() {
     const resp =
         await fetch("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?serviceKey=ZCU3%2FjB%2FlrpbQX9ou37B1eCj93xvvkjd5%2F609G4%2FxzVrGVTfFcfhBPhexAu%2Fw0APi53876d4eojm%2Bq8Eiq7ZaA%3D%3D&_type=json&numOfRows=6");
     const data = await resp.json(); // 
-    const paths = data.response.body.items.item.map((one) => ({
+    const paths = data.response.body.items.item.map((one:Animal) => ({
         params: {
             desertionNo: one.desertionNo,
             type: one.kindCd.startsWith("[개]") ? "dog" : (
@@ -33,9 +35,11 @@ export async function getStaticPaths() {
         fallback: true // can also be true or 'blocking'
     }
 }
-
-export async function getStaticProps(context) {
-    function convertToCode(str) {
+type Props = {
+    target: Animal[];
+}
+export const getStaticProps: GetStaticProps<Props> = async(context) => {
+    function convertToCode(str:any) {
         if (str === "dog") {
             return "417000"
         } else if (str === "cat") {
@@ -46,14 +50,15 @@ export async function getStaticProps(context) {
             return null;
         }
     }
-    const type = context.params.type;
-    const desertionNo = context.params.desertionNo;
+    const type = context.params!.type;
+    const desertionNo = context.params!.desertionNo;
     const code = convertToCode(type);
     // console.log(" - DetailOnAnimal component .. getStaticProps : ", type, desertionNo);
     const resp = await fetch("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?serviceKey=ZCU3%2FjB%2FlrpbQX9ou37B1eCj93xvvkjd5%2F609G4%2FxzVrGVTfFcfhBPhexAu%2Fw0APi53876d4eojm%2Bq8Eiq7ZaA%3D%3D&_type=json&numOfRows=12&upkind=" + code + "");
     const data = await resp.json();
+    const origin: Animal[] = data.response.body.items.item;
     // 해당축종의 데이터를 얻어온후 desertionNo 가 일치하는 데이터를 찾으려고 함.
-    const foundData = data.response.body.items.item.find((one) => one.desertionNo === desertionNo);
+    const foundData = origin.find((one) => one.desertionNo === desertionNo);
 
     if (!foundData) {
         return { notFound: true }
