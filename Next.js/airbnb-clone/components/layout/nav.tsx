@@ -1,102 +1,42 @@
-import { alpha, AppBar, Avatar, Box, Button, Container, Divider, IconButton, InputBase, Menu, MenuItem, styled, Toolbar, Tooltip, Typography } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import { Tab, Tabs } from "@mui/material";
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
+import GiteOutlinedIcon from '@mui/icons-material/GiteOutlined';
+import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
+import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
+import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+import HouseboatOutlinedIcon from '@mui/icons-material/HouseboatOutlined';
+import HotTubOutlinedIcon from '@mui/icons-material/HotTubOutlined';
+import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
+import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
 import React from "react";
-import SignIn from "../modal/signin";
-import SignUp from "../modal/signup";
-import Search from "./search";
-import CategorySlide from "../main/categorySlide";
 
+const sections = [
+    { title: '최고의 전망', url: '#', icon: <StarBorderOutlinedIcon /> },
+    { title: '한적한 시골', url: '#', icon: <GiteOutlinedIcon /> },
+    { title: '국립공원', url: '#', icon: <ParkOutlinedIcon /> },
+    { title: '럭셔리', url: '#', icon: <LocationCityOutlinedIcon /> },
+    { title: '디자인', url: '#', icon: <ArchitectureOutlinedIcon /> },
+    { title: '셰어하우스', url: '#', icon: <ShareOutlinedIcon /> },
+    { title: '해변 바로 앞', url: '#', icon: <HouseboatOutlinedIcon /> },
+    { title: '료칸', url: '#', icon: <HotTubOutlinedIcon /> },
+    { title: '기상천외한 숙소', url: '#', icon: <TipsAndUpdatesOutlinedIcon /> },
+    { title: '캠핑카', url: '#', icon: <AirportShuttleOutlinedIcon /> },
+];
 
 export default function Nav() {
-    const settings = ['숙소 호스트 되기', '체험 호스팅하기', '도움!!'];
-    const [signIn, setSignIn] = React.useState(false);
-    const [signUp, setSignUp] = React.useState(false);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [value, setValue] = React.useState(0);
 
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-    const handleOpenSignIn = () => {
-        setAnchorElUser(null);
-        setSignIn(true);
-    }
-    const handleOpenSignUp = () => {
-        setAnchorElUser(null);
-        setSignUp(true);
-    }
-    return (
-    <nav>
-        <AppBar position="sticky" color="inherit"  >
-            <Container maxWidth="xl"  >
-                <Toolbar disableGutters style={{justifyContent:"space-between"}}>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="a"
-                    href="/"
-                    sx={{
-                    display: { xs: 'none', md: 'flex' },
-                    fontFamily: 'GangwonEdu',
-                    fontSize: '1.5rem',
-                    letterSpacing: '.3rem',
-                    color: 'red',
-                    textDecoration: 'none',
-                    }}
-                >
-                    여행마렵다
-                </Typography>
-
-                <Search />
-
-                <Box sx={{ flexGrow: 0  }}>
-                    <Tooltip title="Open settings">             
-                    <div style={{backgroundColor:"white",border:"1px solid #ccc", borderRadius:20, padding:"0.2rem"}}>
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                            <MenuIcon sx={{ mr:1, color:"#ccc" }}></MenuIcon>
-                            <Avatar alt="" src="" />
-                        </IconButton>
-                    </div>       
-                    </Tooltip>
-                    <Menu
-                        sx={{ mt: '45px' }}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                    >
-                    <MenuItem key="signUp" onClick={handleOpenSignUp}>
-                        <Typography textAlign="center" fontWeight="bolder">회원가입</Typography>
-                    </MenuItem>
-                    <MenuItem key="logIn" onClick={handleOpenSignIn}>
-                        <Typography textAlign="center">로그인</Typography>
-                    </MenuItem>
-                    <Divider />
-                    {settings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                        </MenuItem>
-                    ))}
-                    </Menu>
-                </Box>
-                </Toolbar>
-                
-            </Container>
-        </AppBar>
-        <CategorySlide />
-        <SignIn open={signIn} setOpen = {setSignIn} />
-        <SignUp open={signUp} setOpen = {setSignUp} />
-    </nav>
+    return(
+        <Tabs value={value} onChange={handleChange} 
+            variant="scrollable" aria-label="icon label tabs example" className="navTabs">
+            {sections.map((section)=>(
+                <Tab key={section.title} icon={section.icon} label={section.title} />
+            ))}
+        </Tabs>
     )
 }

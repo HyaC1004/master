@@ -25,5 +25,7 @@ a {
 * {
   box-sizing: border-box;
 }
-
+.navTabs .MuiTabs-scroller div {
+  justify-content: center;
+}
 
