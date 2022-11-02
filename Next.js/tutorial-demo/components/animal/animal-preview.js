@@ -20,8 +20,15 @@ function AnimalPreview({ data }) {
                             layout={"responsive"} />
                     </div>
                     <ul className={styles.list}>
-                        <li>{data.kindCd}  <small>{data.colorCd}</small></li>
-                        <li>{data.orgNm} {data.happenPlace}에서 발견</li>
+                        <li>
+                        {target.kindCd} |{" "}
+                        <small>
+                            {target.colorCd} | {target.sexCd}
+                        </small>
+                        </li>
+                        <li>
+                        {target.orgNm} {target.happenPlace}에서 발견
+                        </li>
                     </ul>
                 </div>
             </a>

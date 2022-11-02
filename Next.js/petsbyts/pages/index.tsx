@@ -1,35 +1,36 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useState } from 'react'
-import AnimalAlbum from '../components/animal/animal-album'
-import { Animal } from '../interface'
-import { getLatestAnimalData } from '../services/animal-util'
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import Head from "next/head";
+import AnimalAlbum from "../components/animal/animal-album";
+import { AnimalWithUpKind } from "../interface";
+
+import { getLatestAnimalData } from "../lib/animal-api";
 
 export default function Home(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
-  const [loaded, setLooaded] = useState(true);
-
+  const { animals } = props;
   return (
-    <>      
-      <AnimalAlbum animals={props.items} />
+    <>
+      <Head>
+        <title>홈 - 유기동물조회서비스</title>
+        <meta
+          name="description"
+          content="공공데이터로 등재되어 관리되는 유기동물 정보들을 제공해주고자 합니다."
+        />
+      </Head>
+      <AnimalAlbum datas={animals} />
     </>
-  )
+  );
 }
 
-type Props = {
-  items: Animal[];
-  total?: number;
-}
-
-export const getStaticProps: GetStaticProps<Props> = async(context) => {
-  const datas = await getLatestAnimalData();
-  // console.log(datas);
+export const getStaticProps: GetStaticProps<{
+  animals: AnimalWithUpKind[];
+}> = async (context) => {
+  const datas: AnimalWithUpKind[] = await getLatestAnimalData();
   return {
     props: {
-      items: datas
+      animals: datas,
     }, // will be passed to the page component as props
-    revalidate: 60
-  }
-}
+    revalidate: 20,
+  };
+};

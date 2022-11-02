@@ -1,5 +1,3 @@
-const AnimalComment = () => {
-    return<></>
+export default function AnimalComment() {
+  return <></>;
 }
-
-export default AnimalComment;

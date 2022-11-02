@@ -1,3 +1,5 @@
+const { default: mongoose } = require('mongoose');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -7,4 +9,12 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = () => {
+  const MONGO_URI = process.env.MONGO_URI;
+
+  mongoose.connect(MONGO_URI, { dbName: "tutorial-demo" })
+    .then(() => console.log("mongoose Initialized"));
+
+  return nextConfig;
+
+}

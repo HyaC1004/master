@@ -1,30 +1,19 @@
-import AnimalPreview from "./animal-preview";
-import React from "react";
 import { Animal } from "../../interface";
+import AnimalPreview from "./animal-preview";
+import styles from "./animal.module.css";
 
 type AnimalAlbumProps = {
-    animals: Animal[]
-}
+  datas: Animal[];
+};
 
-const AnimalAlbum = ({ animals }: AnimalAlbumProps) => {
-    return (
-        <>
-            <div className="album">
-                {
-                    animals.map(one =>
-                        <AnimalPreview data={one} key={one.desertionNo} />
-                    )
-                }
-            </div>
-            <style jsx>{`
-                .album {
-                    display : flex;
-                    flex-wrap: wrap;
-                    gap : 0.2rem;
-                    justify-content : center;
-                }
-            `}</style>
-        </>);
+export default function AnimalAlbum({ datas }: AnimalAlbumProps) {
+  return (
+    <>
+      <div className={styles.album}>
+        {datas.map((one) => (
+          <AnimalPreview target={one} key={one.desertionNo} />
+        ))}
+      </div>      
+    </>
+  );
 }
-
-export default AnimalAlbum;

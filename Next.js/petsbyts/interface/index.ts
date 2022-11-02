@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export enum Upkind {
   DOG = 417000,
   CAT = 422400,
@@ -35,6 +37,8 @@ export interface AnimalWithUpKind extends Animal {
 }
 
 export interface Comment {
+  _id?: mongoose.Types.ObjectId;
+  target: string; // 유기번호
   writer: string; // 작성자
   content: string; // 내용
   writeAt: Date; // 작성일자
