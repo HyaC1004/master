@@ -1,9 +1,10 @@
 import { alpha, AppBar, Avatar, Box, Button, Container, Divider, IconButton, InputBase, Menu, MenuItem, styled, Toolbar, Tooltip, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import React from "react";
-import SignIn from "../modal/signin";
-import SignUp from "../modal/signup";
+import SignIn from "../ui/signin";
+import SignUpForm from "../ui/signup-form";
 import Search from "./search";
+import SignUpModal from "../ui/signupModal";
 
 
 export default function Header() {
@@ -27,6 +28,8 @@ export default function Header() {
         setAnchorElUser(null);
         setSignUp(true);
     }
+    const handleCloseSignIn = () => setSignIn(false);
+    const handleCloseSignUp = () => setSignUp(false);
     return (
     <header>
         <AppBar position="sticky" color="inherit"  >
@@ -93,8 +96,7 @@ export default function Header() {
                 
             </Container>
         </AppBar>
-        <SignIn open={signIn} setOpen = {setSignIn} />
-        <SignUp open={signUp} setOpen = {setSignUp} />
+        <SignUpModal open={signUp} setOpen = {handleCloseSignUp} />
     </header>
     )
 }

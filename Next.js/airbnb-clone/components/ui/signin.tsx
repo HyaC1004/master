@@ -33,7 +33,7 @@ export default function SignIn({open, setOpen}: any) {
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleClose}        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
