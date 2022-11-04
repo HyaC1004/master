@@ -1,15 +1,12 @@
-import { alpha, AppBar, Avatar, Box, Button, Container, Divider, IconButton, InputBase, Menu, MenuItem, styled, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, Container, Divider, IconButton,Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import React from "react";
-import SignIn from "../ui/signin";
-import SignUpForm from "../ui/signup-form";
 import Search from "./search";
-import SignUpModal from "../ui/signupModal";
+import Sign from "../ui/sign";
 
 
 export default function Header() {
     const settings = ['숙소 호스트 되기', '체험 호스팅하기', '도움!!'];
-    const [signIn, setSignIn] = React.useState(false);
     const [signUp, setSignUp] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -20,15 +17,11 @@ export default function Header() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-    const handleOpenSignIn = () => {
-        setAnchorElUser(null);
-        setSignIn(true);
-    }
     const handleOpenSignUp = () => {
         setAnchorElUser(null);
         setSignUp(true);
-    }
-    const handleCloseSignIn = () => setSignIn(false);
+    };
+
     const handleCloseSignUp = () => setSignUp(false);
     return (
     <header>
@@ -55,7 +48,7 @@ export default function Header() {
                 <Search />
 
                 <Box sx={{ flexGrow: 0  }}>
-                    <Tooltip title="Open settings">             
+                    <Tooltip title="Open Menu">             
                     <div style={{backgroundColor:"white",border:"1px solid #ccc", borderRadius:20, padding:"0.2rem"}}>
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                             <MenuIcon sx={{ mr:1, color:"#ccc" }}></MenuIcon>
@@ -81,7 +74,7 @@ export default function Header() {
                     <MenuItem key="signUp" onClick={handleOpenSignUp}>
                         <Typography textAlign="center" fontWeight="bolder">회원가입</Typography>
                     </MenuItem>
-                    <MenuItem key="logIn" onClick={handleOpenSignIn}>
+                    <MenuItem key="logIn" onClick={handleOpenSignUp}>
                         <Typography textAlign="center">로그인</Typography>
                     </MenuItem>
                     <Divider />
@@ -96,7 +89,7 @@ export default function Header() {
                 
             </Container>
         </AppBar>
-        <SignUpModal open={signUp} setOpen = {handleCloseSignUp} />
+        <Sign open={signUp} setOpen = {handleCloseSignUp} />
     </header>
     )
 }

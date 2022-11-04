@@ -2,20 +2,37 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import styles from "./signup.module.css";
-import { Avatar, Checkbox, Container, CssBaseline, Divider, FormControlLabel, Grid, Link, TextField } from '@mui/material';
+import CloseIcon from "@mui/icons-material/Close";
+import { Container, CssBaseline, Divider, FormControlLabel, Grid, Link, TextField } from '@mui/material';
+import { SignCotext } from '.';
 
-type props = {onClickNext:()=>void; setEmail:(email:string)=>void}
+type props = {onSubmit:(user: string, type: boolean)=>void;}
 
-export default function SignUpForm({onClickNext, setEmail}:props) {
+export default function SignHome({onSubmit}:props) {
+  const ctx = React.useContext(SignCotext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const defaultEmail:any = data.get('email');
-    setEmail(defaultEmail);
-    onClickNext();
-    console.log({
+
+    fetch("/api/account", {
+        method: "post",
+        body: JSON.stringify({email:defaultEmail}),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(!data.result) {
+        return alert("이메일 형식이 잘못됐습니다.");
+      }      
+      if(!data.type) {
+        onSubmit(data.email, data.type);
+      } else {
+        onSubmit(data.email, data.type);
+      }
     });
   };
 
@@ -28,12 +45,17 @@ export default function SignUpForm({onClickNext, setEmail}:props) {
           alignItems: 'center',
         }}
       >
+        <CloseIcon
+          fontSize="small"
+          sx={{ position: "absolute", right: 24, top:24, cursor:"pointer" }}
+          onClick={ctx?.onClose}
+        />
         <Typography component="h2" variant="inherit">
           로그인 또는 회원가입
         </Typography>
         <Divider style={{width:'100%'}}/>              
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2 }}>
-          <Typography component="h2" variant="inherit" sx={{mb:1}}>
+          <Typography component="h3" variant="inherit" sx={{mb:1, textAlign:"center"}}>
             여행마렵다에 오신 것을 환영합니다.
           </Typography>
           <Grid container spacing={2}>
@@ -52,7 +74,7 @@ export default function SignUpForm({onClickNext, setEmail}:props) {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} className={styles.submitButton}>
             계속
           </Button>
-          <Divider>또는</Divider>
+          <Divider sx={{mb:1}}>또는</Divider>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Button type="button" fullWidth variant="contained" className={styles.snsButtonStyle}>

@@ -4,7 +4,7 @@ import Footer from "./footer"
 import Header from "./header"
 import Nav from "./nav"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useSession } from "next-auth/react";
 const theme = createTheme({
     palette: {
       primary: {
@@ -16,6 +16,9 @@ const theme = createTheme({
     },
 })
 export default function Layout ({children}: {children: ReactNode}) {
+    const { data, status } = useSession();
+    console.log("data: ", data);
+    console.log("status: ", status);
     return(
         <ThemeProvider theme={theme}>
         <Container maxWidth={false}>
