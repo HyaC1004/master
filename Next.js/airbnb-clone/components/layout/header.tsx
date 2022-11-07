@@ -3,13 +3,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import React from "react";
 import Search from "./search";
 import Sign from "../ui/sign";
+import { signOut, useSession } from "next-auth/react";
 
 
 export default function Header() {
+    const { data, status } = useSession();
     const settings = ['숙소 호스트 되기', '체험 호스팅하기', '도움!!'];
     const [signUp, setSignUp] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
+    // console.log(data);
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -52,7 +54,7 @@ export default function Header() {
                     <div style={{backgroundColor:"white",border:"1px solid #ccc", borderRadius:20, padding:"0.2rem"}}>
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                             <MenuIcon sx={{ mr:1, color:"#ccc" }}></MenuIcon>
-                            <Avatar alt="" src="" />
+                            <Avatar alt="" src={data?.user?.image ?? ""} />
                         </IconButton>
                     </div>       
                     </Tooltip>
@@ -71,12 +73,25 @@ export default function Header() {
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUserMenu}
                     >
-                    <MenuItem key="signUp" onClick={handleOpenSignUp}>
-                        <Typography textAlign="center" fontWeight="bolder">회원가입</Typography>
-                    </MenuItem>
-                    <MenuItem key="logIn" onClick={handleOpenSignUp}>
-                        <Typography textAlign="center">로그인</Typography>
-                    </MenuItem>
+                    {
+                        status==="authenticated" ? 
+                        (<div>
+                            <MenuItem key="profile" onClick={() => setAnchorElUser(null)}>
+                                <Typography textAlign="center" fontWeight="bolder">프로필</Typography>
+                            </MenuItem>
+                            <MenuItem key="logOut" onClick={() => signOut()}>
+                                <Typography textAlign="center">로그아웃</Typography>
+                            </MenuItem>
+                        </div>):
+                        (<div>
+                            <MenuItem key="signUp" onClick={handleOpenSignUp}>
+                                <Typography textAlign="center" fontWeight="bolder">회원가입</Typography>
+                            </MenuItem>
+                            <MenuItem key="logIn" onClick={handleOpenSignUp}>
+                                <Typography textAlign="center">로그인</Typography>
+                            </MenuItem>
+                        </div>)
+                    }
                     <Divider />
                     {settings.map((setting) => (
                         <MenuItem key={setting} onClick={handleCloseUserMenu}>

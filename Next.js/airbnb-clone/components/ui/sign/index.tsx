@@ -9,6 +9,7 @@ import SignUp from './sign-up';
 import SignIn from './sign-in';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SignAuth from './sign-auth';
+import { useSession } from 'next-auth/react';
 
 const theme = createTheme({
   palette: {
@@ -36,11 +37,15 @@ export const SignCotext = React.createContext<SingContextType | null>(null);
 export default function SignModal({open, setOpen}: props) {
   const [activeMode, setActiveMode] = React.useState<SignMode>("SIGNHOME");
   const [email, setEmail] = React.useState("");
+  const {data, status} = useSession();
   React.useEffect(()=>{
     if(!open) {
       setActiveMode("SIGNHOME");
     }
-  },[open])
+    if(status==="authenticated") {
+      setOpen();
+    }
+  },[open,status])
   const signInHandle = (user: string, type: boolean) => {
     setEmail(user);
     if (type) {

@@ -33,7 +33,7 @@ export default function Nav() {
 
     return(
         <Tabs value={value} onChange={handleChange} 
-            variant="scrollable" aria-label="icon label tabs example" className="navTabs">
+            variant="scrollable"  className="navTabs">
             {sections.map((section)=>(
                 <Tab key={section.title} icon={section.icon} label={section.title} />
             ))}

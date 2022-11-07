@@ -15,8 +15,8 @@ export default function SignIn({loginEmail}: props) {
   const { data, status } = useSession();    
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const pw = data.get('password');
+    const userData = new FormData(event.currentTarget);
+    const pw = userData.get('password');
     if(pw){
       const result = (await signIn("credentials", {
         redirect: false,
@@ -27,6 +27,7 @@ export default function SignIn({loginEmail}: props) {
       if (result) {
         console.log("data: ", data);
         console.log("status: ", status);
+        ctx?.onClose()
       } else {
         console.log("로그인 실패")
       }

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import styles from "./signup.module.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { Container, CssBaseline, Divider, FormControlLabel, Grid, Link, TextField } from '@mui/material';
+import { Container, Divider, Grid, TextField } from '@mui/material';
 import { SignCotext } from '.';
 
 type props = {onSubmit:(user: string, type: boolean)=>void;}
@@ -35,7 +35,33 @@ export default function SignHome({onSubmit}:props) {
       }
     });
   };
-
+  const googleLoginHandle =()=> {
+    const topX = screenX + screen.width / 2 - 400 / 2;
+    const topY = screenY + screen.height / 2 - 550 / 2;
+    window.open(
+      "http://localhost:3000/popup/google",
+      "popup",
+      `top=${topY},left=${topX},width=400,height=550`
+    );
+  }
+  const facebookLoginHandle =()=> {
+    const topX = screenX + screen.width / 2 - 500 / 2;
+    const topY = screenY + screen.height / 2 - 650 / 2;
+    window.open(
+      "http://localhost:3000/popup/facebook",
+      "popup",
+      `top=${topY},left=${topX},width=500,height=650`
+    );
+  }
+  const discordLoginHandle = () =>{
+    const topX = screenX + screen.width / 2 - 500 / 2;
+    const topY = screenY + screen.height / 2 - 650 / 2;
+    window.open(
+      "http://localhost:3000/popup/discord",
+      "popup",
+      `top=${topY},left=${topX},width=500,height=650`
+    );
+  }
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -77,25 +103,21 @@ export default function SignHome({onSubmit}:props) {
           <Divider sx={{mb:1}}>또는</Divider>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Button type="button" fullWidth variant="contained" className={styles.snsButtonStyle}>
+              <Button type="button" onClick={facebookLoginHandle} fullWidth variant="contained" className={styles.snsButtonStyle}>
                 페이스북으로 로그인하기
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Button type="button" fullWidth variant="contained" className={styles.snsButtonStyle}>
+              <Button type="button" onClick={googleLoginHandle} fullWidth variant="contained" className={styles.snsButtonStyle}>
                 구글로 로그인하기
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Button type="button" fullWidth variant="contained" className={styles.snsButtonStyle}>
-                Apple 계정으로 계속하기
+              <Button type="button" onClick={discordLoginHandle} fullWidth variant="contained" className={styles.snsButtonStyle}>
+                디스코드로 로그인하기
               </Button>
             </Grid>
-            <Grid item xs={12}>
-              <Button type="button" fullWidth variant="contained" className={styles.snsButtonStyle}>
-                전화번호로 로그인하기
-              </Button>
-            </Grid>
+            
           </Grid>
         </Box>
       </Box>

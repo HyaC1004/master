@@ -29,7 +29,7 @@ const theme = createTheme({
   }
 });
 
-export default function Album() {
+export default function Home() {
   return (
     <ThemeProvider theme={theme}>   
       <Container sx={{ py: 2 }} maxWidth="lg">
@@ -64,3 +64,5 @@ export default function Album() {
     </ThemeProvider>
   );
 }
+
+Home.isInLayout = true;
