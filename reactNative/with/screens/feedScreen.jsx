@@ -28,6 +28,7 @@ function FeedScreen() {
             // console.log("recv",feeds);
         }();
     },[isFocused])
+    
     const onAddItemHandle = () => {
         navigation.navigate("feedWrite");
     }

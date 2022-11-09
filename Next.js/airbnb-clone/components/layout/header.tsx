@@ -11,7 +11,7 @@ export default function Header() {
     const settings = ['숙소 호스트 되기', '체험 호스팅하기', '도움!!'];
     const [signUp, setSignUp] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    // console.log(data);
+    // console.log(data?.user?.email);
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };

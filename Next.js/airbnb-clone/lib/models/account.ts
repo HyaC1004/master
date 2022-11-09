@@ -3,7 +3,7 @@ import { AccountData } from "../../interface/account";
 
 const accountSchema = new mongoose.Schema<AccountData>({
     email: {type: String, required: true },
-    password: {type: String, required: true }, // bycript
+    password: {type: String, required: true }, // bcrypt
     firstName: {type: String, required: true },
     lastName: {type: String, required: true },
     birth: {type: String, required: true },

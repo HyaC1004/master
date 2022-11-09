@@ -9,29 +9,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main:'rgb(224, 95, 95)',
-      light:'#fff',
-      dark: '#002884',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000',
-    } 
-  },
-  typography: {
-    fontFamily: 'GangwonEdu'
-  }
-});
 
 export default function Home() {
   return (
-    <ThemeProvider theme={theme}>   
       <Container sx={{ py: 2 }} maxWidth="lg">
         <Grid container spacing={3}>
           {cards.map((card) => (
@@ -61,7 +41,6 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
-    </ThemeProvider>
   );
 }
 

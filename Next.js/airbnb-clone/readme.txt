@@ -15,3 +15,24 @@
                      - 회원가입 유도 - 가입 처리 - 기본정보+ 계정상태:잠김
                                     - 약관 동의? { 예 - 계정활성화             
                                                   아니오 / 취소 - 계정잠금 그대로
+# Day 3, 4
+    : SNS 로그인 구현
+        - Discord, Google, Facebook
+
+# Day 5
+    : 숙소 등록 절차
+        /hosting : 호스트 모드의 웰컴 페이지 (보류)
+        /become-a-host: 숙소 등록쪽 웰컴페이지
+            - 숙소 등록 완료하기: 
+            - 숙소 등록 시작하기: 
+        /become-a-host/intro: 숙소 등록 첫 화면
+        /become-a-host/property-type-group
+        /become-a-host/755958618798513774/property-type
+                      /755958618798513774 [roomid]
+        /become-a-host/property-type-group/privacy-type
+
+        /pages/become-a-host/index
+                            /intro
+                            /property-type-group ==> 
+                            /[id]/
+
