@@ -23,6 +23,7 @@ const theme = createTheme({
   typography: {
     fontFamily: 'GangwonEdu'
   }
+  
 });
 
 export default function App({ Component, pageProps }: AppProps) {

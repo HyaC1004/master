@@ -6,13 +6,17 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useSession } from "next-auth/react";
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 
 export default function Home() {
-  return (
+  const { data, status } = useSession();
+  return (    
       <Container sx={{ py: 2 }} maxWidth="lg">
+        <p>
+          {status} - {JSON.stringify(data)}
+        </p>
         <Grid container spacing={3}>
           {cards.map((card) => (
             <Grid item key={card} xs={12} sm={6} md={3}>

@@ -3,8 +3,8 @@ import { HostingData } from "../../interface/hosting";
 
 
 const hostingSchema = new mongoose.Schema<HostingData>({
-    // email: {type: String, required: true },
-    group: {type: String, required: true },
+    email: String,
+    group: String,
     property: String,
     privacy: String,
     location: String,

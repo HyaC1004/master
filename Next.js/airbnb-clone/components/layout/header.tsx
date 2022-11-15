@@ -1,14 +1,17 @@
-import { AppBar, Avatar, Box, Container, Divider, IconButton,Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, Divider, IconButton,Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import React from "react";
 import Search from "./search";
 import Sign from "../ui/sign";
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 
 export default function Header() {
     const { data, status } = useSession();
-    const settings = ['숙소 호스트 되기', '체험 호스팅하기', '도움!!'];
+    const router = useRouter();
+    const settings = ['체험 호스팅하기', '도움!!'];
     const [signUp, setSignUp] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     // console.log(data?.user?.email);
@@ -48,8 +51,8 @@ export default function Header() {
                 </Typography>
 
                 <Search />
-
-                <Box sx={{ flexGrow: 0  }}>
+                
+                <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open Menu">             
                     <div style={{backgroundColor:"white",border:"1px solid #ccc", borderRadius:20, padding:"0.2rem"}}>
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -81,6 +84,9 @@ export default function Header() {
                             </MenuItem>
                             <MenuItem key="logOut" onClick={() => signOut()}>
                                 <Typography textAlign="center">로그아웃</Typography>
+                            </MenuItem>
+                            <MenuItem key="hosting" onClick={() => router.push("/become-a-host/")}>
+                                <Typography textAlign="center" fontWeight="bolder">숙소 호스트되기</Typography>
                             </MenuItem>
                         </div>):
                         (<div>

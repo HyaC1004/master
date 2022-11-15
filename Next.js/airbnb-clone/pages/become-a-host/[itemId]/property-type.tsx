@@ -4,22 +4,41 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-const example = [0,1,2]
+import { GetServerSideProps } from "next";
+import Property, { PropertyData } from "../../../lib/models/property";
+import PropertyButton from "../../../components/hosting/propertyButton";
+import Hosting from "../../../lib/models/hosting";
 
-export default function PropertyType() {
+export default function PropertyType(props: {
+  groupItems:any;
+}) {
     const router = useRouter();
-    const [group, setGroup] = React.useState<string>("");    
+    const [value, setValue] = React.useState<string>(""); 
+    // console.log("props", props.groupItems.types);
+    // console.log("쿼리",router.query);
     const nextStepHandle = () => {
-        // 데이터 생성 fetch...===>  생성된 데이터의 ID를 얻어와야 함
-        const itemId = Date.now();
-        console.log(group);
-        // router.push("/become-a-host/" + itemId + "/property-type");
+      const { itemId } = router.query;
+      fetch("/api/hosting", {
+        method: "post",
+        body: JSON.stringify({property: value, _id: itemId}),
+        headers: {
+            "Content-type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.result === true) {
+          router.push("/become-a-host/" + data?.data._id + "/privacy-type");
+        } else {
+        }
+      });
     };
   
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <Grid
+        item
         md={6}
         sx={{
           display: "flex",
@@ -54,103 +73,17 @@ export default function PropertyType() {
                 justifyContent:"center"
             }}       
         >         
-          {example.map((one)=>{
-            return(
-              <ToggleButton
-                sx={{ width: "70%", height: "5rem", px: 2, mb:5 }}
-                value={"아파트"}             
-                onClick={() => setGroup("아파트")}
-                selected={group === "아파트"}
-              >
-              <Box
-                  sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  alignItems: "center",
-                  flexDirection:"column"
-                  }}
-              >
-                  <Typography variant="h6">아파트</Typography>                
-              </Box>
-              </ToggleButton>
-            )
-          })}
-            <ToggleButton
-                sx={{ width: "70%", height: "5rem", px: 2, mb:5 }}
-                value={"아파트"}             
-                onClick={() => setGroup("아파트")}
-                selected={group === "아파트"}
-            >
-            <Box
-                sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-                alignItems: "center",
-                flexDirection:"column"
-                }}
-            >
-                <Typography variant="h6">아파트</Typography>                
-            </Box>
-            </ToggleButton>
-            <ToggleButton
-            sx={{ width: "70%", height: "5rem", px: 2, mb:5 }}             
-            value={"주택"}
-            onClick={() => setGroup("주택")}
-            selected={group === "주택"}
-            >
-            <Box
-                sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-                alignItems: "center",
-                flexDirection:"column"
-                }}
-            >
-                <Typography variant="h6">주택</Typography>                
-            </Box>
-            </ToggleButton>
-            <ToggleButton
-            sx={{ width: "70%", height: "5rem", px: 2, mb:5 }}
-            value={"별채"}             
-            onClick={() => setGroup("별채")}
-            selected={group === "별채"}
-            >
-            <Box
-                sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-                alignItems: "center",
-                flexDirection:"column"
-                }}
-            >
-                <Typography variant="h6">별채</Typography>
-                
-            </Box>
-            </ToggleButton>
-            <ToggleButton
-            sx={{ width: "70%", height: "5rem", px: 2, mb:5 }}             
-            value="부티크 호텔"
-            onClick={() => setGroup("부티크 호텔")}
-            selected={group === "부티크 호텔"}
-            >
-            <Box
-                sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-                alignItems: "center",
-                flexDirection:"column"
-                }}
-            >
-                <Typography variant="h6">부티크 호텔</Typography>
-                
-            </Box>
-            </ToggleButton>
-            </Box>
+          {props.groupItems.types.map((one:any) => (
+              <PropertyButton
+                onClick={(nValue) => setValue(nValue)}
+                value={one.property}
+                description = {one.description}
+                compare={value}
+                key={one.property}
+              />
+          ))}
+            
+          </Box>
             <Box
                 sx={{
                     my: 2,
@@ -161,10 +94,26 @@ export default function PropertyType() {
                 }}
             >          
                 <Button onClick={()=>router.back()}>뒤로</Button>
-                <Button onClick={nextStepHandle}>시작하기</Button>          
+                <Button onClick={nextStepHandle}>다음</Button>          
             </Box>  
                     
       </Grid>
     </Grid>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findOne({itemId:itemId});
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
+  const groupItems = await Property.findOne({ group: hosting?.group });
+  return {
+    props: {
+      groupItems: JSON.parse(JSON.stringify(groupItems)),
+    },
+  };
+};

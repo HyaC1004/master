@@ -5,7 +5,12 @@ export default function mongooseInit() {
     if (!MONGO_URI) {
         throw new Error("Please check MONGO_URI in .env.local");
     }
-    mongoose.connect(MONGO_URI, { dbName: "airbnbClone" });
+    mongoose.connect(MONGO_URI, { dbName: "airbnbClone" })
+        .then(() => console.log("server - mongoose initialized"))
+        .catch(() => {
+        console.log("Error - moongose connect failed");
+        process.exit(-1);
+        });
 }
 
 

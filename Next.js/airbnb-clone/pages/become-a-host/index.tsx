@@ -16,7 +16,6 @@ export default function BecomeAHost() {
     const router = useRouter();
     const nextStepHandle = () => {
         // 데이터 생성 fetch...===>  생성된 데이터의 ID를 얻어와야 함
-        const itemId = Date.now();
         router.push("/become-a-host/property-type-group");
     };
   return (
@@ -45,7 +44,7 @@ export default function BecomeAHost() {
             alignItems: "flex-end",
           }}
         >          
-            <Button>나가기</Button>          
+            <Button onClick={() => router.back()}>나가기</Button>          
         </Box>
         <Box
           sx={{

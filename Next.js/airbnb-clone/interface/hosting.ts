@@ -1,8 +1,11 @@
+import mongoose from "mongoose";
+
 export interface HostingData {
-    email?: string;
+    _id: mongoose.Types.ObjectId;
+    email: string;
     group: string;    
-    property?: string;
-    privacy?: string;
+    property: string;
+    privacy: string;
     location?: string;
     image?: string;
 }

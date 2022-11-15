@@ -21,7 +21,7 @@ export default function UpkindPage(props: Props) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async (context) => {
+export const getStatics: GetStaticPaths = async (context) => {
   const modes = ["dog", "cat", "etc"];
 
   return {
