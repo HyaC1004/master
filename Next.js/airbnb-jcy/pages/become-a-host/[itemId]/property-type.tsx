@@ -10,6 +10,8 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Property, { PropertyData } from "../../../lib/models/property";
 import Hosting from "../../../lib/models/hosting";
 import HostingToggleButton from "../../../components/hosting/hostingToggleButton";
+import HostingProgress from "../../../components/hosting/hostingProgress";
+import HostingNavigator from "../../../components/hosting/hostingNavigator";
 
 export default function PropertyTypePage(props: { groupItem: PropertyData }) {
   console.log(props);
@@ -50,19 +52,9 @@ export default function PropertyTypePage(props: { groupItem: PropertyData }) {
           다음 중 숙소를 가장 잘 설명하는 문구는 무엇인가요?
         </Typography>
       </Grid>
-      <Grid item md={6}>
+      <Grid item md={6} sx={{width:"100%"}}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              zIndex: 2000,
-              width: "90%",
-              bgcolor: "white",
-            }}
-          >
-            <Slider value={20} size="small" color={"secondary"} />
-          </Box>
+          <HostingProgress value={20} />
           <Box
             sx={{
               display: "flex",
@@ -85,31 +77,10 @@ export default function PropertyTypePage(props: { groupItem: PropertyData }) {
               />
             ))}
           </Box>
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              zIndex: 2000,
-              bgcolor: "white",
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100% ",
-              p: 1.5,
-              borderTop: "1px solid #dedede",
-            }}
-          >
-            <Button variant="text" color="info" onClick={() => router.back()}>
-              뒤로
-            </Button>
-            <Button
-              variant="contained"
-              color="info"
-              disabled={value === ""}
-              onClick={nextStepHandle}
-            >
-              다음
-            </Button>
-          </Box>
+          <HostingNavigator
+            disabled={value === ""}
+            onNextClick={nextStepHandle}
+          />
         </Box>
       </Grid>
     </Grid>

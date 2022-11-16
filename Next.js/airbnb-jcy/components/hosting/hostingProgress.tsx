@@ -7,7 +7,7 @@ function HostingProgress(props: { value: number }) {
         position: "absolute",
         top: 0,
         zIndex: 2000,
-        width: "90%",
+        width: "100%",
       }}
     >
       <Slider value={props.value} size="small" color={"secondary"} />

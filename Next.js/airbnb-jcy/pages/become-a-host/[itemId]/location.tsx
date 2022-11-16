@@ -1,76 +1,115 @@
-import * as React from "react";
-import {
-  Box,
-  Grid,
-  TextField,
-  InputAdornment,
-  Typography,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Autocomplete
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import Hosting from "../../../lib/models/hosting";
 import { createStaticMapURI } from "../../../lib/helper/map-api";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+
 import HostingProgress from "../../../components/hosting/hostingProgress";
 import HostingNavigator from "../../../components/hosting/hostingNavigator";
+import LocationStepper from "../../../components/hosting/location/locationStepper";
+import { createContext } from "react";
 
-export default function Location(props: { privacies: string[] }) {
-  const router = useRouter();
-  const [value, setValue] = React.useState<string>("");
-  const [inputValue, setInputValue] = React.useState<string>("");  
-  const [predictions, setPredictions] = React.useState<any[] | null>([]);
-  const [locationModal, setLocationModal] = React.useState(false);
-
-  React.useEffect(() => {
-    const timerId = setTimeout(async() => {
-      // console.log(inputValue, "!!!");
-      if(inputValue.trim().length === 0 ) {
-        setPredictions([]);
-        return;
-      }
-      const endPoint =`/google/autocomplete?input=${inputValue}&key=AIzaSyCp6ntFLjQNdUVEIQ_FUTsyJn79NHh2xww&language=ko&components=country:kr`   
-      const response = await fetch(endPoint);
-      const json = await response.json();
-      setPredictions(json.predictions);
-      console.log(predictions);
-    }, 500);
-
-    return () => {
-      // console.log(timerId + ".. cancled");
-      clearTimeout(timerId);
-    };
-  }, [inputValue]);
-  const handleOpenModal = () => {
-    setLocationModal(true);
+type LoocationContextData = {
+  step: number;
+  uri: string;
+  placeId?: string;
+  address: {
+    state?: string;
+    city?: string;
+    street?: string;
+    apt?: string;
+    zipCode?: string;
+    lat?: number;
+    lng?: number;
   };
+  changeStep: (step: number) => void;
+  changeURI: (lat: number, lng: number) => void;
+  changeAddress: (address: LoocationContextData["address"]) => void;
+  changePlaceId: (id: string) => void;
+  setValue: (value:string)=>void;
+};
+
+export const LocationContext = createContext<LoocationContextData | null>(null);
+
+const defaultUri = createStaticMapURI();
+
+export default function Location() {
+  const router = useRouter();
+  const [value, setValue] = useState<string>("");
+
+  const [step, setStep] = useState(1);
+  const [uri, setURI] = useState(defaultUri);
+  const [placeId, setPlaceId] = useState<string>("");
+  const [address, setAddress] = useState<LoocationContextData["address"]>({});
+  const changeStep = (newStep: number) => {
+    setStep(newStep);
+  };
+  const changeURI = (lat: number, lng: number) => {
+    const newURI = createStaticMapURI(lat, lng);
+    setURI(newURI);
+  };
+  const changePlaceId = async (id: string) => {
+    setPlaceId(id);
+    if (!id) {
+      return setAddress({
+        apt: "",
+        city: "",
+        state: "",
+        street: "",
+        zipCode: "",
+      });
+    }
+    const endPoint = `/google/details?place_id=${id}&key=AIzaSyCp6ntFLjQNdUVEIQ_FUTsyJn79NHh2xww&language=ko&fields=address_component,geometry`;
+    const response = await fetch(endPoint);
+    const json = await response.json();
+    // console.log("detail ... ", json);
+    const location = json.result.geometry.location;
+    const uri = createStaticMapURI(location.lat, location.lng);
+    setURI(uri);
+    const addressComponent: any[] = json.result.address_components;
+    console.log(addressComponent);
+    addressComponent.reverse();
+    // 파싱 ===
+    const parsed: LoocationContextData["address"] = {
+      zipCode: addressComponent[0].long_name,
+      lat: location.lat,
+      lng: location.lng,
+      state: addressComponent[2].long_name,
+      city: addressComponent[3].long_name,
+      street:
+        addressComponent[4].long_name + " " + addressComponent[5]?.long_name,
+    };
+    changeAddress(parsed);
+  };
+  const changeAddress = (fragment: LoocationContextData["address"]) => {
+    setAddress((current) => {
+      return { ...current, ...fragment };
+    });
+  };
+
   const nextStepHandle = async () => {
+    // console.log(address);
     const { itemId } = router.query;
     const response = await fetch(
-      "/api/hosting/updateStepData?opertion=addPrivacy",
+      "/api/hosting/updateStepData?opertion=addLocation",
       {
         method: "POST",
-        body: JSON.stringify({ privacy: value, _id: itemId }),
+        body: JSON.stringify({ location: address, _id: itemId }),
         headers: { "Content-type": "application/json" },
       }
     );
     const json = await response.json();
+    // alert(response.status);
 
     if (response.status === 200) {
-      router.push("/become-a-host/" + json?.data._id + "/location");
+      router.push("/become-a-host/" + json?.data._id + "/floor-plan");
     } else {
     }
   };
 
-  const uri = createStaticMapURI();
   return (
-    <div>
-    <Grid container component="main" sx={{ height: "100vh" }}>
+    <Grid container component="main" sx={{ height: "100vh"  }}>
       <Grid
         item
         md={6}
@@ -79,66 +118,31 @@ export default function Location(props: { privacies: string[] }) {
           alignItems: "center",
           backgroundColor: "#1f385c",
           p: 7,
+          width:"100%"
         }}
       >
         <Typography component="h1" variant="h3" color={"white"}>
           숙소 위치는 어디인가요?
         </Typography>
       </Grid>
-      <Grid item md={6}>
+      <Grid item md={6} sx={{width:"100%"}}>
         <Box sx={{ height: "100vh", position: "relative" }}>
           <HostingProgress value={40} />
-          <Box sx={{ width: "100%", height: "100%" }}>
-            <Image alt="기본위치" src={uri} fill />
-          </Box>
-          <Box
-            sx={{
-              position: "absolute",
-              top: 160,
-              width: "100%",
-              zIndex: 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
+          <LocationContext.Provider
+            value={{
+              step,
+              uri,
+              address,
+              placeId,
+              changeStep,
+              changeURI,
+              changePlaceId,
+              changeAddress,
+              setValue
             }}
           >
-            <TextField
-              onChange={(evt) => {
-                setInputValue(evt.currentTarget.value);
-              }}
-              value={inputValue}
-              variant="outlined"
-              placeholder="주소를 입력하세요."
-              sx={{ bgcolor: "#ffffff", width: "80%" }}
-              color={"info"}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LocationOnIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {predictions && (
-              <List
-                dense={true}
-                sx={{
-                  zIndex: 2,
-                  bgcolor: "white",
-                  width: "80%",
-                  borderRadius: "5px",
-                  border: "1px solid #cccccc",
-                }}
-              >
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary="Trash" secondary="Trash items" />
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            )}
-          </Box>
+            <LocationStepper />
+          </LocationContext.Provider>
           <HostingNavigator
             disabled={value === ""}
             onNextClick={nextStepHandle}
@@ -146,8 +150,6 @@ export default function Location(props: { privacies: string[] }) {
         </Box>
       </Grid>
     </Grid>
-    <Location open={locationModal} setOpen = {handleOpenModal} />
-    </div>
   );
 }
 

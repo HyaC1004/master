@@ -11,6 +11,11 @@ const nextConfig = {
     return [{
       source: "/google/autocomplete",
       destination: "https://maps.googleapis.com/maps/api/place/autocomplete/json"
+    },
+    {
+      source: "/google/details",
+      destination: "https://maps.googleapis.com/maps/api/place/details/json"
+
     }]
   }
 }

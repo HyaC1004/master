@@ -10,6 +10,8 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Property, { PropertyData } from "../../../lib/models/property";
 import Hosting from "../../../lib/models/hosting";
 import HostingToggleButton from "../../../components/hosting/hostingToggleButton";
+import HostingProgress from "../../../components/hosting/hostingProgress";
+import HostingNavigator from "../../../components/hosting/hostingNavigator";
 
 export default function PrivacyType(props: { privacies: string[] }) {
   console.log(props);
@@ -50,19 +52,9 @@ export default function PrivacyType(props: { privacies: string[] }) {
           게스트가 머무르게 될 숙소의 종류가 무엇인가요?
         </Typography>
       </Grid>
-      <Grid item md={6}>
+      <Grid item md={6} sx={{width:"100%"}}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              zIndex: 2000,
-              width: "90%",
-              bgcolor: "white",
-            }}
-          >
-            <Slider value={30} size="small" color={"secondary"} />
-          </Box>
+          <HostingProgress value={30} />
           <Box
             sx={{
               display: "flex",
@@ -84,31 +76,10 @@ export default function PrivacyType(props: { privacies: string[] }) {
               />
             ))}
           </Box>
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              zIndex: 2000,
-              bgcolor: "white",
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100% ",
-              p: 1.5,
-              borderTop: "1px solid #dedede",
-            }}
-          >
-            <Button variant="text" color="info" onClick={() => router.back()}>
-              뒤로
-            </Button>
-            <Button
-              variant="contained"
-              color="info"
-              disabled={value === ""}
-              onClick={nextStepHandle}
-            >
-              다음
-            </Button>
-          </Box>
+          <HostingNavigator
+            disabled={value === ""}
+            onNextClick={nextStepHandle}
+          />
         </Box>
       </Grid>
     </Grid>

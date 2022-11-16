@@ -7,7 +7,7 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const token = await getToken({ req });
-  console.log(token);
+  // console.log(token);
   // const { operation } = req.query;
   try {
     if (!token?.email) {
@@ -16,8 +16,8 @@ export default async function handle(
     //console.log("updateStepData Handle --- ", { ...item, owner: token?.email });
 
     const item: HostingData = req.body;
-  
     let resultItem;
+    
     
     if (!item._id) {
       resultItem = await Hosting.create({ ...item, owner: token?.email });
@@ -25,6 +25,7 @@ export default async function handle(
       resultItem = await Hosting.findByIdAndUpdate(item._id, item, {
         returnDocument: "after",
       });
+      console.log(item,resultItem);
     }
     return res.status(200).json({ result: true, data: resultItem });
   } catch (e: any) {
