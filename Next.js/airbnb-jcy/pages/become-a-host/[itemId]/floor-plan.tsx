@@ -50,6 +50,7 @@ export default function FloorPlan() {
           alignItems: "center",
           backgroundColor: "#1f385c",
           p: 7,
+          width:'100%'
         }}
       >
         <Typography component="h1" variant="h3" color={"white"}>

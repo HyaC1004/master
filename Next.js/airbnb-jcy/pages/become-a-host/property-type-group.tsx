@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Property, { PropertyData } from "../../lib/models/property";
 import HostingToggleButton from "../../components/hosting/hostingToggleButton";
+import HostingProgress from "../../components/hosting/hostingProgress";
 
 export default function BecomeAHostPropertyTypeGroup({
   datas,
@@ -46,17 +47,7 @@ export default function BecomeAHostPropertyTypeGroup({
       </Grid>
       <Grid item md={6}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              zIndex: 2000,
-              width: "90%",
-              bgcolor: "white",
-            }}
-          >
-            <Slider value={10} size="small" color={"secondary"} />
-          </Box>
+          <HostingProgress value={0} />
           <Box
             sx={{
               display: "flex",

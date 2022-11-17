@@ -20,7 +20,11 @@ export interface HostingData {
     beds: number; 
     bedrooms: number;
     bathrooms: number;
-  }
+  };
+  facilities: Array<String>;
+  safeItems: Array<String>;
+  title: string;
+  description: string;
 }
 
 const hostingSchema = new mongoose.Schema<HostingData>({
@@ -42,7 +46,11 @@ const hostingSchema = new mongoose.Schema<HostingData>({
     beds: Number, 
     bedrooms: Number,
     bathrooms: Number
-  }
+  },
+  facilities: Array,
+  safeItems: Array,
+  title: String,
+  description: String
 });
 
 const Hosting: mongoose.Model<HostingData> =
