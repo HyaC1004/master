@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { FormControl, TextField, OutlinedInput, InputAdornment, FormHelperText } from "@mui/material";
+import { FormControl, TextField, OutlinedInput, InputAdornment, FormHelperText, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import Hosting from "../../../lib/models/hosting";
@@ -14,19 +14,20 @@ import HostingProgress from "../../../components/hosting/hostingProgress";
 export default function Visibility() {
   // console.log(props);
     const router = useRouter();
-    const [description, setDescription] = React.useState<string>("차분하면서도 스타일이 살아 있는 숙소에서 편안한 휴식을 즐기세요.");
+    const [value, setValue] = React.useState('female');
 
-    const handleDescription = (evt:any) => {
-        setDescription(evt.target.value);
-    }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValue((event.target as HTMLInputElement).value);
+    };
+
  
     const nextStepHandle = async () => {
         const { itemId } = router.query;
         const response = await fetch(
-        "/api/hosting/updateStepData?opertion=addPrivacy",
+        "/api/hosting/updateStepData?opertion=addVisibility",
         {
             method: "POST",
-            body: JSON.stringify({  _id: itemId }),
+            body: JSON.stringify({ visibility:value, _id: itemId }),
             headers: { "Content-type": "application/json" },
         }
         );
@@ -51,25 +52,25 @@ export default function Visibility() {
         }}
       >
         <Typography component="h1" variant="h3" color={"white"}>
-            숙소 설명 작성하기
+          첫 예약의 게스트 조건을 선⁠택⁠해⁠주⁠세⁠요
         </Typography>
       </Grid>
       <Grid item md={6} sx={{width:"100%"}}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <HostingProgress value={90} />
+          <HostingProgress value={85} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              pt: 15,
+              pt: 10,
               gap: 4,
               height: "100vh",
               pb: 10,
             }}
           >
             <Typography variant="h6" sx={{paddingX:4}}>
-             숙소의 특징과 장점을 알려주세요.
+              첫 번째 게스트의 예약을 받은 후에는 누구나 숙소를 예약할 수 있습니다.
             </Typography>
             <Box
                 sx={{
@@ -78,17 +79,20 @@ export default function Visibility() {
                     textAlign:"center",
                 }}
             >
-                <FormControl sx={{ m: 1, width: '100%',maxHeight:"400px" }} variant="outlined">
-                    <TextField 
-                        sx={{fontSize:"2rem"}}
-                        aria-describedby="helper-text"
-                        onChange={handleDescription}
-                        color="secondary"
-                        multiline
-                        defaultValue="차분하면서도 스타일이 살아 있는 숙소에서 편안한 휴식을 즐기세요."                                                
-                        rows={10}
-                    />
-                    <FormHelperText id="helper-text">{description.length}/500</FormHelperText>
+                <FormControl>
+                  <RadioGroup                    
+                    value={value}
+                    onChange={handleChange}
+                  >
+                    <Box sx={{display:'flex', flexDirection:"column", mb:4}}>
+                      <FormControlLabel value="allGuest" control={<Radio color="secondary" />} label="모든 에어비엔비 게스트" />
+                      <FormHelperText>모든 에어비앤비 게스트를 맞이하겠다고 설정하면 예약을 더 빨리 받으실 수 있습니다.</FormHelperText>
+                    </Box>
+                    <Box sx={{display:'flex', flexDirection:"column", mb:4}}>
+                      <FormControlLabel value="authorizedGuest" control={<Radio color="secondary" />} label="경험이 풍부한 게스트" />
+                      <FormHelperText>에어비앤비 이용 실적이 우수하며, 유용한 호스팅 팁도 제공할 수 있는 사람을 첫 번째 게스트로 수락하세요.</FormHelperText>
+                    </Box>
+                  </RadioGroup>
                 </FormControl>
             </Box>  
             

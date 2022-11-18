@@ -3,30 +3,31 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { FormControl, TextField, OutlinedInput, InputAdornment, FormHelperText } from "@mui/material";
+import { InputLabel, OutlinedInput, Input, InputAdornment, FormHelperText } from "@mui/material";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import Hosting from "../../../lib/models/hosting";
 import HostingNavigator from "../../../components/hosting/hostingNavigator";
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import HostingProgress from "../../../components/hosting/hostingProgress";
+import { useRef } from "react";
 
 export default function Price() {
   // console.log(props);
     const router = useRouter();
-    const [description, setDescription] = React.useState<string>("차분하면서도 스타일이 살아 있는 숙소에서 편안한 휴식을 즐기세요.");
-
-    const handleDescription = (evt:any) => {
-        setDescription(evt.target.value);
+    const [price, setPrice] = React.useState(30000);
+    const ref = useRef<HTMLInputElement>(null);
+    const handlePrice = (evt:any) => {
+      setPrice(evt.target.value);      
     }
- 
     const nextStepHandle = async () => {
         const { itemId } = router.query;
         const response = await fetch(
-        "/api/hosting/updateStepData?opertion=addPrivacy",
+        "/api/hosting/updateStepData?opertion=addPrice",
         {
             method: "POST",
-            body: JSON.stringify({  _id: itemId }),
+            body: JSON.stringify({ price:price<10000?10000:price, sale:ref.current!.checked, _id: itemId }),
             headers: { "Content-type": "application/json" },
         }
         );
@@ -52,7 +53,7 @@ export default function Price() {
         }}
       >
         <Typography component="h1" variant="h3" color={"white"}>
-            숙소 설명 작성하기
+          이제 요금을 설정하세요
         </Typography>
       </Grid>
       <Grid item md={6} sx={{width:"100%"}}>
@@ -70,27 +71,36 @@ export default function Price() {
             }}
           >
             <Typography variant="h6" sx={{paddingX:4}}>
-             숙소의 특징과 장점을 알려주세요.
+              이제 요금을 설정하세요
             </Typography>
             <Box
                 sx={{
                     width:"80%",
-                    height:"400px",
                     textAlign:"center",
                 }}
             >
-                <FormControl sx={{ m: 1, width: '100%',maxHeight:"400px" }} variant="outlined">
-                    <TextField 
-                        sx={{fontSize:"2rem"}}
-                        aria-describedby="helper-text"
-                        onChange={handleDescription}
-                        color="secondary"
-                        multiline
-                        defaultValue="차분하면서도 스타일이 살아 있는 숙소에서 편안한 휴식을 즐기세요."                                                
-                        rows={10}
-                    />
-                    <FormHelperText id="helper-text">{description.length}/500</FormHelperText>
-                </FormControl>
+              <Box sx={{display:'flex',padding:2,mb:4, flexDirection:"column", border:"1px solid #ccc", borderRadius:"1rem", backgroundColor:"#E3E3E3"}}>
+                <Box sx={{display:'flex', flexDirection:"row", mb:4, justifyContent:"space-around"}}>
+                <Button onClick={() => setPrice((c) => c - 1000)} disabled={price <= 10000} color="secondary">
+                    <RemoveCircleOutlineOutlinedIcon  />
+                </Button>
+                <OutlinedInput  
+                  type="number"
+                  className="priceText"
+                  color="secondary" sx={{alignItems:"center", orderRadius:"0.5rem", backgroundColor:"white"}} 
+                  value={price<10000 ? 10000 : price} 
+                  onChange={handlePrice}
+                />
+                <Button onClick={() => setPrice((c) => c*1 + 1000)}><AddCircleOutlineOutlinedIcon color="secondary" /></Button>
+                </Box>
+                <Typography variant="subtitle1">이 지역에서 비슷한 숙소의 요금은 보통 ₩29,857~₩49,761 사이입니다.</Typography>
+              </Box>
+              
+                <InputLabel htmlFor="how" sx={{display:'flex',padding:"1rem",flexWrap:"wrap", border:"1px solid #ccc", borderRadius:"1rem", backgroundColor:"#E3E3E3"}} >
+                  <Typography variant="h5" sx={{width:'90%', textAlign:'left'}}>단기간에 예약률을 높이는 법</Typography>
+                  <Input type="checkbox" name="how" id="how" color="secondary" ref={ref} />
+                  <Typography variant="subtitle1" sx={{color:"#333", mt:1}}>첫 게스트 3명에게 20% 할인 혜택을 제공하여 더 빨리 예약을 받아보세요.</Typography>
+                </InputLabel>
             </Box>  
             
           </Box>

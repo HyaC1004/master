@@ -23,9 +23,22 @@ export interface HostingData {
   };
   facilities: Array<String>;
   safeItems: Array<String>;
+  photos: Array<Object>;
   title: string;
   description: string;
+  visibility: string;
+  price: string;
+  sale: boolean;
+  legal: {
+    cctv: boolean;
+    weapon: boolean;
+    beast: boolean;
+  }
 }
+const ImageSchema = new mongoose.Schema({
+  name: String,
+  data: Buffer
+});
 
 const hostingSchema = new mongoose.Schema<HostingData>({
   owner: String,
@@ -49,8 +62,17 @@ const hostingSchema = new mongoose.Schema<HostingData>({
   },
   facilities: Array,
   safeItems: Array,
+  photos: [ImageSchema],
   title: String,
-  description: String
+  description: String,
+  visibility: String,
+  price: String,
+  sale: Boolean,
+  legal: {
+    cctv: Boolean,
+    weapon: Boolean,
+    beast: Boolean
+  }
 });
 
 const Hosting: mongoose.Model<HostingData> =

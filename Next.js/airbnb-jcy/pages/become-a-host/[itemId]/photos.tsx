@@ -22,6 +22,7 @@ export default function Photos() {
   // console.log(props);
     const router = useRouter();
     const [files, setFiles] = React.useState<File[]>([]);
+    const [photos, setPhotos] = React.useState([{}]);
     const addFiles = (frag: File[]) => {
         setFiles((current)=> [...current, ...frag])
     };
@@ -32,21 +33,34 @@ export default function Photos() {
     };
     const nextStepHandle = async () => {
         const { itemId } = router.query;
-        const response = await fetch(
-        "/api/hosting/updateStepData?opertion=addPhoto",
-        {
-            method: "POST",
-            body: JSON.stringify({ photos: files, _id: itemId }),
-            headers: { "Content-type": "application/json" },
-        }
-    );
-    const json = await response.json();
-
-    if (response.status === 200) {
-      router.push("/become-a-host/" + json?.data._id + "/title");
-    } else {
-    }
-  };
+        // console.log("===========",files);
+        const formdata = new FormData();
+        
+        files.forEach((e) => {
+          console.log(e.name)
+          const fileReader = new FileReader()
+          fileReader.onload = (rst) => {
+              // console.log("rst::::",rst.target?.result)
+              setPhotos([{name:e.name, data: rst.target!.result}, ...photos])
+          }
+          fileReader.readAsDataURL(e);
+        });
+        console.log("===========",photos[0]);
+        // const response = await fetch(
+        //     "/api/hosting/updateStepData?opertion=addPhoto",
+        //     {
+        //         method: "POST",
+        //         body: JSON.stringify({ photos: photos, _id: itemId }),
+        //         headers: { "Content-type": "application/json" },
+        //     }
+        // );
+        // const json = await response.json();
+        //     // console.log(json);
+        // if (response.status === 200) {
+        //   router.push("/become-a-host/" + json?.data._id + "/title");
+        // } else {
+        // }
+    };
 
   return (
     <Grid container component="main" sx={{ height: "100vh", overflowY:"scroll" }}>
@@ -89,7 +103,7 @@ export default function Photos() {
                 {files.length !== 0 && <PreviewPhotoBox />}
             </PhotoContext.Provider>
           </Box>
-          <HostingNavigator disabled={files.length>=5?false:true} onNextClick={nextStepHandle} />
+          <HostingNavigator disabled={files.length>=2?false:true} onNextClick={nextStepHandle} />
         </Box>
       </Grid>
     </Grid>

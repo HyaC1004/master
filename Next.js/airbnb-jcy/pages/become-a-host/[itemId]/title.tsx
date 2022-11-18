@@ -57,7 +57,7 @@ export default function Title(props: { privacies: string[] }) {
       </Grid>
       <Grid item md={6} sx={{width:"100%"}}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <HostingProgress value={80} />
+          <HostingProgress value={75} />
           <Box
             sx={{
               display: "flex",

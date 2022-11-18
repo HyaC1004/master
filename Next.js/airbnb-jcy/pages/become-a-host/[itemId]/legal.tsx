@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { FormControl, TextField, OutlinedInput, InputAdornment, FormHelperText } from "@mui/material";
+import { FormControl, TextField,InputLabel,Input, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import Hosting from "../../../lib/models/hosting";
@@ -14,26 +14,31 @@ import HostingProgress from "../../../components/hosting/hostingProgress";
 export default function Legal() {
   // console.log(props);
     const router = useRouter();
-    const [description, setDescription] = React.useState<string>("차분하면서도 스타일이 살아 있는 숙소에서 편안한 휴식을 즐기세요.");
+    const cctvRef = React.useRef<HTMLInputElement>(null);
+    const weaponRef = React.useRef<HTMLInputElement>(null);
+    const beastRef = React.useRef<HTMLInputElement>(null);
 
-    const handleDescription = (evt:any) => {
-        setDescription(evt.target.value);
-    }
- 
     const nextStepHandle = async () => {
         const { itemId } = router.query;
         const response = await fetch(
-        "/api/hosting/updateStepData?opertion=addPrivacy",
+        "/api/hosting/updateStepData?opertion=addLegal",
         {
             method: "POST",
-            body: JSON.stringify({  _id: itemId }),
+            body: JSON.stringify({
+              legal:{
+                cctv: cctvRef.current?.checked,
+                weapon: weaponRef.current?.checked,
+                beast: beastRef.current?.checked,
+              },  
+              _id: itemId 
+            }),
             headers: { "Content-type": "application/json" },
         }
         );
         const json = await response.json();
 
         if (response.status === 200) {
-        router.push("/become-a-host/" + json?.data._id + "/amenities");
+          router.push("/become-a-host/" + json?.data._id + "/publish-celebration");
         } else {
         }
     };
@@ -51,12 +56,12 @@ export default function Legal() {
         }}
       >
         <Typography component="h1" variant="h3" color={"white"}>
-            숙소 설명 작성하기
+          마지막 단계입니다!
         </Typography>
       </Grid>
       <Grid item md={6} sx={{width:"100%"}}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <HostingProgress value={90} />
+          <HostingProgress value={95} />
           <Box
             sx={{
               display: "flex",
@@ -69,29 +74,38 @@ export default function Legal() {
             }}
           >
             <Typography variant="h6" sx={{paddingX:4}}>
-             숙소의 특징과 장점을 알려주세요.
+              숙소에 다음 물품이 있나요?
             </Typography>
             <Box
                 sx={{
                     width:"80%",
-                    height:"400px",
                     textAlign:"center",
                 }}
-            >
-                <FormControl sx={{ m: 1, width: '100%',maxHeight:"400px" }} variant="outlined">
-                    <TextField 
-                        sx={{fontSize:"2rem"}}
-                        aria-describedby="helper-text"
-                        onChange={handleDescription}
-                        color="secondary"
-                        multiline
-                        defaultValue="차분하면서도 스타일이 살아 있는 숙소에서 편안한 휴식을 즐기세요."                                                
-                        rows={10}
-                    />
-                    <FormHelperText id="helper-text">{description.length}/500</FormHelperText>
-                </FormControl>
+            >              
+              <InputLabel htmlFor="cctv" sx={{display:'flex', justifyContent:"space-between", mb:2}}>
+                <Typography variant="h6">
+                    보안 카메라
+                </Typography>
+                <Input sx={{width:'2rem'}} id="cctv" name="cctv" type="checkbox" color="secondary" ref={cctvRef} />
+              </InputLabel>
+              <InputLabel htmlFor="weapon" sx={{display:'flex', justifyContent:"space-between", mb:2}} >
+                <Typography variant="h6">
+                    무기류
+                </Typography>
+                <Input sx={{width:'2rem'}} id="weapon" name="weapon" type="checkbox" color="secondary" ref={weaponRef} />
+              </InputLabel>
+              <InputLabel htmlFor="beast" sx={{display:'flex', justifyContent:"space-between", mb:2}}>
+                <Typography variant="h6">
+                    위험동물
+                </Typography>
+                <Input sx={{width:'2rem'}} id="beast" name="beast" type="checkbox" color="secondary" ref={beastRef} />
+              </InputLabel>
             </Box>  
-            
+            <Divider style={{width:'80%'}}/>
+            <Box sx={{width:"80%"}}>
+              <Typography variant="h4">중요사항</Typography>
+              <Typography>호스팅 하는 지역의 현지 법규를 준수하고 에어비앤비의 차별 금지 정책과 게스트 및 호스트 수수료에 대해 숙지하세요.</Typography>
+            </Box>
           </Box>
           <HostingNavigator disabled={false} onNextClick={nextStepHandle} />
         </Box>
