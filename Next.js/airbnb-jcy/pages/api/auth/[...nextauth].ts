@@ -1,8 +1,9 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
+import DiscordProvider from "next-auth/providers/discord";
 import Account from "../../../lib/models/account";
-import AuthNew from "../../auth/new";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -53,6 +54,14 @@ export const authOptions: NextAuthOptions = {
         "869831580431-v2l9gqfqmtr944nl38kvrrld8sd1lu4l.apps.googleusercontent.com",
       clientSecret: "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",
     }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!
+    }),
+    DiscordProvider({
+      clientId: process.env.DISCORD_CLIENT_ID!,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET!
+    })
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
@@ -81,7 +90,7 @@ export const authOptions: NextAuthOptions = {
           return true;
         } else {
           const params = `name=${user.name}&email=${user.email}&provider=${account?.provider}&providerAccountId=${account?.providerAccountId}`;
-          return "http://localhost:3000/auth/linking?" + params;
+          return `${process.env.SERVER_ADDRESS}/auth/linking?` + params;
         }
       } else {
         const params = new URLSearchParams();
@@ -91,7 +100,7 @@ export const authOptions: NextAuthOptions = {
         params.append("providerAccountId", account?.providerAccountId!);
         // const params = `name=${user.name}&email=${user.email}&provider=${account?.provider}&providerAccountId=${account?.providerAccountId}`;
         console.log(params);
-        return "http://localhost:3000/auth/new?" + params.toString();
+        return `${process.env.SERVER_ADDRESS}/auth/new?` + params.toString();
       }
 
       // return "http://localhost:3000/auth/error?error=Duplicated&email=salzte";

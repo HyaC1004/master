@@ -38,7 +38,7 @@ export default function Legal() {
         const json = await response.json();
 
         if (response.status === 200) {
-          router.push("/become-a-host/" + json?.data._id + "/publish-celebration");
+          router.push("/become-a-host/" + json?.data._id + "/receipt");
         } else {
         }
     };
@@ -86,25 +86,25 @@ export default function Legal() {
                 <Typography variant="h6">
                     보안 카메라
                 </Typography>
-                <Input sx={{width:'2rem'}} id="cctv" name="cctv" type="checkbox" color="secondary" ref={cctvRef} />
+                <input style={{width:'2rem'}} id="cctv" name="cctv" type="checkbox" color="secondary" ref={cctvRef} />
               </InputLabel>
               <InputLabel htmlFor="weapon" sx={{display:'flex', justifyContent:"space-between", mb:2}} >
                 <Typography variant="h6">
                     무기류
                 </Typography>
-                <Input sx={{width:'2rem'}} id="weapon" name="weapon" type="checkbox" color="secondary" ref={weaponRef} />
+                <input style={{width:'2rem'}} id="weapon" name="weapon" type="checkbox" color="secondary" ref={weaponRef} />
               </InputLabel>
               <InputLabel htmlFor="beast" sx={{display:'flex', justifyContent:"space-between", mb:2}}>
                 <Typography variant="h6">
                     위험동물
                 </Typography>
-                <Input sx={{width:'2rem'}} id="beast" name="beast" type="checkbox" color="secondary" ref={beastRef} />
+                <input style={{width:'2rem'}} id="beast" name="beast" type="checkbox" color="secondary" ref={beastRef} />
               </InputLabel>
             </Box>  
             <Divider style={{width:'80%'}}/>
             <Box sx={{width:"80%"}}>
               <Typography variant="h4">중요사항</Typography>
-              <Typography>호스팅 하는 지역의 현지 법규를 준수하고 에어비앤비의 차별 금지 정책과 게스트 및 호스트 수수료에 대해 숙지하세요.</Typography>
+              <Typography>호스팅 하는 지역의 현지 법규를 준수하고 여행마렵다의 차별 금지 정책과 게스트 및 호스트 수수료에 대해 숙지하세요.</Typography>
             </Box>
           </Box>
           <HostingNavigator disabled={false} onNextClick={nextStepHandle} />
@@ -114,5 +114,19 @@ export default function Legal() {
   );
 }
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findById(itemId);
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
 
+  return {
+    props: {
+      hosting: JSON.parse(JSON.stringify(hosting)),
+    },
+  };
+};
 Legal.isRaw = true;

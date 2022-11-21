@@ -3,15 +3,31 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { FormControl, TextField, FormHelperText } from "@mui/material";
 import { useRouter } from "next/router";
 import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import HostingProgress from "../../../components/hosting/hostingProgress";
+import { GetServerSideProps } from "next";
+import Hosting from "../../../lib/models/hosting";
 
 export default function PublishCelebration() {
     const router = useRouter();
     const nextStepHandle = async () => {
+      const { itemId } = router.query;
+      const response = await fetch(
+        "/api/hosting/updateStepData?opertion=publish",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            publish: true,
+            _id: itemId,
+          }),
+          headers: { "Content-type": "application/json" },
+        }
+      );
+      if (response.status === 200) {
         router.push("/");
+      } else {
+      }
     };
 
   return (
@@ -64,6 +80,20 @@ export default function PublishCelebration() {
     </Grid>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findById(itemId);
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
 
+  return {
+    props: {
+      hosting: JSON.parse(JSON.stringify(hosting)),
+    },
+  };
+};
 
 PublishCelebration.isRaw = true;

@@ -86,11 +86,11 @@ export default function Visibility() {
                   >
                     <Box sx={{display:'flex', flexDirection:"column", mb:4}}>
                       <FormControlLabel value="allGuest" control={<Radio color="secondary" />} label="모든 에어비엔비 게스트" />
-                      <FormHelperText>모든 에어비앤비 게스트를 맞이하겠다고 설정하면 예약을 더 빨리 받으실 수 있습니다.</FormHelperText>
+                      <FormHelperText>모든 여행마렵다 게스트를 맞이하겠다고 설정하면 예약을 더 빨리 받으실 수 있습니다.</FormHelperText>
                     </Box>
                     <Box sx={{display:'flex', flexDirection:"column", mb:4}}>
                       <FormControlLabel value="authorizedGuest" control={<Radio color="secondary" />} label="경험이 풍부한 게스트" />
-                      <FormHelperText>에어비앤비 이용 실적이 우수하며, 유용한 호스팅 팁도 제공할 수 있는 사람을 첫 번째 게스트로 수락하세요.</FormHelperText>
+                      <FormHelperText>여행마렵다 이용 실적이 우수하며, 유용한 호스팅 팁도 제공할 수 있는 사람을 첫 번째 게스트로 수락하세요.</FormHelperText>
                     </Box>
                   </RadioGroup>
                 </FormControl>
@@ -103,6 +103,20 @@ export default function Visibility() {
     </Grid>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findById(itemId);
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
 
+  return {
+    props: {
+      hosting: JSON.parse(JSON.stringify(hosting)),
+    },
+  };
+};
 
 Visibility.isRaw = true;

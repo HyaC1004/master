@@ -189,7 +189,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      privacies: ["게스트", "침대", "침실", "욕실"],
+      hosting: JSON.parse(JSON.stringify(hosting)),
     },
   };
 };

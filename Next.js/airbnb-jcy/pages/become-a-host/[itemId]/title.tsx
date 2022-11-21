@@ -89,11 +89,16 @@ export default function Title(props: { privacies: string[] }) {
                         rows={5}
                     />
                     <FormHelperText id="helper-text">{title.length}/32</FormHelperText>
+                    {title.length >= 32 && (
+                      <Typography variant="caption" color="red">
+                        32자 까지 입력하실 수 있습니다.
+                      </Typography>
+                    )}
                 </FormControl>
             </Box>  
             
           </Box>
-          <HostingNavigator disabled={false} onNextClick={nextStepHandle} />
+          <HostingNavigator disabled={title.length === 0 || title.length > 32} onNextClick={nextStepHandle} />
         </Box>
       </Grid>
     </Grid>
@@ -111,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      privacies: ["게스트", "침대", "침실", "욕실"],
+      hosting: JSON.parse(JSON.stringify(hosting)),
     },
   };
 };

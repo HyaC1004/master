@@ -118,7 +118,21 @@ export default function FloorPlan() {
     </Grid>
   );
 }
-
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const itemId = context.query.itemId as string;
+    const hosting = await Hosting.findById(itemId);
+    if (!hosting) {
+      return {
+        notFound: true,
+      };
+    }
+  
+    return {
+      props: {
+        hosting: JSON.parse(JSON.stringify(hosting)),
+      },
+    };
+  };
 
 
 FloorPlan.isRaw = true;

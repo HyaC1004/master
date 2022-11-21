@@ -23,6 +23,7 @@ export default function Price() {
     }
     const nextStepHandle = async () => {
         const { itemId } = router.query;
+        console.log(ref.current!.checked);
         const response = await fetch(
         "/api/hosting/updateStepData?opertion=addPrice",
         {
@@ -98,7 +99,7 @@ export default function Price() {
               
                 <InputLabel htmlFor="how" sx={{display:'flex',padding:"1rem",flexWrap:"wrap", border:"1px solid #ccc", borderRadius:"1rem", backgroundColor:"#E3E3E3"}} >
                   <Typography variant="h5" sx={{width:'90%', textAlign:'left'}}>단기간에 예약률을 높이는 법</Typography>
-                  <Input type="checkbox" name="how" id="how" color="secondary" ref={ref} />
+                  <input type="checkbox" name="how" id="how" color="secondary" ref={ref} />
                   <Typography variant="subtitle1" sx={{color:"#333", mt:1}}>첫 게스트 3명에게 20% 할인 혜택을 제공하여 더 빨리 예약을 받아보세요.</Typography>
                 </InputLabel>
             </Box>  
@@ -110,6 +111,20 @@ export default function Price() {
     </Grid>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findById(itemId);
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
 
+  return {
+    props: {
+      hosting: JSON.parse(JSON.stringify(hosting)),
+    },
+  };
+};
 
 Price.isRaw = true;

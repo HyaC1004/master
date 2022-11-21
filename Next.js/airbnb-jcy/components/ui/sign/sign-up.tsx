@@ -35,6 +35,7 @@ export default function SingupForm() {
         "Content-type": "application/json",
       },
     });
+    console.log(response);
     if (response.status === 201) {
       const result: any = await signIn("credentials", {
         redirect: false,
@@ -98,7 +99,7 @@ export default function SingupForm() {
           />
           <Typography variant="caption" gutterBottom={true}>
             만 18세 이상의 성인만 회원으로 가입할 수 있습니다. 생일은
-            에어비앤비의 다른 회원에게 공개되지 않습니다.
+            여행마렵다의 다른 회원에게 공개되지 않습니다.
           </Typography>
         </Box>
         <Box sx={{ mb: 1.5 }}>
@@ -136,9 +137,9 @@ export default function SingupForm() {
             개인정보 수집 및 이용에 동의합니다.
           </Typography>
           <Typography variant="caption">
-            1. 에어비앤비가 수집하는 개인 정보 에어비앤비 플랫폼을 이용하는 데
-            필요한 정보 당사는 회원님이 에어비앤비 플랫폼을 이용할 때 회원님의
-            개인 정보를 수집합니다. 그렇지 않은 경우, 에어비앤비는 요청하신
+            1. 여행마렵다가 수집하는 개인 정보 여행마렵다 플랫폼을 이용하는 데
+            필요한 정보 당사는 회원님이 여행마렵다 플랫폼을 이용할 때 회원님의
+            개인 정보를 수집합니다. 그렇지 않은 경우, 여행마렵다는 요청하신
             서비스를 회원님께 제공하지 못할 수 있습니다. 이러한 정보에는 다음이
             포함됩니다.
           </Typography>
@@ -146,7 +147,7 @@ export default function SingupForm() {
         <Divider />
         <Box sx={{ paddingY: 1.4 }}>
           <Typography variant="caption" gutterBottom sx={{}}>
-            동의 및 계속하기를 선택하여 에어비앤비 서비스 약관, 결제 서비스
+            동의 및 계속하기를 선택하여 여행마렵다 서비스 약관, 결제 서비스
             약관, 위치기반서비스 이용약관, 차별 금지 정책, 개인정보 처리방침에
             동의합니다.
           </Typography>

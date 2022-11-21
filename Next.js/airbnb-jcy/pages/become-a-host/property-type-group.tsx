@@ -47,7 +47,7 @@ export default function BecomeAHostPropertyTypeGroup({
       </Grid>
       <Grid item md={6}>
         <Box sx={{ height: "100vh", position: "relative" }}>
-          <HostingProgress value={0} />
+          <HostingProgress value={5} />
           <Box
             sx={{
               display: "flex",

@@ -90,16 +90,35 @@ export default function Description() {
                         rows={10}
                     />
                     <FormHelperText id="helper-text">{description.length}/500</FormHelperText>
+                    {description.length >= 500 && (
+                      <Typography variant="caption" color="red">
+                        500자 까지 입력하실 수 있습니다.
+                      </Typography>
+                    )}
                 </FormControl>
             </Box>  
             
           </Box>
-          <HostingNavigator disabled={false} onNextClick={nextStepHandle} />
+          <HostingNavigator disabled={description.length === 0 || description.length > 500} onNextClick={nextStepHandle} />
         </Box>
       </Grid>
     </Grid>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findById(itemId);
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
 
+  return {
+    props: {
+      hosting: JSON.parse(JSON.stringify(hosting)),
+    },
+  };
+};
 
 Description.isRaw = true;

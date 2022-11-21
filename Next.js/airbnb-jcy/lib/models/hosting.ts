@@ -23,7 +23,7 @@ export interface HostingData {
   };
   facilities: Array<String>;
   safeItems: Array<String>;
-  photos: Array<Object>;
+  photos: [{ _id: mongoose.Types.ObjectId; extraUrl: string }];
   title: string;
   description: string;
   visibility: string;
@@ -33,12 +33,10 @@ export interface HostingData {
     cctv: boolean;
     weapon: boolean;
     beast: boolean;
-  }
+  };
+  receipt: Date;
+  publish: Boolean;
 }
-const ImageSchema = new mongoose.Schema({
-  name: String,
-  data: Buffer
-});
 
 const hostingSchema = new mongoose.Schema<HostingData>({
   owner: String,
@@ -62,17 +60,19 @@ const hostingSchema = new mongoose.Schema<HostingData>({
   },
   facilities: Array,
   safeItems: Array,
-  photos: [ImageSchema],
+  photos: [{ extraUrl: String }],
   title: String,
   description: String,
   visibility: String,
   price: String,
-  sale: Boolean,
+  sale: {type:Boolean, default:false},
   legal: {
-    cctv: Boolean,
-    weapon: Boolean,
-    beast: Boolean
-  }
+    cctv: {type:Boolean, default:false},
+    weapon: {type:Boolean, default:false},
+    beast: {type:Boolean, default:false}
+  },
+  receipt: Date,
+  publish: Boolean,
 });
 
 const Hosting: mongoose.Model<HostingData> =

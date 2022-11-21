@@ -11,6 +11,7 @@ import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import HostingProgress from "../../../components/hosting/hostingProgress";
 import EmptyPhotoBox from "../../../components/hosting/photos/emptyPhotoBox";
 import PreviewPhotoBox from "../../../components/hosting/photos/previewPhotoBox";
+
 type PhotoContextType = {
     files: File[];
     addFiles: (frag: File[]) => void;
@@ -22,7 +23,6 @@ export default function Photos() {
   // console.log(props);
     const router = useRouter();
     const [files, setFiles] = React.useState<File[]>([]);
-    const [photos, setPhotos] = React.useState([{}]);
     const addFiles = (frag: File[]) => {
         setFiles((current)=> [...current, ...frag])
     };
@@ -32,34 +32,31 @@ export default function Photos() {
         })
     };
     const nextStepHandle = async () => {
-        const { itemId } = router.query;
-        // console.log("===========",files);
-        const formdata = new FormData();
-        
-        files.forEach((e) => {
-          console.log(e.name)
-          const fileReader = new FileReader()
-          fileReader.onload = (rst) => {
-              // console.log("rst::::",rst.target?.result)
-              setPhotos([{name:e.name, data: rst.target!.result}, ...photos])
+      const { itemId } = router.query;
+      // console.log("===========",files);
+      const formData = new FormData();
+      formData.append("itemId", itemId as string);
+      formData.append("id", "ssan");
+
+      files.forEach((one) => {
+        formData.append("photos", one);
+      });
+      
+      const response = await fetch(
+          "/api/hosting/uploadPhotos",
+          {
+              method: "POST",
+              body: formData,
           }
-          fileReader.readAsDataURL(e);
-        });
-        console.log("===========",photos[0]);
-        // const response = await fetch(
-        //     "/api/hosting/updateStepData?opertion=addPhoto",
-        //     {
-        //         method: "POST",
-        //         body: JSON.stringify({ photos: photos, _id: itemId }),
-        //         headers: { "Content-type": "application/json" },
-        //     }
-        // );
-        // const json = await response.json();
-        //     // console.log(json);
-        // if (response.status === 200) {
-        //   router.push("/become-a-host/" + json?.data._id + "/title");
-        // } else {
-        // }
+      );
+
+      // alert(response.status);
+      const json = await response.json();
+      console.log(json);
+      if (response.status === 200) {
+        router.push("/become-a-host/" + json?.data + "/title");
+      } else {
+      }
     };
 
   return (
@@ -109,5 +106,19 @@ export default function Photos() {
     </Grid>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const itemId = context.query.itemId as string;
+  const hosting = await Hosting.findById(itemId);
+  if (!hosting) {
+    return {
+      notFound: true,
+    };
+  }
 
+  return {
+    props: {
+      hosting: JSON.parse(JSON.stringify(hosting)),
+    },
+  };
+};
 Photos.isRaw = true;
