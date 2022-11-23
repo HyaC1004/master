@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { ref, getStorage, getDownloadURL, uploadBytes } from "firebase/storage";
 import formidable from "formidable";
 import Hosting from "../../../lib/models/hosting";
+import mongooseInit from "../../../lib/mongooseInit";
 /*
     multipart /form-data parser 는 기본 내장이 안되있어서 추가 설정
     (multer 같은..) 
@@ -32,6 +33,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  mongooseInit();
   const form = formidable({ multiples: true });
   console.log("==== uploadPhotos ===");
 

@@ -7,8 +7,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useSession } from "next-auth/react";
 import { GetServerSideProps, GetStaticProps, InferGetStaticPropsType } from 'next';
-import Hosting from '../lib/models/hosting';
+import Hosting, { HostingData } from '../lib/models/hosting';
 import HostingItem from '../components/home/hostingItem';
+import mongooseInit from '../lib/mongooseInit';
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 
@@ -19,15 +20,16 @@ export default function Home({
   // console.log(hosting);
   return (    
       <Container sx={{ py: 12 }} maxWidth="lg">        
-        <Grid container spacing={3}>
-          {hosting.map((one:any) => (
-           <HostingItem hosting={one} key={one} />
+        <Grid container spacing={2}>
+          {hosting.map((one:HostingData) => (
+           <HostingItem hosting={one} key={one._id} />
           ))}
         </Grid>
       </Container>
   );
 }
 export const getStaticProps: GetStaticProps = async (context) => {
+  mongooseInit();
   const hosting = await Hosting.find();
   if (!hosting) {
     return {

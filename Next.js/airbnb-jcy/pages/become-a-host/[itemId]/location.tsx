@@ -9,6 +9,7 @@ import HostingProgress from "../../../components/hosting/hostingProgress";
 import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import LocationStepper from "../../../components/hosting/location/locationStepper";
 import { createContext } from "react";
+import mongooseInit from "../../../lib/mongooseInit";
 
 type LoocationContextData = {
   step: number;
@@ -154,6 +155,7 @@ export default function Location() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

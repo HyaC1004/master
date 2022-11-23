@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <title>여행마렵다</title>
       </Head>
       <body>
         <Main />

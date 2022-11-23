@@ -8,6 +8,7 @@ import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import HostingProgress from "../../../components/hosting/hostingProgress";
 import { GetServerSideProps } from "next";
 import Hosting from "../../../lib/models/hosting";
+import mongooseInit from "../../../lib/mongooseInit";
 
 export default function PublishCelebration() {
     const router = useRouter();
@@ -81,6 +82,7 @@ export default function PublishCelebration() {
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

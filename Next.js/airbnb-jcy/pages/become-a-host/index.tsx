@@ -11,7 +11,6 @@ import HostingButton from "../../components/hosting/hostingButton";
 export default function BecomeAHost() {
   const router = useRouter();
   const { data } = useSession();
-  const [group, setGroup] = React.useState<string>("");
 
   const nextStepHandle = () => {
     const { itemId } = router.query;

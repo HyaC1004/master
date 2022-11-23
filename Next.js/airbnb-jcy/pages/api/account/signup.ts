@@ -2,10 +2,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import AccountData from "../../../interfaces/account";
 import Account from "../../../lib/models/account";
 import { hashSync } from "bcryptjs";
+import mongooseInit from "../../../lib/mongooseInit";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+
+  mongooseInit();
   if (req.method !== "POST") {
     return res
       .status(405)

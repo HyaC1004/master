@@ -1,4 +1,4 @@
-const { default: mongoose } = require('mongoose');
+
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,18 +19,5 @@ const nextConfig = {
     }]
   }
 }
-
-module.exports = () => {
-  const MONGO_URI = process.env.MONGO_URI;
-
-  mongoose.connect(MONGO_URI, { dbName: "airbnbJcy" })
-    .then(() => console.log("server - mongoose initialized"))
-    .catch(() => {
-      console.log("Error - moongose connect failed");
-      process.exit(-1);
-    }
-    );
-
-  return nextConfig;
-}
+module.exports = nextConfig
 

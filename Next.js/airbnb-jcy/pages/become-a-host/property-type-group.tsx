@@ -9,6 +9,7 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Property, { PropertyData } from "../../lib/models/property";
 import HostingToggleButton from "../../components/hosting/hostingToggleButton";
 import HostingProgress from "../../components/hosting/hostingProgress";
+import mongooseInit from "../../lib/mongooseInit";
 
 export default function BecomeAHostPropertyTypeGroup({
   datas,
@@ -100,6 +101,7 @@ export default function BecomeAHostPropertyTypeGroup({
 export const getStaticProps: GetStaticProps<{
   datas: PropertyData[];
 }> = async () => {
+  mongooseInit();
   const datas = await Property.find({});
   // console.log(datas);
   return {

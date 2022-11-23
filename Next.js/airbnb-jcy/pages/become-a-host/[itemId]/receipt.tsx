@@ -13,6 +13,7 @@ import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import CloseIcon from '@mui/icons-material/Close';
+import mongooseInit from "../../../lib/mongooseInit";
 
 
 const style = {
@@ -178,6 +179,7 @@ export default function Receipt({
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

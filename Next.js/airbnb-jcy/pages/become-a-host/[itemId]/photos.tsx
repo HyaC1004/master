@@ -11,6 +11,7 @@ import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import HostingProgress from "../../../components/hosting/hostingProgress";
 import EmptyPhotoBox from "../../../components/hosting/photos/emptyPhotoBox";
 import PreviewPhotoBox from "../../../components/hosting/photos/previewPhotoBox";
+import mongooseInit from "../../../lib/mongooseInit";
 
 type PhotoContextType = {
     files: File[];
@@ -107,6 +108,7 @@ export default function Photos() {
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

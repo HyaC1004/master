@@ -4,7 +4,9 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import DiscordProvider from "next-auth/providers/discord";
 import Account from "../../../lib/models/account";
+import mongooseInit from "../../../lib/mongooseInit";
 
+mongooseInit();
 export const authOptions: NextAuthOptions = {
   pages: {
     error: "/auth/error",

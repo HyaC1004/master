@@ -12,6 +12,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import HostingProgress from "../../../components/hosting/hostingProgress";
 import { useRef } from "react";
+import mongooseInit from "../../../lib/mongooseInit";
 
 export default function Price() {
   // console.log(props);
@@ -112,6 +113,7 @@ export default function Price() {
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

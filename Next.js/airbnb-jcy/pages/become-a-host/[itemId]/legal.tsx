@@ -10,6 +10,7 @@ import Hosting from "../../../lib/models/hosting";
 import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import HostingProgress from "../../../components/hosting/hostingProgress";
+import mongooseInit from "../../../lib/mongooseInit";
 
 export default function Legal() {
   // console.log(props);
@@ -115,6 +116,7 @@ export default function Legal() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

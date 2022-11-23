@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import Hosting, { HostingData } from "../../../lib/models/hosting";
+import mongooseInit from "../../../lib/mongooseInit";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  mongooseInit();
   const token = await getToken({ req });
   // console.log(token);
   // const { operation } = req.query;

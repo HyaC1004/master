@@ -27,7 +27,7 @@ export interface HostingData {
   title: string;
   description: string;
   visibility: string;
-  price: string;
+  price: number;
   sale: boolean;
   legal: {
     cctv: boolean;
@@ -64,7 +64,7 @@ const hostingSchema = new mongoose.Schema<HostingData>({
   title: String,
   description: String,
   visibility: String,
-  price: String,
+  price: Number,
   sale: {type:Boolean, default:false},
   legal: {
     cctv: {type:Boolean, default:false},

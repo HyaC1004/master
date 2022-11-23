@@ -31,6 +31,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import HostingNavigator from "../../../components/hosting/hostingNavigator";
 import HostingProgress from "../../../components/hosting/hostingProgress";
+import mongooseInit from "../../../lib/mongooseInit";
 
 type Section = { title: string; icon:any; selected: boolean };
 
@@ -179,6 +180,7 @@ export default function Amenities(props: { privacies: string[] }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  mongooseInit();
   const itemId = context.query.itemId as string;
   const hosting = await Hosting.findById(itemId);
   if (!hosting) {

@@ -1,5 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Account from "../../../lib/models/account";
+import mongooseInit from "../../../lib/mongooseInit";
+
+mongooseInit();
 
 export default async function handler(
   req: NextApiRequest,

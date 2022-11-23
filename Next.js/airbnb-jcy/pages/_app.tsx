@@ -6,6 +6,7 @@ import DefaultLayout from "../components/layout";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { NextPage } from "next";
+import mongooseInit from "../lib/mongooseInit";
 
 const theme = createTheme({
   palette: {
@@ -28,7 +29,7 @@ const theme = createTheme({
 });
 export default function App({ Component, pageProps }: AppProps) {
   // console.log("App", Component);
-
+  
   const { isRaw } = Component as NextPage & { isRaw?: boolean };
   // console.log(isRaw);
 
