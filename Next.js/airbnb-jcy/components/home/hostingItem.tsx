@@ -28,7 +28,7 @@ function HostingItem({hosting}:any) {
                     sx={{
                     height:"200px"
                     }}
-                    image={hosting.photos[activeStep].extraUrl}
+                    image={hosting.photos[activeStep].extraUrl??""}
                     alt="random"
                 />
             <MobileStepper
