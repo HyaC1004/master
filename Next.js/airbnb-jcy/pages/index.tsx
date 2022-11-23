@@ -18,14 +18,12 @@ export default function Home({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { data, status } = useSession();
   // console.log(hosting);
-  return (    
-      <Container sx={{ py: 12 }} maxWidth="lg">        
-        <Grid container spacing={2}>
-          {hosting.map((one:HostingData) => (
-           <HostingItem hosting={one} key={one._id} />
-          ))}
-        </Grid>
-      </Container>
+  return (         
+    <Grid container spacing={2} sx={{mt:10}}>
+      {hosting.map((one:HostingData) => (
+        <HostingItem hosting={one} key={one._id} />
+      ))}
+    </Grid>
   );
 }
 export const getStaticProps: GetStaticProps = async (context) => {

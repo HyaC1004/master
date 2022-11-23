@@ -101,7 +101,7 @@ export default function Photos() {
                 {files.length !== 0 && <PreviewPhotoBox />}
             </PhotoContext.Provider>
           </Box>
-          <HostingNavigator disabled={files.length>=2?false:true} onNextClick={nextStepHandle} />
+          <HostingNavigator disabled={files.length>=5?false:true} onNextClick={nextStepHandle} />
         </Box>
       </Grid>
     </Grid>

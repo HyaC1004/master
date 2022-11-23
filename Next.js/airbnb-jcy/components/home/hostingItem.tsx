@@ -5,11 +5,15 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { formatDistance } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useRouter } from "next/router";
+import { AppContext } from "../../pages/_app";
 
 function HostingItem({hosting}:any) {
+    const appCtx = React.useContext(AppContext);
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = hosting.photos.length;
     const theme = useTheme();
+    const router = useRouter();
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -60,7 +64,14 @@ function HostingItem({hosting}:any) {
                 }
             />    
             </Box>
-            <CardContent sx={{ flexGrow: 1, display:"flex", cursor:"pointer",  flexDirection:"column", justifyContent:"space-between" }}>
+            <CardContent 
+                sx={{ flexGrow: 1, display:"flex", cursor:"pointer",  flexDirection:"column", justifyContent:"space-between" }}
+                onClick={()=>{
+                    appCtx?.ready();
+                    router.push(`/rooms/${hosting._id}`);
+                    appCtx?.done();
+                }}
+            >
                 <Typography gutterBottom variant="h5" component="h2">
                     {hosting.title}
                 </Typography>
