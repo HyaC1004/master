@@ -72,7 +72,7 @@ const hostingSchema = new mongoose.Schema<HostingData>({
     beast: {type:Boolean, default:false}
   },
   receipt: Date,
-  publish: Boolean,
+  publish: {type:Boolean, default:false},
 });
 
 const Hosting: mongoose.Model<HostingData> =

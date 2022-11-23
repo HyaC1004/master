@@ -18,7 +18,8 @@ function HostingItem({hosting}:any) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
     return (
-        <Grid item xs={12} sm={6} md={3}>
+        <>
+        { hosting.publish && <Grid item xs={12} sm={6} md={3}>
             <Card
              sx={{ height: '100%', display: 'flex', flexDirection: 'column'}}
             >
@@ -79,7 +80,8 @@ function HostingItem({hosting}:any) {
                 }
             </CardContent>
             </Card>
-        </Grid>
+        </Grid>}
+        </>
     );
 }
 
