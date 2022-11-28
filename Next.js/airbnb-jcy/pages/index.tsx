@@ -17,7 +17,6 @@ export default function Home({
   hosting,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { data, status } = useSession();
-  // console.log(hosting);
   return (         
     <Grid container spacing={2} sx={{mt:10}}>
       {hosting.map((one:HostingData) => (

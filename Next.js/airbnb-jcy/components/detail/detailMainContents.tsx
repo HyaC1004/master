@@ -5,16 +5,15 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DetailLeftContents from "./detailLeftContents";
 import DetailRightContents from "./detailRightContents";
 
-function DetailMainContents({ data }: { data: HostingData }) {
+function DetailMainContents({ hosting }: { hosting: HostingData }) {
   return (
     <Box id="content" sx={{ mt: 3 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
-          <DetailLeftContents data={data} />
-          <DetailLeftContents data={data} />
+          <DetailLeftContents hosting={hosting} />
         </Grid>
         <Grid item md={4} xs={12}>
-          <DetailRightContents data={data} />
+          <DetailRightContents hosting={hosting} />
         </Grid>
       </Grid>
     </Box>

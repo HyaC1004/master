@@ -5,15 +5,17 @@ import WifiIcon from '@mui/icons-material/Wifi';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import DetailDatePicker from "./detailDatePicker";
+import BookingSummary from "./parts/bookingSummary";
+import CalendarFragment from "./calendar/caledar-fragment";
 
-function DetailLeftContents({ data }: { data: HostingData }) {
-    const host = data.owner.split("@");
+function DetailLeftContents({ hosting }: { hosting: HostingData }) {
+    const host = hosting.owner.split("@");
   return (
     <>
      <Box sx={{width:"100%", mt:4}}>
       <Box>
         <Typography variant="h4">{host[0]} 님이 호스팅하는 숙소</Typography>
-        <Typography variant="subtitle1">최대 인원 {data.floorPlan.guests}명 · 침실 {data.floorPlan.bedrooms}개 · 침대 {data.floorPlan.beds}개 · 욕실 {data.floorPlan.bathrooms}개</Typography>
+        <Typography variant="subtitle1">최대 인원 {hosting.floorPlan.guests}명 · 침실 {hosting.floorPlan.bedrooms}개 · 침대 {hosting.floorPlan.beds}개 · 욕실 {hosting.floorPlan.bathrooms}개</Typography>
       </Box>
       <Divider sx={{width:"100%", mt:2, mb:2}} />
       <Box>
@@ -60,7 +62,7 @@ function DetailLeftContents({ data }: { data: HostingData }) {
       <Box>
         <Typography variant="h4">숙소 소개</Typography>
         <Typography variant="subtitle1">
-          {data.description}
+          {hosting.description}
         </Typography>
         <Typography variant="subtitle1" sx={{mt:1, cursor:"pointer", textDecorationLine:"underline"}}>더 보기</Typography>            
       </Box>
@@ -68,16 +70,14 @@ function DetailLeftContents({ data }: { data: HostingData }) {
         <Box>
           <Typography variant="h4">숙소 편의시설</Typography>
           <Box sx={{display:"flex", flexWrap:"wrap"}}>
-            {data.facilities.map((one:any)=>
+            {hosting.facilities.map((one:any)=>
               <Typography key={one} variant="h6" sx={{width:"50%"}} >{one}</Typography>
             )}
           </Box>
         </Box>
         <Divider sx={{width:"100%", mt:2, mb:2}} />
-        <Box>
-          <Typography variant="h4">숙소 예약</Typography>
-          <DetailDatePicker />
-        </Box>
+        <BookingSummary hosting={hosting} />
+        <CalendarFragment />
       </Box>
     </>
   );

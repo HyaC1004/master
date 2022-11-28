@@ -1,30 +1,59 @@
 import { HostingData } from "../../lib/models/hosting";
-import { Box, Typography, Divider, TextField, Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Box, Typography, Divider, TextField, Collapse, ListItemButton, ListItemText, List } from "@mui/material";
 import { Card, CardContent, Button } from "@mui/material";
 import { useContext, useState } from "react";
 import { BookContext } from "../../pages/rooms/[roomId]";
-
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { format, differenceInCalendarDays } from "date-fns";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import {
-  DateRangePicker,
-  DateRange,
-} from "@mui/x-date-pickers-pro/DateRangePicker";
 
-function DetailRightContents({ data }: { data: HostingData }) {
+import AvailabilityCalendar from "./calendar/availability-calendar";
+import GusetSelect from "./parts/gusetSelect";
+import { useRouter } from "next/router";
+
+function DetailRightContents({ hosting }: { hosting: HostingData }) {
   const ctx = useContext(BookContext);
-  const [open, setOpen] = useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
+  const router = useRouter();
+  
+  let diff:any;
+  if (ctx?.data.checkin && ctx?.data.checkout) {
+    diff = differenceInCalendarDays(ctx?.data.checkout, ctx?.data.checkin);
+  }
+  
+  
+  
+  const reserveHandle: React.MouseEventHandler = async(evt) => {
+    evt.stopPropagation();
+    if (ctx && ctx.data.checkin && ctx.data.checkout && ctx.data.productId) {
+      const params = new URLSearchParams();
+      params.append("numberOfGuests", ctx?.data.numberOfGuests!.toString());
+      params.append("numberOfAdults", ctx?.data.numberOfAdults!.toString());
+      params.append(
+        "numberOfChildren",
+        ctx?.data.numberOfChildren!.toString()!
+        );
+      params.append("checkin", format(ctx?.data.checkin, "yyyy-MM-dd"));
+      params.append("checkout", format(ctx?.data.checkout, "yyyy-MM-dd"));
+      params.append("productId", ctx.data.productId);
+      const totalfee = ((hosting.price * diff * (ctx?.data.numberOfGuests ?? 1) + Math.ceil(hosting.price * diff * (ctx?.data.numberOfGuests ?? 1) * 0.14))*0.00075).toFixed(2);
+      const response = await fetch(
+        "/api/book/checkout",
+        {
+          method: "POST",
+          body: JSON.stringify({...ctx.data, totalFee:totalfee}),
+          headers: { "Content-type": "application/json" },
+        }
+      );
+      const json = await response.json();
+      console.log(json);
+      // console.log(params.toString());
+      // router.push(
+      //   "/book/check/" + ctx.data.productId + "?" + params.toString()
+      // );
+    } else {
+      ctx?.openDialog();
+    }
   };
-  const [value, setValue] = useState<DateRange<Date>>([
-    new Date(ctx?.data.checkin!),
-    new Date(ctx?.data.checkout!),
-  ]);
-  console.log(value);
   return (
     <>
       <Box
@@ -41,7 +70,7 @@ function DetailRightContents({ data }: { data: HostingData }) {
           <CardContent>
             <Box sx={{ mb: 1 }}>
               <Typography component={"span"} variant={"h6"}>
-                ₩{data.price.toLocaleString()}
+                ₩{hosting.price.toLocaleString()}
               </Typography>
               <Typography component={"span"}>/박</Typography>
             </Box>
@@ -52,6 +81,7 @@ function DetailRightContents({ data }: { data: HostingData }) {
                 overflow: "hidden",
                 border: "1px solid #000000",
               }}
+              onClick={(evt) => evt.stopPropagation()}
             >
               <Box sx={{ display: "flex" }}>
                 <Button
@@ -64,10 +94,13 @@ function DetailRightContents({ data }: { data: HostingData }) {
                   variant="outlined"
                   color="inherit"
                   size="large"
+                  onClick={() => ctx?.openDialog()}
                 >
                   <Typography variant="caption">체크인</Typography>
                   <Typography variant="body2">
-                    {ctx?.data.checkin ?? "날짜추가"}
+                    {ctx?.data.checkin
+                      ? format(ctx?.data.checkin, "yyyy-MM-dd")
+                      : "날짜추가"}
                   </Typography>
                 </Button>
                 <Button
@@ -78,12 +111,15 @@ function DetailRightContents({ data }: { data: HostingData }) {
                     flexDirection: "column",
                   }}
                   variant="outlined"
-                  color="inherit"
+                  color="inherit" 
                   size="large"
+                  onClick={() => ctx?.openDialog()}
                 >
                   <Typography variant="caption">체크아웃</Typography>
                   <Typography variant="body2">
-                    {ctx?.data.checkout ?? "날짜추가"}
+                    {ctx?.data.checkout
+                      ? format(ctx?.data.checkout, "yyyy-MM-dd")
+                      : "날짜추가"}
                   </Typography>
                 </Button>
               </Box>
@@ -94,32 +130,39 @@ function DetailRightContents({ data }: { data: HostingData }) {
                     borderRadius: "0px",
                     alignItems: "start",
                     flexDirection: "column",
+                    height:"400px"
                   }}
                   variant="outlined"
                   color="inherit"
                   size="large"
-                  onClick={handleClick}
+                  onClick={() => { ctx?.open ? ctx?.closeGuest() : ctx?.openGuest()}}
                 >
-                  <Box sx={{display:"flex", justifyContent:"space-between"}}>
-                    <Typography variant="caption">인원</Typography>
-                    <Typography variant="body2">
-                      게스트 {ctx?.data.numberOfGuests}명
-                    </Typography>
-                    {open ? <ExpandMore /> : <ExpandLess />}
+                  <Box sx={{display:"flex",width:'100%', justifyContent:"space-between"}}>
+                    <Box sx={{textAlign:"left"}}>
+                      <Typography variant="caption">인원</Typography>
+                      <Typography variant="body2">
+                        게스트 {ctx?.data.numberOfGuests}명
+                      </Typography>
+                    </Box>
+                    <Box sx={{pt:2}}>
+                      {ctx?.open ? <ExpandMore /> : <ExpandLess />}
+                    </Box>
                   </Box>
                 </Button>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding sx={{position:"absolute", top:0}}>
-                    <ListItemButton sx={{ pl: 4 }}>
-                      <ListItemText primary="Starred" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
+                
               </Box>
+              {ctx?.open && <GusetSelect />}
             </Box>
             <Box sx={{ mb: 1 }}>
-              <Button variant="contained" fullWidth size="large">
-                예약하기
+              <Button
+                variant="contained"
+                fullWidth
+                size="large"
+                onClick={reserveHandle}
+              >
+                {ctx?.data.checkin && ctx?.data.checkout
+                  ? "예약하기"
+                  : "예약 가능 여부 보기"}
               </Button>
             </Box>
             <Box sx={{ mb: 2 }}>
@@ -127,40 +170,69 @@ function DetailRightContents({ data }: { data: HostingData }) {
                 예약 확정 전에는 요금이 청구되지 않습니다.
               </Typography>
             </Box>
-            <Box
-              sx={{ mb: 1, display: "flex", justifyContent: "space-between" }}
-            >
-              <Typography>₩{data.price.toLocaleString()} X 1박</Typography>
-              <Typography>₩{(data.price * 1).toLocaleString()} </Typography>
-            </Box>
-            <Box
-              sx={{ mb: 2, display: "flex", justifyContent: "space-between" }}
-            >
-              <Typography>서비스 수수료</Typography>
-              <Typography>
-                ₩{Math.round(data.price * 1 * 0.14).toLocaleString()}{" "}
-              </Typography>
-            </Box>
-            <Divider />
-            <Box
-              sx={{
-                mb: 2,
-                display: "flex",
-                justifyContent: "space-between",
-                pt: 2,
-              }}
-            >
-              <Typography>총합계</Typography>
-              <Typography>
-                ₩
-                {(
-                  data.price * 1 +
-                  Math.ceil(data.price * 1 * 0.14)
-                ).toLocaleString()}
-              </Typography>
-            </Box>
+            {diff && (
+              <>
+                <Box
+                  sx={{
+                    mb: 1,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>
+                    ₩{hosting.price.toLocaleString()} X {diff}박
+                  </Typography>
+                  <Typography>
+                    ₩{(hosting.price * diff).toLocaleString()}{" "}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    mb: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>서비스 수수료</Typography>
+                  <Typography>
+                    ₩{Math.round(hosting.price * diff * 0.14).toLocaleString()}{" "}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    mb: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>총 인원 수</Typography>
+                  <Typography>
+                    {ctx?.data.numberOfGuests} 명
+                  </Typography>
+                </Box>
+                <Divider />
+                <Box
+                  sx={{
+                    mb: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    pt: 2,
+                  }}
+                >
+                  <Typography>총합계</Typography>
+                  <Typography>
+                    ₩
+                    {(
+                      hosting.price * diff * (ctx?.data.numberOfGuests ?? 1) +
+                      Math.ceil(hosting.price * diff * (ctx?.data.numberOfGuests ?? 1) * 0.14)
+                    ).toLocaleString()}
+                  </Typography>
+                </Box>
+              </>
+            )}
           </CardContent>
         </Card>
+        {ctx?.isOpened && <AvailabilityCalendar />}
       </Box>
     </>
   );

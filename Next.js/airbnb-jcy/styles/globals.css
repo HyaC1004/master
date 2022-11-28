@@ -37,3 +37,6 @@ input[type="number"]::-webkit-inner-spin-button {
 * {
   box-sizing: border-box;
 }
+.MuiPickerStaticWrapper-content>div> div:first-child {
+  display: none;
+}
