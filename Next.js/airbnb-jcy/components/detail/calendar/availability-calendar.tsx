@@ -1,10 +1,10 @@
 import { Box, Paper, Typography, TextField, Grid } from "@mui/material";
 
 import { useContext, useState } from "react";
-import { BookContext } from "../../../pages/rooms/[roomId]";
+import { BookContext, ReservedPeriod } from "../../../pages/rooms/[roomId]";
 import { format } from "date-fns";
 import CalendarFragment from "./caledar-fragment";
-function AvailabilityCalendar() {
+function AvailabilityCalendar({ reserved }: { reserved: ReservedPeriod }) {
   const ctx = useContext(BookContext);
 
   return (
@@ -63,7 +63,7 @@ function AvailabilityCalendar() {
         </Grid>
       </Grid>
 
-      <CalendarFragment />
+      <CalendarFragment reserved={reserved}/>
     </Paper>
   );
 }

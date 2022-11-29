@@ -13,12 +13,12 @@ function EmptyPhotoItem() {
     const dropHandle: React.DragEventHandler = (evt) => {
         evt.preventDefault();
         evt.stopPropagation();
-        console.log(evt.dataTransfer.files);
+        // console.log(evt.dataTransfer.files);
         const t = Array.from(evt.dataTransfer.files)
         ctx?.addFiles(t);
     };           
     const fileSelectHandle:React.ChangeEventHandler<HTMLInputElement> = (evt) =>{
-        console.log(evt.target.files);
+        // console.log(evt.target.files);
         if(evt.target.files){
             const t2 = Array.from(evt.target.files);  
             ctx?.addFiles(t2);          

@@ -6,6 +6,7 @@ import Head from "next/head";
 import StayHedaer from "../../../components/checkout/stayHeader";
 import StayMain from "../../../components/checkout/stayMain";
 import mongooseInit from "../../../lib/mongooseInit";
+import Book from "../../../lib/models/book";
 
 export type BookData = {
   productId?: string;
@@ -46,9 +47,10 @@ function StayCheckout({
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   await mongooseInit();
-  const { id } = ctx.query;
+  const { productId } = ctx.query;
 
-  const data = await Hosting.findById(id);
+  const data = await Hosting.findById(productId);
+  // const bookData = await Book.findById(id);
   if (!data) {
     return {
       notFound: true,

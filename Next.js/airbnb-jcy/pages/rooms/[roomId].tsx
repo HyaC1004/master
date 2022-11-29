@@ -1,21 +1,15 @@
 import { Box, Typography, Grid, Divider } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import WifiIcon from '@mui/icons-material/Wifi';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import {useEffect,useState,useRef, createContext, useContext} from 'react';
-import styles from "./signup.module.css";
 import mongooseInit from "../../lib/mongooseInit";
-import Hosting from "../../lib/models/hosting";
-import DetailRightContents from "../../components/detail/detailRightContents";
-import DetailLeftContents from "../../components/detail/detailLeftContents";
+import Hosting, { HostingData } from "../../lib/models/hosting";
 import DetailMainContents from "../../components/detail/detailMainContents";
 import DetailMainHeader from "../../components/detail/detailMainHeader";
 import DetailMainPhotos from "../../components/detail/detailMainPhotos";
 import { addDays, format } from "date-fns";
 import DetailLocation from "../../components/detail/detailLocation";
 import { useSession } from "next-auth/react";
-import { BookData } from "../../lib/models/book";
+import Book, { BookData } from "../../lib/models/book";
 
 export type Book = {
   productId?: string;
@@ -30,6 +24,7 @@ export type Book = {
   fee?: number;
   totalFee?: number;
 };
+
 export const BookContext = createContext<{
   data: Book;
   updateData: (frag: Book) => void;
@@ -41,9 +36,16 @@ export const BookContext = createContext<{
   closeGuest: () => void;
 } | null>(null);
 
+export type ReservedPeriod = [
+  { checkin: Date | string; checkout: Date | string }
+];
 function HostingDetail({
-    hosting
-  }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  hosting,
+  reserved,
+}: {
+  hosting: HostingData;
+  reserved: ReservedPeriod;
+}) {
     const { data, status }= useSession();
     const [book, setBook] = useState<Book>({
       productId: hosting._id.toString(),
@@ -84,7 +86,7 @@ function HostingDetail({
           <Box sx={{position:"relative"}}> 
             <DetailMainHeader hosting={hosting} />
             <DetailMainPhotos hosting={hosting} />
-            <DetailMainContents hosting={hosting} />
+            <DetailMainContents hosting={hosting} reserved={reserved} />
             <DetailLocation hosting={hosting} />
               <Divider sx={{width:"100%", mt:2, mb:2}} />
               <Box></Box>
@@ -105,6 +107,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   mongooseInit();
   const itemId = context.query.roomId as string;
   const data = await Hosting.findById(itemId);
+  const reserved = await Book.find(
+    { productId: itemId },
+    "checkin checkout"
+  );
+  
   if (!data) {
     return {
       notFound: true,
@@ -114,6 +121,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       hosting: JSON.parse(JSON.stringify(data)),
+      reserved: JSON.parse(JSON.stringify(reserved)),
     },
   };
 };

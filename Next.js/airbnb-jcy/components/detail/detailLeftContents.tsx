@@ -7,8 +7,13 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import DetailDatePicker from "./detailDatePicker";
 import BookingSummary from "./parts/bookingSummary";
 import CalendarFragment from "./calendar/caledar-fragment";
+import { ReservedPeriod } from "../../pages/rooms/[roomId]";
 
-function DetailLeftContents({ hosting }: { hosting: HostingData }) {
+function DetailLeftContents({hosting,reserved}: {
+  hosting: HostingData;
+  reserved: ReservedPeriod;
+}) {
+  
     const host = hosting.owner.split("@");
   return (
     <>
@@ -77,7 +82,7 @@ function DetailLeftContents({ hosting }: { hosting: HostingData }) {
         </Box>
         <Divider sx={{width:"100%", mt:2, mb:2}} />
         <BookingSummary hosting={hosting} />
-        <CalendarFragment />
+        <CalendarFragment reserved={reserved}/>
       </Box>
     </>
   );

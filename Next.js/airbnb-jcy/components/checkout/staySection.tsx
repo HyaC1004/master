@@ -2,6 +2,7 @@ import { HostingData } from "../../lib/models/hosting";
 import { Grid, Box, Typography, Avatar, Divider, Button } from "@mui/material";
 import { differenceInCalendarDays, format, subDays } from "date-fns";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useRouter } from "next/router";
 
 function StaySection({
   hosting,
@@ -10,25 +11,33 @@ function StaySection({
   hosting: HostingData;
   booking: any;
 }) {
+  const router = useRouter();
     const diff = differenceInCalendarDays(
         new Date(booking.checkout),
         new Date(booking.checkin)
     );
     const pay = ((hosting.price * diff * booking.numberOfGuests + Math.ceil(hosting.price * diff * booking.numberOfGuests * 0.14))*0.00075).toFixed(2);
-    console.log(pay)
-    const bookHandle = async(payment:Array<Object>) =>{
+    // console.log(booking)
+    const bookHandle = async(payment:any) =>{
         const response = await fetch(
-            "/api/book/checkout",
-            {
-              method: "POST",
-              body: JSON.stringify({
-                payment:{...payment},
-                publish:true
-              }),
-              headers: { "Content-type": "application/json" },
-            }
-          );
-          const json = await response.json();
+          "/api/book/checkout",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              productId: hosting._id,
+              payment:{...payment},
+              publish:true,
+              _id: booking.id
+            }),
+            headers: { "Content-type": "application/json" },
+          }
+        );
+        const json = await response.json();
+        if(json.result){
+          router.push("/book/result/"+json.data._id);        
+        }else{
+          alert("오류")
+        }
     }
     
   return (
@@ -95,6 +104,8 @@ function StaySection({
               options={{
                 "client-id":
                   "AaW_Q2WH3pa25XUDnq3mejRS_xUd03oakAtBWYW45GfaE8lpDYFfYApfn3VC4B4-AE1rBEhn0Z15xHQQ",
+                locale:"ko_KR",
+                intent:"authorize"
               }}
             >
               <PayPalButtons
@@ -112,15 +123,18 @@ function StaySection({
                         },
                         ],
                     })
-                    .then((orderId) => {
-                        console.log("orderId == ", orderId);
-                        return orderId;
-                    });
                 }}
                 onApprove={async (data, actions)=> {
-                    const payment = {
-                        
-                    }
+                  // console.log(data);
+                  // console.log(actions);
+                  const payment = {
+                    source: data.facilitatorAccessToken,
+                    orderId: data.orderID,
+                    payId: data.payerID,
+                    paidTime: new Date()
+                  }
+                  actions.order?.authorize();
+                  bookHandle(payment)
                 }}
               />
             </PayPalScriptProvider>

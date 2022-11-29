@@ -2,7 +2,7 @@ import { HostingData } from "../../lib/models/hosting";
 import { Box, Typography, Divider, TextField, Collapse, ListItemButton, ListItemText, List } from "@mui/material";
 import { Card, CardContent, Button } from "@mui/material";
 import { useContext, useState } from "react";
-import { BookContext } from "../../pages/rooms/[roomId]";
+import { BookContext, ReservedPeriod } from "../../pages/rooms/[roomId]";
 import { format, differenceInCalendarDays } from "date-fns";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -11,7 +11,7 @@ import AvailabilityCalendar from "./calendar/availability-calendar";
 import GusetSelect from "./parts/gusetSelect";
 import { useRouter } from "next/router";
 
-function DetailRightContents({ hosting }: { hosting: HostingData }) {
+function DetailRightContents({ hosting, reserved }: { hosting: HostingData;reserved: ReservedPeriod; }) {
   const ctx = useContext(BookContext);
   const router = useRouter();
   
@@ -40,16 +40,19 @@ function DetailRightContents({ hosting }: { hosting: HostingData }) {
         "/api/book/checkout",
         {
           method: "POST",
-          body: JSON.stringify({...ctx.data, totalFee:totalfee}),
+          body: JSON.stringify({productId:hosting._id, ...ctx.data, totalFee:totalfee}),
           headers: { "Content-type": "application/json" },
         }
       );
       const json = await response.json();
-      console.log(json);
-      // console.log(params.toString());
-      // router.push(
-      //   "/book/check/" + ctx.data.productId + "?" + params.toString()
-      // );
+      // console.log(json);
+      if(json.result){
+        router.push(
+          "/book/check/" + json?.data._id + "?" + params.toString()
+        );        
+      }else{
+        alert("이미 예약된 날짜입니다. 다른 날로 잡아주세요")
+      }
     } else {
       ctx?.openDialog();
     }
@@ -232,7 +235,7 @@ function DetailRightContents({ hosting }: { hosting: HostingData }) {
             )}
           </CardContent>
         </Card>
-        {ctx?.isOpened && <AvailabilityCalendar />}
+        {ctx?.isOpened && <AvailabilityCalendar reserved={reserved}/>}
       </Box>
     </>
   );
