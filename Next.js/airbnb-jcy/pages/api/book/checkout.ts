@@ -17,7 +17,7 @@ export default async function handle(
     checkin: { $lt: one.checkout }
   })
   const token = await getToken({ req });
-  if(found.length>0) {
+  if(found.length>0) {    
     res.status(422).json({result: false});
   }else{
     try {
@@ -35,7 +35,7 @@ export default async function handle(
           resultItem = await Book.create({ ...item, client: token?.email, reserve:new Date() });
           // console.log(resultItem._id);
           setTimeout(async()=>{
-            await Book.deleteMany({_id:resultItem._id,publish:false});
+            await Book.deleteOne({_id:resultItem._id,publish:false});
             console.log("deleted");
           },60000*30)
         } else {

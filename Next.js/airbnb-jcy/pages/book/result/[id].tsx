@@ -1,74 +1,56 @@
 import { GetServerSideProps } from "next";
-import Book, { BookData } from "../../../lib/models/book";
 import Hosting, { HostingData } from "../../../lib/models/hosting";
-import mongooseInit from "../../../lib/mongooseInit";
-import {Box, Typography, Button} from "@mui/material";
-import HostingItem from "../../../components/home/hostingItem";
-import { format } from "date-fns";
-import DetailMainPhotos from "../../../components/detail/detailMainPhotos";
-import DetailMainHeader from "../../../components/detail/detailMainHeader";
+import { Box, Grid, Typography } from "@mui/material";
 
-function BookResult(
-    {hosting, bookData} : {hosting:HostingData; bookData:BookData}
-) {
-    console.log(hosting)
-    return (
-    <Box>
-        <h2>예약완료</h2>  
-        <Box sx={{width:"50%"}}>
-        <Box sx={{ py: 1 }}>
-          <Typography variant="h5">예약정보</Typography>
+import Head from "next/head";
+import Book, { BookData } from "../../../lib/models/book";
+import BookingPreview from "../../../components/book/bookingPreview";
+import mongooseInit from "../../../lib/mongooseInit";
+
+
+function BookResult({ data }: { data: BookData & HostingData }) {
+  return (
+    <>
+      <Head>
+        <title>예약 목록</title>
+      </Head>
+      <Box
+        sx={{
+          position: "relative",
+          maxWidth: "1120px",
+          margin: "auto",
+          pb: 10,
+          mt: 0,
+        }}
+      >
+        <Box>
+          <Typography variant="h4">예약이 확정되었습니다.</Typography>
+          <BookingPreview data={data} />
         </Box>
-        <DetailMainHeader hosting={hosting} />
-        <DetailMainPhotos hosting={hosting} />
-        <Box sx={{ py: 1, display: "flex" }}>
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h4">날짜</Typography>
-            <Box sx={{ display: "flex" }}>
-              <Typography variant="h6">
-                {format(new Date(bookData.checkin), "yyyy년 MM월 dd일")}
-              </Typography>
-              <Typography variant="h6" sx={{ mx: 1 }}>
-                ~
-              </Typography>
-              <Typography variant="h6">
-                {format(new Date(bookData.checkout), "yyyy년 MM월 dd일")}
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-        <Box sx={{ py: 1, display: "flex" }}>
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h4">게스트</Typography>
-            <Typography variant="h6">
-              게스트 {bookData.numberOfGuests}명
-            </Typography>
-          </Box>
-        </Box>
-      </Box> 
-    </Box>  );
+      </Box>
+    </>
+  );
 }
 
-export default BookResult;
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    mongooseInit();
-    const { id }= context.query;
-    console.log(context.query)    
-    const data = await Book.findById(id);
-    const hostingData = await Hosting.findById({_id:data?.productId})
-    if (!data || !hostingData) {
-      return {
-        notFound: true,
-      };
-    }
-  
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  await mongooseInit();
+  const { id } = ctx.query;
+
+  const one = await Book.findById(id).lean();
+  if (!one) {
     return {
-      props: {
-        hosting: JSON.parse(JSON.stringify(hostingData)),
-        bookData: JSON.parse(JSON.stringify(data)),
-      },
+      notFound: true,
     };
+  }
+  const other = await Hosting.findById(one.productId).lean();
+  // console.log(JSON.stringify({ ...one, ...other }));
+  return {
+    props: {
+      data: JSON.parse(JSON.stringify({ ...one, ...other })),
+    },
+  };
 };
 
+export default BookResult;
 BookResult.isDetail = true;
 BookResult.isRaw = true;

@@ -50,8 +50,10 @@ function DetailRightContents({ hosting, reserved }: { hosting: HostingData;reser
         router.push(
           "/book/check/" + json?.data._id + "?" + params.toString()
         );        
-      }else{
+      }else if(response.status===422){
         alert("이미 예약된 날짜입니다. 다른 날로 잡아주세요")
+      }else{
+        alert(json.error);
       }
     } else {
       ctx?.openDialog();

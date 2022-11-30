@@ -3,6 +3,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    SERVER_ADDRESS: process.env.SERVER_ADDRESS,
+  },
   swcMinify: true,
   images: {
     domains: ['maps.googleapis.com'],

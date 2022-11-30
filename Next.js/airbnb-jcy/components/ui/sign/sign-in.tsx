@@ -44,6 +44,7 @@ export default function SingInForm() {
   const googleSignHandle = () => {
     const topX = screenX + screen.width / 2 - 500 / 2;
     const topY = screenY + screen.height / 2 - 650 / 2;
+    console.log(process.env.SERVER_ADDRESS);
     window.open(
       `${process.env.SERVER_ADDRESS}/popup/google`,
       "popup",

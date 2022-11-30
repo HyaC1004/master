@@ -11,7 +11,7 @@ export default function AuthMenu({ dummyMenuHandle }: Props) {
       <MenuItem onClick={dummyMenuHandle}>
         <Typography>메시지</Typography>
       </MenuItem>
-      <MenuItem onClick={dummyMenuHandle}>
+      <MenuItem onClick={() => router.push("/book/list")}>
         <Typography>여행</Typography>
       </MenuItem>
       <MenuItem onClick={dummyMenuHandle}>

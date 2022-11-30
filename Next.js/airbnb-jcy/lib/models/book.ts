@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import { HostingData } from "./hosting";
 export interface BookData {
   _id: mongoose.Types.ObjectId;
   productId: string;
@@ -20,6 +20,7 @@ export interface BookData {
     payId: string;
     paidTime: Date;
   };
+  product?: HostingData;
 }
 
 const bookSchema = new mongoose.Schema<BookData>({
@@ -41,6 +42,13 @@ const bookSchema = new mongoose.Schema<BookData>({
     paidTime: Date,
   },
   publish: {type: Boolean, default: false}
+});
+
+bookSchema.virtual("product", {
+  localField: "productId",
+  ref: "Hosting",
+  foreignField: "_id",
+  justOne: true
 });
 
 const Book: mongoose.Model<BookData> =
