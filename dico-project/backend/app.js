@@ -1,11 +1,13 @@
 const express = require("express");
 const path = require("path")
 const cors = require("cors");
-
+const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
+const { default: mongoose } = require("mongoose");
 
 
-
+dotenv.config();
+mongoose.connect(process.env.MONGODB_URI,{dbName:"discord"})
 const app = express();
 
 app.use(cors());

@@ -3,36 +3,43 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-const theme = createTheme();
+import {  useNavigate } from 'react-router-dom';
+
 
 function LoginPage() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const loginHandle = async(event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const response = await fetch("http://localhost:8080/auth/login",{
+      method:"POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({})
     });
+    if(response.status === 20) {
+      const json = await response.json()
+      console.log(json.token);
+      navigate("/channels/@me");
+    }
+    console.log(response.status);
   };
   return (
-    <ThemeProvider theme={theme}>
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container sx={{width:'100%', display:"flex", flexDirection: 'column', alignItems: 'center'}}>
       <Box
         sx={{
           marginTop: 8,
+          padding:5,
           display: 'flex',
+          width:"60%",
           flexDirection: 'column',
           alignItems: 'center',
+          backgroundColor:"#2F2A30",
+          borderRadius:"1rem"
         }}
       >
         <Typography component="h1" variant="h4">
@@ -41,7 +48,7 @@ function LoginPage() {
         <Typography component="h1" variant="h6">
           다시 만나다니 너무 반가워요!
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={loginHandle} noValidate sx={{ mt: 1 }}>
           <Typography variant='caption'>이메일 또는 전화번호<span style={{color:"red"}}>*</span></Typography>
           <TextField
             required
@@ -69,7 +76,7 @@ function LoginPage() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            로그인
           </Button>
           <Link href="#" variant="body2">
             {"Don't have an account? Sign Up"}
@@ -77,7 +84,6 @@ function LoginPage() {
         </Box>
       </Box>
     </Container>
-  </ThemeProvider>
   );
 }
 

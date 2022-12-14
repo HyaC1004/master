@@ -1,20 +1,30 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 const router = express.Router();
 
-router.post("/login", (req,res)=>{
-    console.log(req.body);
+router.post("/register", async(req, res)=>{
+    const {email, password, name} = req.body;
+    const hashedPW = bcrypt.hashSync(req.body.password, 12);    
+    try{
+        let rst = await User.create({email:email,name:name, password: hashedPW, authed:false});
+        res.status(200).json({result:true, message: rst});
+    }catch(e){
+        res.status(500).json({result:false, message: e.message});
+    } 
+})
+
+router.post("/login", async(req,res)=>{
+    const {email, password, name} = req.body;
     try {
-        // const one = await Users.findOne({email: req.body.email});
-        const one = {email: "master@gmail.com", name: "master"};
-        const isEqual = bcrypt.compareSync(req.body.password,
-            "$3454354#%#$543543");
-        if(!isEqual){
-            return res.status(500).json({});
+        const one = await User.findOne({email: email});
+        if(one && bcrypt.compareSync(password, one.password)){
+            const token = jwt.sign({user:{email:one.email, name: one.name}},
+                process.env.SECRET_KEY,{expiresIn: "7d"});
+            console.log(token);
+            res.status(200).json({token:token, result: true});
         }
-        const token = jwt.sign(one, "secretKey", {expiresIn:"7d"})
-        console.log(token);
     } catch(e) {
         console.log(e);
         res.status(500).json({});
@@ -22,13 +32,7 @@ router.post("/login", (req,res)=>{
 
 })
 
-router.post("/register", (req, res)=>{
-    // console.log(req.body);
-    // password 만 
-    const hashedPW = bcrypt.hashSync(req.body.password, 12);
-    console.log(req.body.password, hashedPW);
-    return res.status(200).json({});
-})
+
 
 
 
