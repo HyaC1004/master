@@ -13,7 +13,6 @@ function MePage() {
   },[])  
     return (
     <>
-      <S
     </>
     );
 }
