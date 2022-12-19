@@ -35,6 +35,7 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", async (socket) => {
+    console.log("socket.id",socket.id, "rooms ", socket.rooms);
     // console.log(socket.handshake.query);
     const owner = socket.handshake.query.email;
     console.log(owner);
