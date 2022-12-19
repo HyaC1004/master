@@ -1,9 +1,11 @@
+import { Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
 function ChannelsTemplate() {
-    return (
-        <>
-        
-        </>
-      );
+
+    const params = useParams();
+    console.log(params);
+
+    return (<Typography>DDD</Typography>);
 }
 
 export default ChannelsTemplate;
