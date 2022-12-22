@@ -10,6 +10,8 @@ import AddFriend from "./friends/add-friend";
 import { grey } from "@mui/material/colors";
 import AuthContext from "../../contexts/AuthContext";
 import PendingFriend from "./friends/pending-friend";
+import OnlineFriend from "./friends/online-friend";
+import AllFriend from "./friends/all-friend";
 
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -66,7 +68,9 @@ function FriendsManage({ friends }) {
         </Box>
         <Divider />
         {mode === "add-friend" && <AddFriend />}
-        {mode === "pending" && <PendingFriend friends={friends} />}
+        {mode === "pending" && <PendingFriend friends={friends.filter(one => one.type === 3 || one.type === 4)} />}
+        {mode === "online" && <OnlineFriend friends={friends.filter(one => one.type === 1)} />}
+        {mode === "all" && <AllFriend friends={friends.filter(one => one.type === 1 || one.type === 2)} />}
     </Box>);
 }
 

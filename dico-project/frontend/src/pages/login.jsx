@@ -55,6 +55,7 @@ function LoginPage() {
                     InputProps={{ sx: { background: "#171717", color: "white" } }}
                     margin={"dense"}
                     value={email}
+                    autoFocus={true}
                     onChange={evt => setEmail(evt.target.value)}
                 />
                 <Typography variant="body2" sx={{ mt: 2 }}>비밀번호 *</Typography>

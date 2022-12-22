@@ -1,16 +1,27 @@
 const mongoose = require("mongoose");
-const messageSchema = new mongoose.Schema({
-    author: String,
-    content: String,
-    timestamp: Date,
-})
+
 const relationshipSchema = new mongoose.Schema({
     owner: String,
     opponent: String,
     created_at: Date,
     accepted_at: Date,
-    messages: [messageSchema]
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
 
+relationshipSchema.virtual("ownerDetail", {
+    ref: "user",
+    justOne: true,
+    localField: "owner",
+    foreignField: "email",
+});
+
+relationshipSchema.virtual("opponentDetail", {
+    ref: "user",
+    justOne: true,
+    localField: "opponent",
+    foreignField: "email"
+});
 
 module.exports = mongoose.model("relationship", relationshipSchema);

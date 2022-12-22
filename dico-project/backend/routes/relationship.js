@@ -26,17 +26,19 @@ router.use((req, res, next) => {
 router.get("/relationship", async (req, res) => {
     const requester = req.data.user.email;
     // owner == 요청보낸 사람 혹은 opponent 가 요청보낸 사람
-    const datas = await relationship.find({ $or: [{ owner: requester }, { opponent: requester }] }).sort("created_at");
+    const datas = await relationship.find({ $or: [{ owner: requester }, { opponent: requester }] }).populate("ownerDetail").populate("opponentDetail").sort("created_at");
+
     const cvtDatas = datas.map((one) => {
         // console.log("!!!", one);
-        let user = requester === one.owner ? one.opponent : one.owner;
+        let user = requester === one.owner ? one.opponentDetail : one.ownerDetail;
+
         let type;
         if (one.accepted_at) {
-            type = 1;   // 서로 수락
+            type = user.sid ? 1 : 2;   // 서로 수락
         } else {
             type = requester === one.owner ? 3 : 4;
         }
-        return { created_at: one.created_at, user: user, type: type };
+        return { created_at: one.created_at, user: user, type: type, _id: one._id };
     });
     return res.status(200).json(cvtDatas);
 });
@@ -73,23 +75,31 @@ router.post("/relationship", async (req, res) => {
         opponent: opponent
     };
     // console.log(one);
-    await relationship.create(one);
+    const result = await relationship.create(one);
+    // console.log(result);
     // 요청을 당한사람의 소켓아이디를 찾아야됨. == 위에 찾아놈.
     if (found.sid) {
         const io = req.app.get("io");
         io.to(found.sid).emit("add-friend-req", {
             created_at: one.created_at,
-            user: owner,
-            type: 4
+            user: await user.findOne({ email: owner }).lean(),
+            type: 4,
+            _id: result._id
         });
     }
-
-
-
     // console.log({ message: `${opponent} 에게 성공적으로 친구 요청을 보냈습니다.` })
     return res.status(201).json({ message: `${opponent} 에게 성공적으로 친구 요청을 보냈습니다.` });
 });
 
+
+
+// 친구 추가 요청 처리 {oppenent : "totoro@gmail.com"}
+router.put("/relationship", async (req, res) => {
+    const { relationshipId } = req.body;
+    await relationship.updateOne({ _id: relationshipId }, { accepted_at: new Date() });
+
+    return res.status(200).json({ message: "해당 요청건에 승인하였습니다." });
+});
 
 
 module.exports = router;
